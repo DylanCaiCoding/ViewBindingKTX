@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.dylanc.viewbinding
 
 import android.view.LayoutInflater
@@ -10,16 +12,19 @@ import androidx.viewbinding.ViewBinding
  */
 
 inline fun <reified VB : ViewBinding> newBindingViewHolder(parent: ViewGroup): BindingViewHolder<VB> =
-  BindingViewHolder(bindingOf(LayoutInflater.from(parent.context), parent, false))
+  BindingViewHolder.create(VB::class.java, parent)
+
+fun <VB : ViewBinding> Any.newBindingViewHolderWithGeneric(parent: ViewGroup): BindingViewHolder<VB> =
+  BindingViewHolder.createWithGeneric(this, parent)
 
 class BindingViewHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root) {
   companion object {
     @JvmStatic
     fun <VB : ViewBinding> create(clazz: Class<VB>, parent: ViewGroup) =
-      BindingViewHolder(bindingOf(clazz, LayoutInflater.from(parent.context), parent, false))
+      BindingViewHolder(inflateBinding(clazz, LayoutInflater.from(parent.context), parent, false))
 
     @JvmStatic
     fun <VB : ViewBinding> createWithGeneric(any: Any, parent: ViewGroup) =
-      BindingViewHolder<VB>(any.genericBindingOf(LayoutInflater.from(parent.context), parent, false))
+      BindingViewHolder<VB>(any.inflateBindingWithGeneric(LayoutInflater.from(parent.context), parent, false))
   }
 }
