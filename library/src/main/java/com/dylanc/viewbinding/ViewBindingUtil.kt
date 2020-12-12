@@ -41,22 +41,28 @@ inline fun <reified VB : ViewBinding> inflateBinding(layoutInflater: LayoutInfla
 
 @JvmName("inflateWithGeneric")
 fun <VB : ViewBinding> Any.inflateBindingWithGeneric(layoutInflater: LayoutInflater): VB =
-  inflateBinding(findGenericBindingClass(), layoutInflater)
+  doForGenericBindingClass { inflateBinding(it, layoutInflater) }
 
 @JvmName("inflateWithGeneric")
 fun <VB : ViewBinding> Any.inflateBindingWithGeneric(layoutInflater: LayoutInflater, parent: ViewGroup, attachToParent: Boolean): VB =
-  inflateBinding(findGenericBindingClass(), layoutInflater, parent, attachToParent)
+  doForGenericBindingClass { inflateBinding(it, layoutInflater, parent, attachToParent) }
+
+private fun <VB : ViewBinding> Any.doForGenericBindingClass(block: (Class<VB>) -> VB): VB {
+  var index = 0
+  while (true) {
+    try {
+      return block.invoke(findGenericBindingClass(index))
+    } catch (e: NoSuchMethodException) {
+      index++
+    }
+  }
+}
 
 @Suppress("UNCHECKED_CAST")
-private fun <VB : ViewBinding> Any.findGenericBindingClass(): Class<VB> {
+private fun <VB : ViewBinding> Any.findGenericBindingClass(index: Int): Class<VB> {
   val type = javaClass.genericSuperclass
-  if (type is ParameterizedType) {
-    type.actualTypeArguments.forEach {
-      try {
-        return it as Class<VB>
-      } catch (e: Exception) {
-      }
-    }
+  if (type is ParameterizedType && index < type.actualTypeArguments.size) {
+    return type.actualTypeArguments[index] as Class<VB>
   }
   throw IllegalArgumentException("There is no generic of ViewBinding.")
 }
