@@ -1,7 +1,7 @@
 package com.dylanc.viewbinding.sample.item
 
 import com.dylanc.viewbinding.BindingViewHolder
-import com.dylanc.viewbinding.sample.base.java.BindingViewDelegate
+import com.dylanc.viewbinding.sample.base.kotlin.BindingViewDelegate
 import com.dylanc.viewbinding.sample.databinding.ItemFooBinding
 
 class FooViewDelegate : BindingViewDelegate<Foo, ItemFooBinding>() {

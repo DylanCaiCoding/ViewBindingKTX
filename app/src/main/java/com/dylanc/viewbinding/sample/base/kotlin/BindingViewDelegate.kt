@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.dylanc.viewbinding.sample.base.kotlin
 
 import android.content.Context
