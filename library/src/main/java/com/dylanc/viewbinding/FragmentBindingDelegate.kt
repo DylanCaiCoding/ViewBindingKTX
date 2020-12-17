@@ -18,6 +18,7 @@
 
 package com.dylanc.viewbinding
 
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -26,6 +27,7 @@ import androidx.viewbinding.ViewBinding
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
+@Suppress("UNCHECKED_CAST")
 class FragmentBindingDelegate<VB : ViewBinding>(
   private val clazz: Class<VB>
 ) : ReadOnlyProperty<Fragment, VB> {
@@ -42,7 +44,8 @@ class FragmentBindingDelegate<VB : ViewBinding>(
           _binding = null
         }
       })
-      _binding = inflateBinding(clazz, thisRef.layoutInflater)
+      _binding = clazz.getMethod("bind", View::class.java)
+        .invoke(null, thisRef.requireView()) as VB
       isInitialized = true
     }
     return binding

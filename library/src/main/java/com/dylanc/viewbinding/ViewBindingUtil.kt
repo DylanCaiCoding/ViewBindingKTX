@@ -36,12 +36,12 @@ inline fun <reified VB : ViewBinding> Activity.inflate() = lazy {
   inflateBinding<VB>(layoutInflater).apply { setContentView(root) }
 }
 
-inline fun <reified VB : ViewBinding> Fragment.inflate() =
-  FragmentBindingDelegate(VB::class.java)
-
 inline fun <reified VB : ViewBinding> Dialog.inflate() = lazy {
   inflateBinding<VB>(layoutInflater).apply { setContentView(root) }
 }
+
+inline fun <reified VB : ViewBinding> Fragment.bindView() =
+  FragmentBindingDelegate(VB::class.java)
 
 @JvmName("inflate")
 @Suppress("UNCHECKED_CAST")
@@ -54,18 +54,13 @@ inline fun <reified VB : ViewBinding> inflateBinding(layoutInflater: LayoutInfla
 @JvmName("inflate")
 @Suppress("UNCHECKED_CAST")
 fun <VB : ViewBinding> inflateBinding(
-  clazz: Class<VB>,
-  layoutInflater: LayoutInflater,
-  parent: ViewGroup,
-  attachToParent: Boolean
+  clazz: Class<VB>, layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean
 ) =
   clazz.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
     .invoke(null, layoutInflater, parent, attachToParent) as VB
 
 inline fun <reified VB : ViewBinding> inflateBinding(
-  layoutInflater: LayoutInflater,
-  parent: ViewGroup,
-  attachToParent: Boolean
+  layoutInflater: LayoutInflater, parent: ViewGroup, attachToParent: Boolean
 ) =
   inflateBinding(VB::class.java, layoutInflater, parent, attachToParent)
 
@@ -75,9 +70,7 @@ fun <VB : ViewBinding> Any.inflateBindingWithGeneric(layoutInflater: LayoutInfla
 
 @JvmName("inflateWithGeneric")
 fun <VB : ViewBinding> Any.inflateBindingWithGeneric(
-  layoutInflater: LayoutInflater,
-  parent: ViewGroup,
-  attachToParent: Boolean
+  layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean
 ): VB =
   withGenericBindingClass(this) { inflateBinding(it, layoutInflater, parent, attachToParent) }
 

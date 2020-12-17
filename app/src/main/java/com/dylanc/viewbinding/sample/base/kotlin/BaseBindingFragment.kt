@@ -13,10 +13,10 @@ import com.dylanc.viewbinding.inflateBindingWithGeneric
 abstract class BaseBindingFragment<VB : ViewBinding> : Fragment() {
 
   private var _binding: VB? = null
-  val binding:VB get() = _binding!!
+  val binding: VB get() = _binding!!
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    _binding = inflateBindingWithGeneric(layoutInflater)
+    _binding = inflateBindingWithGeneric(layoutInflater, container, false)
     return binding.root
   }
 
