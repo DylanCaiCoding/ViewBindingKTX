@@ -15,8 +15,7 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    with(binding) {
-      tvHelloWorld.text = "Hello Android!"
+    binding.apply {
       val adapter = MultiTypeAdapter(listOf(Foo("1"), Foo("2"), Foo("3")))
       adapter.register(FooViewDelegate())
       recyclerView.adapter = adapter

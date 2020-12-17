@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
 
 package com.dylanc.viewbinding.sample.base.kotlin
 
@@ -12,10 +12,16 @@ import com.dylanc.viewbinding.inflateBindingWithGeneric
 
 abstract class BaseBindingFragment<VB : ViewBinding> : Fragment() {
 
-  lateinit var binding: VB
+  private var _binding: VB? = null
+  val binding:VB get() = _binding!!
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    binding = inflateBindingWithGeneric(layoutInflater)
+    _binding = inflateBindingWithGeneric(layoutInflater)
     return binding.root
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
   }
 }
