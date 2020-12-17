@@ -76,6 +76,12 @@ public abstract class BaseBindingFragment<VB extends ViewBinding> extends Fragme
     return binding.getRoot();
   }
 
+  @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+    binding = null;
+  }
+
   public VB getBinding() {
     return binding;
   }
