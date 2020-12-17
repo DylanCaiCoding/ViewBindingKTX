@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'com.github.panpf.bintray-publish'
 }
 
 android {
@@ -43,4 +44,15 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
+
+
+publish {
+    userOrg = 'dylancai'
+    repoName = 'maven'
+    groupId = 'com.dylanc'
+    artifactId = 'viewbinding-ktx'
+    publishVersion = '1.0.0'
+    desc = 'An easy way to use ViewBinding.'
+    website = 'https://github.com/DylanCaiCoding/ViewBindingKtx'
 }

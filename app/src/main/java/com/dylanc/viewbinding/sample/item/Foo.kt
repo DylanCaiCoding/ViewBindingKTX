@@ -1,3 +1,3 @@
 package com.dylanc.viewbinding.sample.item
 
-class Foo(val value: String)
+data class Foo(val value: String)
