@@ -18,7 +18,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.dylanc:viewbinding-ktx:1.0.0'
+    implementation 'com.dylanc:viewbinding-ktx:1.0.1'
 }
 ```
 
@@ -43,12 +43,8 @@ class MainActivity : AppCompatActivity() {
 ```
 
 ```kotlin
-class HomeFragment: Fragment() {
-  private val binding : FragmentHomeBinding by inflate()
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    return binding.root
-  }
+class HomeFragment: Fragment(R.layout.fragment_home) {
+  private val binding : FragmentHomeBinding by bindView()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
