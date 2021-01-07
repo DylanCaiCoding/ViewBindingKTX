@@ -1,13 +1,19 @@
-
 buildscript {
-    ext.kotlin_version = "1.4.21"
+    ext.kotlinVersion = '1.4.21'
+    ext.buildConfig = [
+            'versionCode'      : 1,
+            'versionName'      : "1.0.0",
+            'compileSdkVersion': 30,
+            'minSdkVersion'    : 19,
+            'targetSdkVersion' : 30
+    ]
     repositories {
         google()
         jcenter()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.1"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath 'com.github.panpf.bintray-publish:bintray-publish:1.0.0'
     }
 }
