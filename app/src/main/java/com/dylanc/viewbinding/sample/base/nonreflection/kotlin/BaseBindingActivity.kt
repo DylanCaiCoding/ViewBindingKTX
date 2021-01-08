@@ -1,17 +1,19 @@
-package com.dylanc.viewbinding.sample.base.kotlin
+package com.dylanc.viewbinding.sample.base.nonreflection.kotlin
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import com.dylanc.viewbinding.inflateBindingWithGeneric
 
-abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity() {
+abstract class BaseBindingActivity<VB : ViewBinding>(
+  private val inflate: (LayoutInflater) -> VB
+) : AppCompatActivity() {
 
   lateinit var binding: VB
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    binding = inflateBindingWithGeneric(layoutInflater)
+    binding = inflate(layoutInflater)
     setContentView(binding.root)
   }
 

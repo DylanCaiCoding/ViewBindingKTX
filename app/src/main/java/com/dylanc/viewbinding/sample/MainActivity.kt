@@ -1,17 +1,17 @@
 package com.dylanc.viewbinding.sample
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
-import com.dylanc.viewbinding.inflate
+import com.dylanc.viewbinding.nonreflection.binding
+import com.dylanc.viewbinding.sample.base.nonreflection.kotlin.BaseBindingActivity
 import com.dylanc.viewbinding.sample.databinding.ActivityMainBinding
 import com.dylanc.viewbinding.sample.item.Foo
 import com.dylanc.viewbinding.sample.item.FooViewDelegate
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseBindingActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
-  private val binding: ActivityMainBinding by inflate()
+//  private val binding2 by binding(ActivityMainBinding::inflate)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

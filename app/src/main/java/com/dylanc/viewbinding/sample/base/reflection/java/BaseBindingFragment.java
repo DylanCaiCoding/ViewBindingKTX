@@ -1,4 +1,4 @@
-package com.dylanc.viewbinding.sample.base.java;
+package com.dylanc.viewbinding.sample.base.reflection.java;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewbinding.ViewBinding;
 
-import com.dylanc.viewbinding.ViewBindingUtil;
+import com.dylanc.viewbinding.base.ViewBindingUtil;
+
 
 public abstract class BaseBindingFragment<VB extends ViewBinding> extends Fragment {
 

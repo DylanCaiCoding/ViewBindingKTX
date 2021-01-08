@@ -1,4 +1,4 @@
-package com.dylanc.viewbinding.sample.base.java;
+package com.dylanc.viewbinding.sample.base.reflection.java;
 
 import android.os.Bundle;
 
@@ -6,7 +6,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewbinding.ViewBinding;
 
-import com.dylanc.viewbinding.ViewBindingUtil;
+import com.dylanc.viewbinding.base.ViewBindingUtil;
+
 
 public abstract class BaseBindingActivity<VB extends ViewBinding> extends AppCompatActivity {
 

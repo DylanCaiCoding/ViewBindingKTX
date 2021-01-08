@@ -1,10 +1,15 @@
 package com.dylanc.viewbinding.sample.item
 
+import android.content.Context
+import android.view.ViewGroup
+import com.drakeet.multitype.ItemViewDelegate
 import com.dylanc.viewbinding.BindingViewHolder
-import com.dylanc.viewbinding.sample.base.kotlin.BindingViewDelegate
 import com.dylanc.viewbinding.sample.databinding.ItemFooBinding
 
-class FooViewDelegate : BindingViewDelegate<Foo, ItemFooBinding>() {
+class FooViewDelegate : ItemViewDelegate<Foo, BindingViewHolder<ItemFooBinding>>() {
+
+  override fun onCreateViewHolder(context: Context, parent: ViewGroup) =
+    BindingViewHolder<ItemFooBinding>(parent)
 
   override fun onBindViewHolder(holder: BindingViewHolder<ItemFooBinding>, item: Foo) {
     holder.binding.foo.text = item.value

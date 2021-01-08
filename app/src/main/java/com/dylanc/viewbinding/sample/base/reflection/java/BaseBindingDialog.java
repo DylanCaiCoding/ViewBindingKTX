@@ -1,4 +1,4 @@
-package com.dylanc.viewbinding.sample.base.java;
+package com.dylanc.viewbinding.sample.base.reflection.java;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,7 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.viewbinding.ViewBinding;
 
-import com.dylanc.viewbinding.ViewBindingUtil;
+import com.dylanc.viewbinding.base.ViewBindingUtil;
+
 
 public abstract class BaseBindingDialog<VB extends ViewBinding> extends Dialog {
 
