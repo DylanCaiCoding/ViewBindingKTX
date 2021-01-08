@@ -46,7 +46,9 @@ dependencies {
     implementation 'com.drakeet.multitype:multitype:4.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation project(path: ':library')
-    testImplementation 'junit:junit:4.+'
+    implementation project(path: ':library-nonreflection')
+    implementation project(path: ':library-base')
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

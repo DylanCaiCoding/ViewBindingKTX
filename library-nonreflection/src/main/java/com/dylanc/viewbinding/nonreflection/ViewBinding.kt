@@ -16,8 +16,11 @@
 
 @file:Suppress("unused")
 
-package com.dylanc.viewbinding
+package com.dylanc.viewbinding.nonreflection
 
+import android.app.Activity
+import android.app.Dialog
+import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -27,15 +30,31 @@ import androidx.viewbinding.ViewBinding
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-@Suppress("UNCHECKED_CAST")
+
+/**
+ * @author Dylan Cai
+ */
+
+fun <VB : ViewBinding> Activity.binding(inflate: (LayoutInflater) -> VB) = lazy {
+  inflate(layoutInflater).apply { setContentView(root) }
+}
+
+fun <VB : ViewBinding> Dialog.binding(inflate: (LayoutInflater) -> VB) = lazy {
+  inflate(layoutInflater).apply { setContentView(root) }
+}
+
+fun <VB : ViewBinding> Fragment.binding(bind: (View) -> VB) =
+  FragmentBindingDelegate(bind)
+
 class FragmentBindingDelegate<VB : ViewBinding>(
-  private val clazz: Class<VB>
+  private val bind: (View) -> VB
 ) : ReadOnlyProperty<Fragment, VB> {
 
   private var isInitialized = false
   private var _binding: VB? = null
   private val binding: VB get() = _binding!!
 
+  @Suppress("UNCHECKED_CAST")
   override fun getValue(thisRef: Fragment, property: KProperty<*>): VB {
     if (!isInitialized) {
       thisRef.viewLifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {
@@ -44,8 +63,7 @@ class FragmentBindingDelegate<VB : ViewBinding>(
           _binding = null
         }
       })
-      _binding = clazz.getMethod("bind", View::class.java)
-        .invoke(null, thisRef.requireView()) as VB
+      _binding = bind(thisRef.requireView())
       isInitialized = true
     }
     return binding

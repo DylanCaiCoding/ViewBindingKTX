@@ -16,7 +16,7 @@
 
 @file:Suppress("unused")
 
-package com.dylanc.viewbinding
+package com.dylanc.viewbinding.nonreflection
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -26,9 +26,6 @@ import androidx.viewbinding.ViewBinding
 /**
  * @author Dylan Cai
  */
-
-inline fun <reified VB : ViewBinding> BindingViewHolder(parent: ViewGroup) =
-  BindingViewHolder(inflateBinding<VB>(LayoutInflater.from(parent.context), parent, false))
 
 class BindingViewHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root) {
 
