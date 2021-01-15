@@ -19,6 +19,7 @@
 package com.dylanc.viewbinding.base
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import java.lang.reflect.ParameterizedType
@@ -29,6 +30,13 @@ import java.lang.reflect.ParameterizedType
 fun <VB : ViewBinding> Any.inflateBindingWithGeneric(layoutInflater: LayoutInflater): VB =
   withGenericBindingClass(this) {
     it.getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
+  }
+
+@Suppress("UNCHECKED_CAST")
+@JvmName("inflateWithGeneric")
+fun <VB : ViewBinding> Any.inflateBindingWithGeneric(view: View): VB =
+  withGenericBindingClass(this) {
+    it.getMethod("bind", LayoutInflater::class.java).invoke(null, view) as VB
   }
 
 @JvmName("inflateWithGeneric")

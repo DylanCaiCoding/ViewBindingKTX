@@ -47,26 +47,17 @@ inline fun <reified VB : ViewBinding> Dialog.binding() = lazy {
 inline fun <reified VB : ViewBinding> Fragment.binding() =
   FragmentBindingDelegate(VB::class.java)
 
-@JvmName("inflate")
-@Suppress("UNCHECKED_CAST")
-fun <VB : ViewBinding> inflateBinding(clazz: Class<VB>, layoutInflater: LayoutInflater) =
-  clazz.getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
-
 inline fun <reified VB : ViewBinding> inflateBinding(layoutInflater: LayoutInflater) =
-  inflateBinding(VB::class.java, layoutInflater)
+  VB::class.java.getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
 
-@JvmName("inflate")
-@Suppress("UNCHECKED_CAST")
-fun <VB : ViewBinding> inflateBinding(
-  clazz: Class<VB>, layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean
-) =
-  clazz.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
-    .invoke(null, layoutInflater, parent, attachToParent) as VB
+inline fun <reified VB : ViewBinding> inflateBinding(parent: ViewGroup) =
+  inflateBinding<VB>(LayoutInflater.from(parent.context), parent, false)
 
 inline fun <reified VB : ViewBinding> inflateBinding(
   layoutInflater: LayoutInflater, parent: ViewGroup, attachToParent: Boolean
 ) =
-  inflateBinding(VB::class.java, layoutInflater, parent, attachToParent)
+  VB::class.java.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
+    .invoke(null, layoutInflater, parent, attachToParent) as VB
 
 class FragmentBindingDelegate<VB : ViewBinding>(
   private val clazz: Class<VB>
