@@ -40,12 +40,18 @@ inline fun <reified VB : ViewBinding> Activity.binding() = lazy {
   inflateBinding<VB>(layoutInflater).apply { setContentView(root) }
 }
 
+inline fun <reified VB : ViewBinding> Fragment.binding() =
+  FragmentBindingDelegate(VB::class.java)
+
 inline fun <reified VB : ViewBinding> Dialog.binding() = lazy {
   inflateBinding<VB>(layoutInflater).apply { setContentView(root) }
 }
 
-inline fun <reified VB : ViewBinding> Fragment.binding() =
-  FragmentBindingDelegate(VB::class.java)
+inline fun <reified VB : ViewBinding> ViewGroup.binding(attachToParent: Boolean = true): VB =
+  if (attachToParent)
+    inflateBinding(LayoutInflater.from(context), this, attachToParent)
+  else
+    inflateBinding(LayoutInflater.from(context))
 
 inline fun <reified VB : ViewBinding> inflateBinding(layoutInflater: LayoutInflater) =
   VB::class.java.getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB

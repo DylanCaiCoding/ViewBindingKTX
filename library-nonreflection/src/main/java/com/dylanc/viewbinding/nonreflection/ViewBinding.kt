@@ -22,6 +22,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -39,12 +40,21 @@ fun <VB : ViewBinding> Activity.binding(inflate: (LayoutInflater) -> VB) = lazy 
   inflate(layoutInflater).apply { setContentView(root) }
 }
 
+fun <VB : ViewBinding> Fragment.binding(bind: (View) -> VB) =
+  FragmentBindingDelegate(bind)
+
 fun <VB : ViewBinding> Dialog.binding(inflate: (LayoutInflater) -> VB) = lazy {
   inflate(layoutInflater).apply { setContentView(root) }
 }
 
-fun <VB : ViewBinding> Fragment.binding(bind: (View) -> VB) =
-  FragmentBindingDelegate(bind)
+fun <VB : ViewBinding> ViewGroup.binding(
+  inflate: (LayoutInflater, ViewGroup?, Boolean) -> VB,
+  attachToParent: Boolean = true
+) =
+  if (attachToParent)
+    inflate(LayoutInflater.from(context), this, true)
+  else
+    inflate(LayoutInflater.from(context), null, false)
 
 class FragmentBindingDelegate<VB : ViewBinding>(
   private val bind: (View) -> VB
