@@ -12,10 +12,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/library" />
-            <option value="$PROJECT_DIR$/library-base" />
-            <option value="$PROJECT_DIR$/library-brvah" />
-            <option value="$PROJECT_DIR$/library-nonreflection" />
+            <option value="$PROJECT_DIR$/viewbinding" />
+            <option value="$PROJECT_DIR$/viewbinding-base" />
+            <option value="$PROJECT_DIR$/viewbinding-brvah" />
+            <option value="$PROJECT_DIR$/viewbinding-nonreflection" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
