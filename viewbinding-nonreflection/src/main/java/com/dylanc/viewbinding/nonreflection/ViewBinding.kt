@@ -28,6 +28,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.tabs.TabLayout
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -55,6 +56,13 @@ fun <VB : ViewBinding> ViewGroup.binding(
     inflate(LayoutInflater.from(context), this, true)
   else
     inflate(LayoutInflater.from(context), null, false)
+
+fun <VB : ViewBinding> TabLayout.Tab.setCustomView(
+  inflate: (LayoutInflater) -> VB,
+  onBindView: VB.() -> Unit
+) {
+  customView = inflate(LayoutInflater.from(parent!!.context)).apply(onBindView).root
+}
 
 class FragmentBindingDelegate<VB : ViewBinding>(
   private val bind: (View) -> VB
