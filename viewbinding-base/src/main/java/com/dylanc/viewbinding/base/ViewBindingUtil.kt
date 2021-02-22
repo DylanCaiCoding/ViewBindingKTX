@@ -56,22 +56,30 @@ private fun <VB : ViewBinding> inflateBinding(
   clazz.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
     .invoke(null, layoutInflater, parent, attachToParent) as VB
 
-private fun <VB : ViewBinding> withGenericBindingClass(any: Any, block: (Class<VB>) -> VB): VB {
-  var index = 0
-  while (true) {
-    try {
-      return block.invoke(any.findGenericBindingClass(index))
-    } catch (e: NoSuchMethodException) {
-      index++
-    }
-  }
-}
-
 @Suppress("UNCHECKED_CAST")
-private fun <VB : ViewBinding> Any.findGenericBindingClass(index: Int): Class<VB> {
-  val type = javaClass.genericSuperclass
-  if (type is ParameterizedType && index < type.actualTypeArguments.size) {
-    return type.actualTypeArguments[index] as Class<VB>
+private fun <VB : ViewBinding> withGenericBindingClass(any: Any, block: (Class<VB>) -> VB): VB {
+  any.allParameterizedType.forEach { parameterizedType ->
+    parameterizedType.actualTypeArguments.forEach {
+      try {
+        return block.invoke(it as Class<VB>)
+      } catch (e: NoSuchMethodException) {
+      }
+    }
   }
   throw IllegalArgumentException("There is no generic of ViewBinding.")
 }
+
+private val Any.allParameterizedType: List<ParameterizedType>
+  get() {
+    val genericParameterizedType = mutableListOf<ParameterizedType>()
+    var genericSuperclass = javaClass.genericSuperclass
+    var superclass = javaClass.superclass
+    while (superclass != null) {
+      if (genericSuperclass is ParameterizedType) {
+        genericParameterizedType.add(genericSuperclass)
+      }
+      genericSuperclass = superclass.genericSuperclass
+      superclass = superclass.superclass
+    }
+    return genericParameterizedType
+  }
