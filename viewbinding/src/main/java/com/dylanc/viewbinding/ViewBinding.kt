@@ -49,10 +49,7 @@ inline fun <reified VB : ViewBinding> Dialog.binding() = lazy {
 }
 
 inline fun <reified VB : ViewBinding> ViewGroup.binding(attachToParent: Boolean = true): VB =
-  if (attachToParent)
-    inflateBinding(LayoutInflater.from(context), this, attachToParent)
-  else
-    inflateBinding(LayoutInflater.from(context))
+  inflateBinding(LayoutInflater.from(context), if (attachToParent) this else null, attachToParent)
 
 inline fun <reified VB : ViewBinding> TabLayout.Tab.setCustomView(onBindView: VB.() -> Unit) {
   customView = inflateBinding<VB>(LayoutInflater.from(parent!!.context)).apply(onBindView).root
@@ -65,7 +62,7 @@ inline fun <reified VB : ViewBinding> inflateBinding(parent: ViewGroup) =
   inflateBinding<VB>(LayoutInflater.from(parent.context), parent, false)
 
 inline fun <reified VB : ViewBinding> inflateBinding(
-  layoutInflater: LayoutInflater, parent: ViewGroup, attachToParent: Boolean
+  layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean
 ) =
   VB::class.java.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
     .invoke(null, layoutInflater, parent, attachToParent) as VB

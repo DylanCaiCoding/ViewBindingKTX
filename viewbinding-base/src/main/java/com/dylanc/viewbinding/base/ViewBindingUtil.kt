@@ -15,6 +15,7 @@
  */
 
 @file:JvmName("ViewBindingUtil")
+@file:Suppress("UNCHECKED_CAST", "unused")
 
 package com.dylanc.viewbinding.base
 
@@ -25,38 +26,28 @@ import androidx.viewbinding.ViewBinding
 import java.lang.reflect.ParameterizedType
 
 
-@Suppress("UNCHECKED_CAST")
 @JvmName("inflateWithGeneric")
 fun <VB : ViewBinding> Any.inflateBindingWithGeneric(layoutInflater: LayoutInflater): VB =
-  withGenericBindingClass(this) {
-    it.getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
+  withGenericBindingClass(this) { clazz ->
+    clazz.getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
   }
 
-@Suppress("UNCHECKED_CAST")
 @JvmName("inflateWithGeneric")
-fun <VB : ViewBinding> Any.inflateBindingWithGeneric(view: View): VB =
-  withGenericBindingClass(this) {
-    it.getMethod("bind", LayoutInflater::class.java).invoke(null, view) as VB
+fun <VB : ViewBinding> Any.inflateBindingWithGeneric(layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean): VB =
+  withGenericBindingClass(this) { clazz ->
+    clazz.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
+      .invoke(null, layoutInflater, parent, attachToParent) as VB
   }
 
 @JvmName("inflateWithGeneric")
 fun <VB : ViewBinding> Any.inflateBindingWithGeneric(parent: ViewGroup): VB =
-  withGenericBindingClass(this) { inflateBinding(it, LayoutInflater.from(parent.context), parent, false) }
+  inflateBindingWithGeneric(LayoutInflater.from(parent.context), parent, false)
 
-@JvmName("inflateWithGeneric")
-fun <VB : ViewBinding> Any.inflateBindingWithGeneric(
-  layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean
-): VB =
-  withGenericBindingClass(this) { inflateBinding(it, layoutInflater, parent, attachToParent) }
+fun <VB : ViewBinding> Any.bindViewWithGeneric(view: View): VB =
+  withGenericBindingClass(this) { clazz ->
+    clazz.getMethod("bind", LayoutInflater::class.java).invoke(null, view) as VB
+  }
 
-@Suppress("UNCHECKED_CAST")
-private fun <VB : ViewBinding> inflateBinding(
-  clazz: Class<VB>, layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean
-) =
-  clazz.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
-    .invoke(null, layoutInflater, parent, attachToParent) as VB
-
-@Suppress("UNCHECKED_CAST")
 private fun <VB : ViewBinding> withGenericBindingClass(any: Any, block: (Class<VB>) -> VB): VB {
   any.allParameterizedType.forEach { parameterizedType ->
     parameterizedType.actualTypeArguments.forEach {
