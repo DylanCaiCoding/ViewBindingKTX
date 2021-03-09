@@ -40,9 +40,8 @@ android {
 
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
@@ -52,7 +51,7 @@ publish {
     repoName = 'maven'
     groupId = 'com.dylanc'
     artifactId = 'viewbinding-brvah-ktx'
-    publishVersion = '1.1.0-alpha3'
+    publishVersion = '1.1.0-alpha4'
     desc = 'An easy way to use ViewBinding.'
     website = 'https://github.com/DylanCaiCoding/ViewBindingKtx'
 }
