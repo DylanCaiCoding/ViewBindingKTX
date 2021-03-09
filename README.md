@@ -2,15 +2,23 @@
 
 [![Download](https://api.bintray.com/packages/dylancai/maven/viewbinding-ktx/images/download.svg)](https://bintray.com/dylancai/maven/viewbinding-ktx/_latestVersion) [![](https://img.shields.io/badge/License-Apache--2.0-green.svg)](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/LICENSE)
 
-ViewBinding 相对于 Kotlin synthetics、ButterKnife、findViewById，能减少 id 写错或类型写错导致的异常，官方和 JakeWharton 都推荐使用。但是 ViewBinding 直接使用会有点繁琐，所以 [ViewBindingKtx](https://github.com/DylanCaiCoding/ViewBindingKtx) 就诞生了，**能够用最少的代码来使用 ViewBinding**。
+ViewBinding 相对于 Kotlin synthetics、ButterKnife、findViewById，能减少 id 写错或类型写错导致的异常，官方和 JakeWharton 都推荐使用。但是 ViewBinding 直接使用会有点繁琐，所以本库能**帮助你在各种使用场景用尽可能少的代码来使用 ViewBinding**。
 
-## 开始使用
+## Feature
 
-Kotlin | [Java](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/README_JAVA.md)
+- 支持 Kotlin 和 Java 用法
+- 支持多种使用反射和不使用反射的用法
+- 支持封装改造自己的基类，使其用上 ViewBinding
+- 支持 BaseRecyclerViewAdapterHelper
+- 支持 Activitiy、Fragment、Dialog、Adapter
+- 支持实现自定义组合控件
+- 支持 TabLayout 实现自定义标签布局
 
-在 module 的 build.gradle 添加以下代码：
+## Gradle
 
-```
+添加配置和依赖：
+
+```groovy
 android {
     viewBinding {
         enabled = true
@@ -18,215 +26,37 @@ android {
 }
 
 dependencies {
-    implementation 'com.dylanc:viewbinding-ktx:1.0.1'
+    // 以下都是可选，请根据需要进行添加
+    implementation 'com.dylanc:viewbinding-ktx:1.1.0-alpha4'
+    implementation 'com.dylanc:viewbinding-nonreflection-ktx:1.1.0-alpha4'
+    implementation 'com.dylanc:viewbinding-base-ktx:1.1.0-alpha4'
+    implementation 'com.dylanc:viewbinding-brvah-ktx:1.1.0-alpha4'
 }
 ```
 
-提供了两种 Kotlin 的使用方式。
+## Wiki
 
-### 不依托于基类
+#### Kotlin 用法
 
-这种用法的好处是想用就用，无需继承什么基类，泛用性更强，移植代码更加容易。
+- [使用拓展函数](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/使用拓展函数)
 
-```kotlin
-class MainActivity : AppCompatActivity() {
+- [改造基类](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/改造基类-(Kotlin))
 
-  private val binding: ActivityMainBinding by inflate()
+- [兼容 BRVAH](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/兼容-BRVAH-(Kotlin))
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    binding.apply {
-      tvHelloWorld.text = "Hello Android!"
-    }
-  }
-}
-```
+#### Java 用法
 
-```kotlin
-class HomeFragment: Fragment(R.layout.fragment_home) {
-  private val binding : FragmentHomeBinding by bindView()
+- [改造基类](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/改造基类-(Java))
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    binding.apply {
-      tvHelloWorld.text = "Hello Android!"
-    }
-  }
-}
-```
+- [兼容 BRVAH](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/兼容-BRVAH-(Java))
 
-```kotlin
-class LoadingDialog(context: Context) : Dialog(context) {
+#### 其它
 
-  private val binding: DialogLoadingBinding by inflate()
+- [Q&A](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/Q&A)
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    binding.apply {
-      tvMessage.text = "Wait a minute..."
-    }
-  }
-}
-```
+## Thanks
 
-在适配器里是用 BindingViewHolder 替换原来的 ViewHolder，通过 newBindingViewHolder 方法来创建 BindingViewHolder 对象。这样就可以用 holder 获取 binding 对象了。
-
-```kotlin
-class FooAdapter(var list: List<Foo>) : RecyclerView.Adapter<BindingViewHolder<ItemFooBinding>>() {
-  
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    newBindingViewHolder<ItemFooBinding>(parent)
-
-  override fun onBindViewHolder(holder: BindingViewHolder<ItemFooBinding>, position: Int) {
-    binding.apply {
-      tvFoo.text = list[position].value
-    }
-  }
-
-  override fun getItemCount() = list.size
-}
-```
-
-### 依托于基类
-
-这里是让大家用最少的代码改造自己的基类，从而使用上 ViewBinding。主要是把 binding 对象封装在基类里替换掉布局。
-
-因为大家的基类封装方式各式各样，所以讲下核心的改造步骤：
-
-1. 增加一个继承 ViewBinding 的泛型；
-2. 在类里定义一个类型是 ViewBinding 泛型的 binding 对象；
-3. 用工具类方法初始化泛型的 binding；
-4. 用 binding.root 替代原来设置或返回布局的代码；
-
-Activity 基类改造的核心代码：
-
-```kotlin
-abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity() {
-
-  lateinit var binding: VB
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    binding = inflateBindingWithGeneric(layoutInflater)
-    setContentView(binding.root)
-  }
-}
-```
-
-Activity 基类改造后的使用示例：
-
-```kotlin
-class MainActivity : BaseBindingActivity<ActivityMainBinding>() {
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    binding.apply {
-      tvHelloWorld.text = "Hello Android!"
-    }
-  }
-}
-```
-
-Fragment 基类改造的核心代码：
-
-```kotlin
-abstract class BaseBindingFragment<VB : ViewBinding> : Fragment() {
-
-  private var _binding: VB? = null
-  val binding:VB get() = _binding!!
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    _binding = inflateBindingWithGeneric(layoutInflater)
-    return binding.root
-  }
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
-  }
-}
-```
-
-Fragment 基类改造后的使用示例：
-
-```kotlin
-class HomeFragment: BaseBindingFragment<FragmentHomeBinding>() {
-
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    binding.apply {
-      tvHelloWorld.text = "Hello Android!"
-    }
-  }
-}
-```
-
-Dialog 基类改造的核心代码：
-
-```kotlin
-abstract class BaseBindingDialog<VB : ViewBinding>(context: Context, themeResId: Int) : Dialog(context, themeResId) {
-
-  lateinit var binding: VB
-
-  constructor(context: Context) : this(context, 0)
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    binding = inflateBindingWithGeneric(layoutInflater)
-    setContentView(binding.root)
-  }
-}
-```
-
-Dialog 基类改造后的使用示例：
-
-```kotlin
-class LoadingDialog(context: Context) : BaseBindingDialog<DialogLoadingBinding>(context) {
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    binding.apply {
-      tvMessage.text = "Wait a minute..."
-    }
-  }
-}
-```
-
-Adapter 基类的改造步骤：
-
-1. 增加一个继承 ViewBinding 的泛型；
-2. 将原来的 ViewHolder 改成 BindingViewHolder；
-3. 删除原有的用布局创建 ViewHolder 相关代码，改成一个用泛型创建 BindingViewHolder 的方法；
-
-用列表库 [Drakeet/MultiType]() 为例子，ViewDelegate 可以当成 Adapter 来看。下面是核心的代码：
-
-```kotlin
-abstract class BindingViewDelegate<T, VB : ViewBinding> : ItemViewDelegate<T, BindingViewHolder<VB>>() {
-
-  override fun onCreateViewHolder(context: Context, parent: ViewGroup) =
-    newBindingViewHolderWithGeneric<VB>(parent)
-}
-```
-
-Adapter 基类改造后的使用示例：
-
-```kotlin
-class FooViewDelegate : BindingViewDelegate<Foo, ItemFooBinding>() {
-
-  override fun onBindViewHolder(holder: BindingViewHolder<ItemFooBinding>, item: Foo) {
-    holder.binding.foo.text = item.value
-  }
-}
-```
-
-## 混淆
-
-```
--keepclassmembers class * implements androidx.viewbinding.ViewBinding {
-  public static * inflate(android.view.LayoutInflater);
-  public static * inflate(android.view.LayoutInflater, android.view.ViewGroup, boolean);
-  public static * bind(android.view.View);
-}
-```
+感谢 [ViewBindingPropertyDelegate](https://github.com/kirich1409/ViewBindingPropertyDelegate) 不使用反射的思路
 
 ## License
 
@@ -245,4 +75,3 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
-
