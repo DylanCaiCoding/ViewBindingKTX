@@ -16,49 +16,44 @@
 
 package com.dylanc.viewbinding.sample.base.nonreflection.java;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.drakeet.multitype.ItemViewDelegate;
 import com.dylanc.viewbinding.base.ViewBindingUtil;
 
 import org.jetbrains.annotations.NotNull;
 
-public abstract class BaseBindingQuickAdapter<T, VB extends ViewBinding>
-    extends BaseQuickAdapter<T, BaseBindingQuickAdapter.BaseBindingHolder<VB>> {
-
-  public BaseBindingQuickAdapter() {
-    this(-1);
-  }
-
-  public BaseBindingQuickAdapter(@LayoutRes int layoutResId) {
-    super(-layoutResId);
-  }
+/**
+ * @author Dylan Cai
+ */
+public abstract class BindingViewDelegate<T, VB extends ViewBinding> extends
+    ItemViewDelegate<T, BindingViewDelegate.BindingViewHolder<VB>> {
 
   @NotNull
   @Override
-  protected BaseBindingHolder<VB> onCreateDefViewHolder(@NotNull ViewGroup parent, int viewType) {
-    return new BaseBindingHolder<>(onCreateViewBinding(LayoutInflater.from(parent.getContext()), parent));
+  public BindingViewHolder<VB> onCreateViewHolder(@NotNull Context context, @NotNull ViewGroup parent) {
+    return new BindingViewHolder<>(onCreateViewBinding(LayoutInflater.from(parent.getContext()), parent));
   }
 
   protected abstract VB onCreateViewBinding(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent);
 
-  public static class BaseBindingHolder<B extends ViewBinding> extends BaseViewHolder {
+  public static class BindingViewHolder<VB extends ViewBinding> extends RecyclerView.ViewHolder {
 
-    private final B binding;
+    private final VB binding;
 
-    public BaseBindingHolder(@NotNull B binding) {
+    public BindingViewHolder(@NonNull VB binding) {
       super(binding.getRoot());
       this.binding = binding;
     }
 
     @NonNull
-    public B getViewBinding() {
+    public VB getBinding() {
       return binding;
     }
   }

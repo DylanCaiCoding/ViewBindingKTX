@@ -1,22 +1,24 @@
-# ViewBindingKtx
+# ViewBindingKTX
+
+English | [中文](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/README_CN.md)
 
 [![Download](https://api.bintray.com/packages/dylancai/maven/viewbinding-ktx/images/download.svg)](https://bintray.com/dylancai/maven/viewbinding-ktx/_latestVersion) [![](https://img.shields.io/badge/License-Apache--2.0-green.svg)](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/LICENSE)
 
-ViewBinding 相对于 Kotlin synthetics、ButterKnife、findViewById，能减少 id 写错或类型写错导致的异常，官方和 JakeWharton 都推荐使用。但是 ViewBinding 直接使用会有点繁琐，所以本库能**帮助你在各种使用场景用尽可能少的代码来使用 ViewBinding**。
+[ViewBinding](https://developer.android.com/topic/libraries/view-binding) reduces exceptions caused by id or type errors, which are recommended by both Google officials and Jake Wharton, but it can be a bit cumbersome to use, so this library can **help you use ViewBinding with as little code as possible in any usage scenario**.
 
 ## Feature
 
-- 支持 Kotlin 和 Java 用法
-- 支持多种使用反射和不使用反射的用法
-- 支持封装改造自己的基类，使其用上 ViewBinding
-- 支持 BaseRecyclerViewAdapterHelper
-- 支持 Activitiy、Fragment、Dialog、Adapter
-- 支持实现自定义组合控件
-- 支持 TabLayout 实现自定义标签布局
+- Support for the usage of Kotlin and Java
+- Support for the usage of reflection and non-reflection
+- Support to modify your base class to support ViewBinding
+- Support for BaseRecyclerViewAdapterHelper
+- Support for Activitiy、Fragment、Dialog、Adapter
+- Support for custom combination view
+- Support for TabLayout to set custom view
 
 ## Gradle
 
-添加配置和依赖：
+Adding dependencies and configurations：
 
 ```groovy
 android {
@@ -26,7 +28,7 @@ android {
 }
 
 dependencies {
-    // 以下都是可选，请根据需要进行添加
+    // The following are optional, please add as needed
     implementation 'com.dylanc:viewbinding-ktx:1.1.0-alpha4'
     implementation 'com.dylanc:viewbinding-nonreflection-ktx:1.1.0-alpha4'
     implementation 'com.dylanc:viewbinding-base-ktx:1.1.0-alpha4'
@@ -36,27 +38,27 @@ dependencies {
 
 ## Wiki
 
-#### Kotlin 用法
+#### Kotlin usage
 
-- [使用拓展函数](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/使用拓展函数)
+- [Using the extension function](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/使用拓展函数)
 
-- [改造基类](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/改造基类-(Kotlin))
+- [Modify base class](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/改造基类-(Kotlin))
 
-- [兼容 BRVAH](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/兼容-BRVAH-(Kotlin))
+- [Compatible with BRVAH](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/兼容-BRVAH-(Kotlin))
 
-#### Java 用法
+#### Java usage
 
-- [改造基类](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/改造基类-(Java))
+- [Modify base class](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/改造基类-(Java))
 
-- [兼容 BRVAH](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/兼容-BRVAH-(Java))
+- [Compatible with BRVAH](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/兼容-BRVAH-(Java))
 
-#### 其它
+#### Others
 
 - [Q&A](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/Q&A)
 
 ## Thanks
 
-感谢 [ViewBindingPropertyDelegate](https://github.com/kirich1409/ViewBindingPropertyDelegate) 不使用反射的思路
+Thanks [ViewBindingPropertyDelegate](https://github.com/kirich1409/ViewBindingPropertyDelegate) for providing an idea without reflection
 
 ## License
 

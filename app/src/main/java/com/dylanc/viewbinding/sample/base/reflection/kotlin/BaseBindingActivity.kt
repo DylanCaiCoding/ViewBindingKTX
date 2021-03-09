@@ -43,5 +43,4 @@ abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity() {
     binding = inflateBindingWithGeneric(layoutInflater)
     setContentView(binding.root)
   }
-
 }

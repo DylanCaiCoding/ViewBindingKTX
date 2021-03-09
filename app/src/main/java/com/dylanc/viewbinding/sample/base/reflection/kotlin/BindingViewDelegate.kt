@@ -14,35 +14,24 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
-
 package com.dylanc.viewbinding.sample.base.reflection.kotlin
 
-import android.app.Dialog
 import android.content.Context
-import android.os.Bundle
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.drakeet.multitype.ItemViewDelegate
 import com.dylanc.viewbinding.base.inflateBindingWithGeneric
 
 /**
- * How to modify the base class to use view binding, you need the following steps:
- * 1. Adds a generic of view binding to the base class.
- * 2. Declares a binding object.
- * 3. Uses [inflateBindingWithGeneric] method to create the binding object.
- * 4. Uses the root of the binding object instead of layout id to set content view.
- *
- * Here is the core code.
- *
  * @author Dylan Cai
  */
-abstract class BaseBindingDialog<VB : ViewBinding>(context: Context, themeResId: Int = 0)
-  : Dialog(context, themeResId) {
+abstract class BindingViewDelegate<T, VB : ViewBinding> :
+  ItemViewDelegate<T, BindingViewDelegate.BindingViewHolder<VB>>() {
 
-  lateinit var binding: VB
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    binding = inflateBindingWithGeneric(layoutInflater)
-    setContentView(binding.root)
+  override fun onCreateViewHolder(context: Context, parent: ViewGroup): BindingViewHolder<VB> {
+    return BindingViewHolder(inflateBindingWithGeneric(parent))
   }
+
+  class BindingViewHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root)
 }

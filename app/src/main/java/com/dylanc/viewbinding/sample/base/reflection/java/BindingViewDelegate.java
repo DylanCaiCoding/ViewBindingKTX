@@ -16,37 +16,43 @@
 
 package com.dylanc.viewbinding.sample.base.reflection.java;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
+import com.drakeet.multitype.ItemViewDelegate;
 import com.dylanc.viewbinding.base.ViewBindingUtil;
 
+import org.jetbrains.annotations.NotNull;
 
-public abstract class BaseBindingFragment<VB extends ViewBinding> extends Fragment {
+/**
+ * @author Dylan Cai
+ */
+public abstract class BindingViewDelegate<T, VB extends ViewBinding> extends
+    ItemViewDelegate<T, BindingViewDelegate.BindingViewHolder<VB>> {
 
-  private VB binding;
-
-  @Nullable
+  @NotNull
   @Override
-  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    binding = ViewBindingUtil.inflateWithGeneric(this, getLayoutInflater(), container, false);
-    return binding.getRoot();
+  public BindingViewHolder<VB> onCreateViewHolder(@NotNull Context context, @NotNull ViewGroup parent) {
+    return new BindingViewHolder<>(ViewBindingUtil.inflateWithGeneric(this, parent));
   }
 
-  @Override
-  public void onDestroyView() {
-    super.onDestroyView();
-    binding = null;
-  }
+  public static class BindingViewHolder<VB extends ViewBinding> extends RecyclerView.ViewHolder {
 
-  public VB getBinding() {
-    return binding;
+    private final VB binding;
+
+    public BindingViewHolder(@NonNull VB binding) {
+      super(binding.getRoot());
+      this.binding = binding;
+    }
+
+    @NonNull
+    public VB getBinding() {
+      return binding;
+    }
   }
 }
