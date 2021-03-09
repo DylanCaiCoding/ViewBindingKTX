@@ -3,4 +3,4 @@ include ':viewbinding-nonreflection'
 include ':viewbinding-base'
 include ':viewbinding'
 include ':app'
-rootProject.name = "ViewBindingKtx"
+rootProject.name = "ViewBindingKTX"
