@@ -12,7 +12,8 @@ English | [中文](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/
 - Support for the usage of reflection and non-reflection
 - Support to modify your base class to support ViewBinding
 - Support for BaseRecyclerViewAdapterHelper
-- Support for Activitiy、Fragment、Dialog、Adapter
+- Support for Activity, Fragment, Dialog, Adapter
+- Support automatic release of binding class instance in Fragment
 - Support for custom combination view
 - Support for TabLayout to set custom view
 

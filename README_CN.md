@@ -1,4 +1,4 @@
-# ViewBindingKtx
+# ViewBindingKTX
 
 [English](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/README.md) | 中文
 
@@ -12,7 +12,8 @@
 - 支持多种使用反射和不使用反射的用法
 - 支持封装改造自己的基类，使其用上 ViewBinding
 - 支持 BaseRecyclerViewAdapterHelper
-- 支持 Activitiy、Fragment、Dialog、Adapter
+- 支持 Activity、Fragment、Dialog、Adapter
+- 支持在 Fragment 自动释放绑定类的实例对象
 - 支持实现自定义组合控件
 - 支持 TabLayout 实现自定义标签布局
 
