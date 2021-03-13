@@ -47,13 +47,12 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 
-
 publish {
     userOrg = 'dylancai'
     repoName = 'maven'
     groupId = 'com.dylanc'
     artifactId = 'viewbinding-base-ktx'
-    publishVersion = '1.1.0-alpha4'
+    publishVersion = '1.1.0'
     desc = 'An easy way to use ViewBinding.'
     website = 'https://github.com/DylanCaiCoding/ViewBindingKtx'
 }

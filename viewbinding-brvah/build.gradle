@@ -51,7 +51,7 @@ publish {
     repoName = 'maven'
     groupId = 'com.dylanc'
     artifactId = 'viewbinding-brvah-ktx'
-    publishVersion = '1.1.0-alpha4'
+    publishVersion = '1.1.0'
     desc = 'An easy way to use ViewBinding.'
     website = 'https://github.com/DylanCaiCoding/ViewBindingKtx'
 }
