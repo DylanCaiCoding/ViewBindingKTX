@@ -30,10 +30,10 @@ android {
 
 dependencies {
     // 以下都是可选，请根据需要进行添加
-    implementation 'com.dylanc:viewbinding-ktx:1.1.0-alpha4'
-    implementation 'com.dylanc:viewbinding-nonreflection-ktx:1.1.0-alpha4'
-    implementation 'com.dylanc:viewbinding-base-ktx:1.1.0-alpha4'
-    implementation 'com.dylanc:viewbinding-brvah-ktx:1.1.0-alpha4'
+    implementation 'com.dylanc:viewbinding-ktx:1.1.0'
+    implementation 'com.dylanc:viewbinding-nonreflection-ktx:1.1.0'
+    implementation 'com.dylanc:viewbinding-base-ktx:1.1.0'
+    implementation 'com.dylanc:viewbinding-brvah-ktx:1.1.0'
 }
 ```
 
