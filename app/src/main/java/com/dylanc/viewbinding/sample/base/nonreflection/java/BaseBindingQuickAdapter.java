@@ -17,6 +17,7 @@
 package com.dylanc.viewbinding.sample.base.nonreflection.java;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.LayoutRes;
@@ -30,36 +31,41 @@ import com.dylanc.viewbinding.base.ViewBindingUtil;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class BaseBindingQuickAdapter<T, VB extends ViewBinding>
-    extends BaseQuickAdapter<T, BaseBindingQuickAdapter.BaseBindingHolder<VB>> {
+    extends BaseQuickAdapter<T, BaseBindingQuickAdapter.BaseBindingHolder> {
 
   public BaseBindingQuickAdapter() {
     this(-1);
   }
 
   public BaseBindingQuickAdapter(@LayoutRes int layoutResId) {
-    super(-layoutResId);
+    super(layoutResId);
   }
 
   @NotNull
   @Override
-  protected BaseBindingHolder<VB> onCreateDefViewHolder(@NotNull ViewGroup parent, int viewType) {
-    return new BaseBindingHolder<>(onCreateViewBinding(LayoutInflater.from(parent.getContext()), parent));
+  protected BaseBindingHolder onCreateDefViewHolder(@NotNull ViewGroup parent, int viewType) {
+    return new BaseBindingHolder(onCreateViewBinding(LayoutInflater.from(parent.getContext()), parent));
   }
 
   protected abstract VB onCreateViewBinding(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent);
 
-  public static class BaseBindingHolder<B extends ViewBinding> extends BaseViewHolder {
+  public static class BaseBindingHolder extends BaseViewHolder {
 
-    private final B binding;
+    private final ViewBinding binding;
 
-    public BaseBindingHolder(@NotNull B binding) {
+    public BaseBindingHolder(@NotNull View view) {
+      this(() -> view);
+    }
+
+    public BaseBindingHolder(@NotNull ViewBinding binding) {
       super(binding.getRoot());
       this.binding = binding;
     }
 
     @NonNull
-    public B getViewBinding() {
-      return binding;
+    @SuppressWarnings("unchecked")
+    public <VB extends ViewBinding> VB getViewBinding() {
+      return (VB) binding;
     }
   }
 }

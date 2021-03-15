@@ -19,6 +19,7 @@
 package com.dylanc.viewbinding.sample.base.nonreflection.kotlin
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -31,10 +32,15 @@ abstract class BaseBindingQuickAdapter<T, VB : ViewBinding>(
   private val inflate: (LayoutInflater, ViewGroup, Boolean) -> VB,
   layoutResId: Int = -1
 ) :
-  BaseQuickAdapter<T, BaseBindingQuickAdapter.BaseBindingHolder<VB>>(layoutResId) {
+  BaseQuickAdapter<T, BaseBindingQuickAdapter.BaseBindingHolder>(layoutResId) {
 
-  override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseBindingHolder<VB> =
+  override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int) =
     BaseBindingHolder(inflate(LayoutInflater.from(parent.context), parent, false))
 
-  class BaseBindingHolder<VB : ViewBinding>(val binding: VB) : BaseViewHolder(binding.root)
+  class BaseBindingHolder(private val binding: ViewBinding) : BaseViewHolder(binding.root) {
+    constructor(itemView: View) : this(ViewBinding { itemView })
+
+    @Suppress("UNCHECKED_CAST")
+    fun <VB : ViewBinding> getViewBinding() = binding as VB
+  }
 }

@@ -16,6 +16,13 @@
 
 package com.dylanc.viewbinding.sample.item
 
+import android.view.View
+import android.view.ViewGroup
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.dylanc.viewbinding.brvah.getViewBinding
+import com.dylanc.viewbinding.brvah.withBinding
+import com.dylanc.viewbinding.sample.R
 import com.dylanc.viewbinding.sample.base.nonreflection.kotlin.BaseBindingQuickAdapter
 import com.dylanc.viewbinding.sample.databinding.ItemFooBinding
 
@@ -33,11 +40,11 @@ import com.dylanc.viewbinding.sample.databinding.ItemFooBinding
 //
 //  override fun getItemCount() = list.size
 //}
-
+//
 //class FooAdapter : BaseQuickAdapter<Foo, BaseViewHolder>(R.layout.item_foo) {
 //
-//  override fun createBaseViewHolder(view: View): BaseViewHolder {
-//    return super.createBaseViewHolder(view).withBinding { ItemFooBinding.bind(it) }
+//  override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+//    return super.onCreateDefViewHolder(parent, viewType).withBinding { ItemFooBinding.bind(it) }
 //  }
 //
 //  override fun convert(holder: BaseViewHolder, item: Foo) {
@@ -46,13 +53,12 @@ import com.dylanc.viewbinding.sample.databinding.ItemFooBinding
 //        tvFoo.text = item.value
 //      }
 //  }
-//
 //}
 
 class FooAdapter : BaseBindingQuickAdapter<Foo, ItemFooBinding>(ItemFooBinding::inflate) {
 
-  override fun convert(holder: BaseBindingHolder<ItemFooBinding>, item: Foo) {
-    holder.binding.apply {
+  override fun convert(holder: BaseBindingHolder, item: Foo) {
+    holder.getViewBinding<ItemFooBinding>().apply {
       tvFoo.text = item.value
     }
   }
