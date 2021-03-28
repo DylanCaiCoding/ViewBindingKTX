@@ -72,25 +72,24 @@ class FragmentBindingDelegate<VB : ViewBinding>(
 ) : ReadOnlyProperty<Fragment, VB> {
 
   private var lifecycleObserver: LifecycleObserver? = null
-  private var _binding: VB? = null
-  private val binding: VB get() = _binding!!
-
+  private var binding: VB? = null
+  
   @Suppress("UNCHECKED_CAST")
   override fun getValue(thisRef: Fragment, property: KProperty<*>): VB {
     if (lifecycleObserver == null) {
       lifecycleObserver = object : LifecycleObserver {
         @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         fun onDestroyView() {
-          _binding = null
+          binding = null
         }
       }.also {
         thisRef.viewLifecycleOwner.lifecycle.addObserver(it)
       }
     }
-    if (_binding == null) {
-      _binding = clazz.getMethod("bind", View::class.java)
+    if (binding == null) {
+      binding = clazz.getMethod("bind", View::class.java)
         .invoke(null, thisRef.requireView()) as VB
     }
-    return binding
+    return binding!!
   }
 }
