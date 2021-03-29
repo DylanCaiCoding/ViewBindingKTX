@@ -71,23 +71,19 @@ class FragmentBindingDelegate<VB : ViewBinding>(
   private val clazz: Class<VB>
 ) : ReadOnlyProperty<Fragment, VB> {
 
-  private var observedLifecycle = false
   private var binding: VB? = null
 
   @Suppress("UNCHECKED_CAST")
   override fun getValue(thisRef: Fragment, property: KProperty<*>): VB {
-    if (!observedLifecycle) {
+    if (binding == null) {
+      binding = clazz.getMethod("bind", View::class.java)
+        .invoke(null, thisRef.requireView()) as VB
       thisRef.viewLifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {
         @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         fun onDestroyView() {
           binding = null
         }
       })
-      observedLifecycle = true
-    }
-    if (binding == null) {
-      binding = clazz.getMethod("bind", View::class.java)
-        .invoke(null, thisRef.requireView()) as VB
     }
     return binding!!
   }
