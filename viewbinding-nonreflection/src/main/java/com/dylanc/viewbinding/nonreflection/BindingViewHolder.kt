@@ -27,7 +27,7 @@ import androidx.viewbinding.ViewBinding
  * @author Dylan Cai
  */
 
-class BindingViewHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root) {
+open class BindingViewHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root) {
 
   constructor(block: (LayoutInflater, ViewGroup, Boolean) -> VB, parent: ViewGroup) :
       this(block(LayoutInflater.from(parent.context), parent, false))
