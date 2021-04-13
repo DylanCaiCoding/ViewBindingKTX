@@ -30,8 +30,13 @@ import androidx.viewbinding.ViewBinding
 inline fun <reified VB : ViewBinding> BindingViewHolder(parent: ViewGroup) =
   BindingViewHolder(inflateBinding<VB>(parent))
 
-open class BindingViewHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root) {
-
-  constructor(block: (LayoutInflater, ViewGroup, Boolean) -> VB, parent: ViewGroup) :
-      this(block(LayoutInflater.from(parent.context), parent, false))
+class BindingViewHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root) {
+  constructor(parent: ViewGroup, inflate: (LayoutInflater, ViewGroup, Boolean) -> VB) :
+      this(inflate(LayoutInflater.from(parent.context), parent, false))
 }
+
+inline fun <VB : ViewBinding> BindingViewHolder<VB>.onBinding(crossinline action: VB.(Int) -> Unit) =
+  apply { binding.action(adapterPosition) }
+
+inline fun <VB : ViewBinding> BindingViewHolder<VB>.onItemClick(crossinline action: VB.(Int) -> Unit) =
+  apply { itemView.setOnClickListener { binding.action(adapterPosition) } }

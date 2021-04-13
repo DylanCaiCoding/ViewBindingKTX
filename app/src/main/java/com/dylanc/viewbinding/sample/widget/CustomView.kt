@@ -29,7 +29,7 @@ import com.dylanc.viewbinding.sample.databinding.LayoutCustomViewBinding
 class CustomView(context: Context, attrs: AttributeSet? = null) :
   ConstraintLayout(context, attrs) {
 
-  val binding: LayoutCustomViewBinding = binding()
+  val binding: LayoutCustomViewBinding by binding()
 
   init {
     binding.tvTitle.setText(R.string.app_name)

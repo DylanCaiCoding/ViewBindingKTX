@@ -18,7 +18,6 @@ package com.dylanc.viewbinding.sample
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.dylanc.viewbinding.nonreflection.binding
 import com.dylanc.viewbinding.sample.databinding.ActivityMainBinding
 import com.dylanc.viewbinding.sample.item.Foo
@@ -34,7 +33,6 @@ class MainActivity : AppCompatActivity() {
       recyclerView.adapter = FooAdapter().apply {
         data.addAll(listOf(Foo("1"), Foo("2"), Foo("3")))
       }
-      recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
     }
   }
 }

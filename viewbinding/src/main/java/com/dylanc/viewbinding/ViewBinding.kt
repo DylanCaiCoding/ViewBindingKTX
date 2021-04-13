@@ -23,6 +23,8 @@ import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.ComponentActivity
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -37,22 +39,30 @@ import kotlin.reflect.KProperty
  * @author Dylan Cai
  */
 
-inline fun <reified VB : ViewBinding> Activity.binding() = lazy {
-  inflateBinding<VB>(layoutInflater).apply { setContentView(root) }
+inline fun <reified VB : ViewBinding> ComponentActivity.binding() = lazy {
+  inflateBinding<VB>(layoutInflater).also {
+    setContentView(it.root)
+    if (this is ViewDataBinding) lifecycleOwner = this@binding
+  }
 }
 
 inline fun <reified VB : ViewBinding> Fragment.binding() =
   FragmentBindingDelegate(VB::class.java)
 
 inline fun <reified VB : ViewBinding> Dialog.binding() = lazy {
-  inflateBinding<VB>(layoutInflater).apply { setContentView(root) }
+  inflateBinding<VB>(layoutInflater).also { setContentView(it.root) }
 }
 
-inline fun <reified VB : ViewBinding> ViewGroup.binding(attachToParent: Boolean = true): VB =
-  inflateBinding(LayoutInflater.from(context), if (attachToParent) this else null, attachToParent)
+inline fun <reified VB : ViewBinding> ViewGroup.binding(attachToParent: Boolean = true) = lazy {
+  inflateBinding<VB>(LayoutInflater.from(context), if (attachToParent) this else null, attachToParent)
+}
 
 inline fun <reified VB : ViewBinding> TabLayout.Tab.setCustomView(onBindView: VB.() -> Unit) {
   customView = inflateBinding<VB>(LayoutInflater.from(parent!!.context)).apply(onBindView).root
+}
+
+inline fun <reified VB : ViewBinding> Activity.binding() = lazy {
+  inflateBinding<VB>(layoutInflater).also { setContentView(it.root) }
 }
 
 inline fun <reified VB : ViewBinding> inflateBinding(layoutInflater: LayoutInflater) =
@@ -78,6 +88,9 @@ class FragmentBindingDelegate<VB : ViewBinding>(
     if (binding == null) {
       binding = clazz.getMethod("bind", View::class.java)
         .invoke(null, thisRef.requireView()) as VB
+      binding.also {
+        if (it is ViewDataBinding) it.lifecycleOwner = thisRef.viewLifecycleOwner
+      }
       thisRef.viewLifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {
         @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         fun onDestroyView() {

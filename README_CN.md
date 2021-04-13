@@ -1,6 +1,6 @@
 # ViewBindingKTX
 
-[English](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/README.md) | 中文
+[English](https://github.com/DylanCaiCoding/ViewBindingKtx) | 中文
 
 [![Download](https://api.bintray.com/packages/dylancai/maven/viewbinding-ktx/images/download.svg)](https://bintray.com/dylancai/maven/viewbinding-ktx/_latestVersion) [![](https://img.shields.io/badge/License-Apache--2.0-green.svg)](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/LICENSE)
 
@@ -16,6 +16,7 @@
 - 支持在 Fragment 自动释放绑定类的实例对象
 - 支持实现自定义组合控件
 - 支持 TabLayout 实现自定义标签布局
+- 支持 DataBinding 自动设置 lifecycleOwner
 
 ## Gradle
 
@@ -30,10 +31,10 @@ android {
 
 dependencies {
     // 以下都是可选，请根据需要进行添加
-    implementation 'com.dylanc:viewbinding-ktx:1.1.1'
-    implementation 'com.dylanc:viewbinding-nonreflection-ktx:1.1.1'
-    implementation 'com.dylanc:viewbinding-base-ktx:1.1.1'
-    implementation 'com.dylanc:viewbinding-brvah-ktx:1.1.1'
+    implementation 'com.dylanc:viewbinding-ktx:1.1.2'
+    implementation 'com.dylanc:viewbinding-nonreflection-ktx:1.1.2'
+    implementation 'com.dylanc:viewbinding-base-ktx:1.1.2'
+    implementation 'com.dylanc:viewbinding-brvah-ktx:1.1.2'
 }
 ```
 

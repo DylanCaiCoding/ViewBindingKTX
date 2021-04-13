@@ -33,8 +33,8 @@ android {
         jvmTarget = '1.8'
     }
 
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
 }
 
@@ -52,7 +52,7 @@ publish {
     repoName = 'maven'
     groupId = 'com.dylanc'
     artifactId = 'viewbinding-base-ktx'
-    publishVersion = '1.1.1'
+    publishVersion = '1.1.2'
     desc = 'An easy way to use ViewBinding.'
     website = 'https://github.com/DylanCaiCoding/ViewBindingKtx'
 }

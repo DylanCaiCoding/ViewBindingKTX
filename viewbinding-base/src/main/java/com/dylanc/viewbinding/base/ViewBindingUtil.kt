@@ -53,7 +53,7 @@ private fun <VB : ViewBinding> withGenericBindingClass(any: Any, block: (Class<V
     parameterizedType.actualTypeArguments.forEach {
       try {
         return block.invoke(it as Class<VB>)
-      } catch (e: NoSuchMethodException) {
+      } catch (e: Exception) {
       }
     }
   }
