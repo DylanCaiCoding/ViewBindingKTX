@@ -65,6 +65,9 @@ fun <VB : ViewBinding> TabLayout.Tab.setCustomView(
   customView = inflate(LayoutInflater.from(parent!!.context)).apply(onBindView).root
 }
 
+inline fun <reified VB : ViewBinding> TabLayout.Tab.bindCustomView(bind: (View) -> VB, onBindView: VB.() -> Unit) =
+  customView?.let { bind(it).run(onBindView) }
+
 class FragmentBindingDelegate<VB : ViewBinding>(
   private val bind: (View) -> VB
 ) : ReadOnlyProperty<Fragment, VB> {

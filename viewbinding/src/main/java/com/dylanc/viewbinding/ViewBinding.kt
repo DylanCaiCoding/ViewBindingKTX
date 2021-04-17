@@ -18,7 +18,6 @@
 
 package com.dylanc.viewbinding
 
-import android.app.Activity
 import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.View
@@ -47,7 +46,7 @@ inline fun <reified VB : ViewBinding> ComponentActivity.binding() = lazy {
 }
 
 inline fun <reified VB : ViewBinding> Fragment.binding() =
-  FragmentBindingDelegate(VB::class.java)
+  FragmentBindingDelegate { it.bind() }
 
 inline fun <reified VB : ViewBinding> Dialog.binding() = lazy {
   inflateBinding<VB>(layoutInflater).also { setContentView(it.root) }
@@ -61,9 +60,11 @@ inline fun <reified VB : ViewBinding> TabLayout.Tab.setCustomView(onBindView: VB
   customView = inflateBinding<VB>(LayoutInflater.from(parent!!.context)).apply(onBindView).root
 }
 
-inline fun <reified VB : ViewBinding> Activity.binding() = lazy {
-  inflateBinding<VB>(layoutInflater).also { setContentView(it.root) }
-}
+inline fun <reified VB : ViewBinding> TabLayout.Tab.bindCustomView(onBindView: VB.() -> Unit) =
+  customView?.bind<VB>()?.run(onBindView)
+
+inline fun <reified VB : ViewBinding> TabLayout.Tab.bindCustomView(bind: (View) -> VB, onBindView: VB.() -> Unit) =
+  customView?.let { bind(it).run(onBindView) }
 
 inline fun <reified VB : ViewBinding> inflateBinding(layoutInflater: LayoutInflater) =
   VB::class.java.getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
@@ -77,17 +78,18 @@ inline fun <reified VB : ViewBinding> inflateBinding(
   VB::class.java.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
     .invoke(null, layoutInflater, parent, attachToParent) as VB
 
-class FragmentBindingDelegate<VB : ViewBinding>(
-  private val clazz: Class<VB>
-) : ReadOnlyProperty<Fragment, VB> {
+inline fun <reified VB : ViewBinding> View.bind() =
+  VB::class.java.getMethod("bind", View::class.java).invoke(null, this) as VB
 
+class FragmentBindingDelegate<VB : ViewBinding>(
+  private val bind: (View) -> VB
+) : ReadOnlyProperty<Fragment, VB> {
   private var binding: VB? = null
 
   @Suppress("UNCHECKED_CAST")
   override fun getValue(thisRef: Fragment, property: KProperty<*>): VB {
     if (binding == null) {
-      binding = clazz.getMethod("bind", View::class.java)
-        .invoke(null, thisRef.requireView()) as VB
+      binding = bind(thisRef.requireView())
       binding.also {
         if (it is ViewDataBinding) it.lifecycleOwner = thisRef.viewLifecycleOwner
       }
