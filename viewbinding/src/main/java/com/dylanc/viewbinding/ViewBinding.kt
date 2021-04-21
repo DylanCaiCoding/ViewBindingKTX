@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("unused", "EXPERIMENTAL_FEATURE_WARNING")
 
 package com.dylanc.viewbinding
 
@@ -45,8 +45,10 @@ inline fun <reified VB : ViewBinding> ComponentActivity.binding() = lazy {
   }
 }
 
-inline fun <reified VB : ViewBinding> Fragment.binding() =
-  FragmentBindingDelegate { it.bind() }
+inline fun <reified VB : ViewBinding> Fragment.binding() = FragmentBindingDelegate<VB> { requireView().bind() }
+
+inline fun <reified VB : ViewBinding> Fragment.binding(method: Method) =
+  FragmentBindingDelegate<VB> { if (method == Method.BIND) requireView().bind() else inflateBinding(layoutInflater) }
 
 inline fun <reified VB : ViewBinding> Dialog.binding() = lazy {
   inflateBinding<VB>(layoutInflater).also { setContentView(it.root) }
@@ -82,15 +84,13 @@ inline fun <reified VB : ViewBinding> View.bind() =
   VB::class.java.getMethod("bind", View::class.java).invoke(null, this) as VB
 
 class FragmentBindingDelegate<VB : ViewBinding>(
-  private val bind: (View) -> VB
+  private val block: () -> VB
 ) : ReadOnlyProperty<Fragment, VB> {
   private var binding: VB? = null
 
-  @Suppress("UNCHECKED_CAST")
   override fun getValue(thisRef: Fragment, property: KProperty<*>): VB {
     if (binding == null) {
-      binding = bind(thisRef.requireView())
-      binding.also {
+      binding = block().also {
         if (it is ViewDataBinding) it.lifecycleOwner = thisRef.viewLifecycleOwner
       }
       thisRef.viewLifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {
@@ -101,5 +101,12 @@ class FragmentBindingDelegate<VB : ViewBinding>(
       })
     }
     return binding!!
+  }
+}
+
+inline class Method private constructor(val value: Int) {
+  companion object {
+    val BIND = Method(0)
+    val INFLATE = Method(1)
   }
 }
