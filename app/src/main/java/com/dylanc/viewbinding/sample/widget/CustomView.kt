@@ -32,7 +32,6 @@ class CustomView(context: Context, attrs: AttributeSet? = null) :
   val binding: LayoutCustomViewBinding by binding()
 
   init {
-    binding.tvTitle.setText(R.string.app_name)
+    binding.tvTitle.setText(R.string.show_loading_dialog)
   }
-
 }

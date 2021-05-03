@@ -13,13 +13,13 @@
     android:layout_marginEnd="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginBottom="16dp"
+    android:src="@drawable/ic_baseline_arrow_forward_24"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toStartOf="@+id/tv_title"
     app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintHorizontal_chainStyle="packed"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:srcCompat="@mipmap/ic_launcher"
-    tools:srcCompat="@tools:sample/avatars" />
+    app:layout_constraintTop_toTopOf="parent" />
 
   <TextView
     android:id="@+id/tv_title"

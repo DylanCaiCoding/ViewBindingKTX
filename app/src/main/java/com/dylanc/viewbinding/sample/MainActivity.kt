@@ -17,21 +17,32 @@
 package com.dylanc.viewbinding.sample
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.dylanc.viewbinding.nonreflection.binding
 import com.dylanc.viewbinding.sample.databinding.ActivityMainBinding
 import com.dylanc.viewbinding.sample.item.Foo
 import com.dylanc.viewbinding.sample.item.FooAdapter
+import com.dylanc.viewbinding.sample.widget.LoadingDialogFragment
 
 class MainActivity : AppCompatActivity() {
 
   private val binding by binding(ActivityMainBinding::inflate)
+  private val loadingDialog by lazy { LoadingDialogFragment() }
+  private val handler = Handler(Looper.getMainLooper())
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     binding.apply {
       recyclerView.adapter = FooAdapter().apply {
         data.addAll(listOf(Foo("1"), Foo("2"), Foo("3")))
+      }
+      customView.setOnClickListener {
+        loadingDialog.show(supportFragmentManager, "loading")
+        handler.postDelayed({
+          loadingDialog.dismiss()
+        }, 2000)
       }
     }
   }

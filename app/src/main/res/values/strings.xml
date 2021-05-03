@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">ViewBindingKTX</string>
+  <string name="app_name">ViewBindingKTX</string>
+  <string name="show_loading_dialog">Show loading dialog</string>
 </resources>
