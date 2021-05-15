@@ -14,7 +14,6 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.2"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'com.github.panpf.bintray-publish:bintray-publish:1.0.0'
     }
 }
 
