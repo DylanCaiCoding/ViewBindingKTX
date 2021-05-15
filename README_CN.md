@@ -2,7 +2,7 @@
 
 [English](https://github.com/DylanCaiCoding/ViewBindingKtx) | 中文
 
-[![Download](https://api.bintray.com/packages/dylancai/maven/viewbinding-ktx/images/download.svg)](https://bintray.com/dylancai/maven/viewbinding-ktx/_latestVersion) [![](https://img.shields.io/badge/License-Apache--2.0-green.svg)](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/LICENSE)
+[![](https://www.jitpack.io/v/DylanCaiCoding/ViewBindingKTX.svg)](https://www.jitpack.io/#DylanCaiCoding/ViewBindingKTX) [![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/LICENSE)
 
 [ViewBinding](https://developer.android.com/topic/libraries/view-binding) 相对于 Kotlin synthetics、ButterKnife、findViewById，能减少 id 写错或类型写错导致的异常，官方和 JakeWharton 都推荐使用。但是 ViewBinding 直接使用会有点繁琐，所以本库能**帮助你在各种使用场景用尽可能少的代码来使用 ViewBinding**。
 
@@ -20,21 +20,32 @@
 
 ## Gradle
 
+在根目录的 build.gradle 添加：
+
+```groovy
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://www.jitpack.io' }
+    }
+}
+```
+
 添加配置和依赖：
 
 ```groovy
 android {
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
 }
 
 dependencies {
     // 以下都是可选，请根据需要进行添加
-    implementation 'com.dylanc:viewbinding-ktx:1.1.2'
-    implementation 'com.dylanc:viewbinding-nonreflection-ktx:1.1.2'
-    implementation 'com.dylanc:viewbinding-base-ktx:1.1.2'
-    implementation 'com.dylanc:viewbinding-brvah-ktx:1.1.2'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.0'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.0'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.0'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:1.2.0'
 }
 ```
 
