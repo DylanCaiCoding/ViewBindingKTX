@@ -20,10 +20,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DiffUtil
+import com.dylanc.viewbinding.ListAdapter
 import com.dylanc.viewbinding.nonreflection.binding
 import com.dylanc.viewbinding.sample.databinding.ActivityMainBinding
+import com.dylanc.viewbinding.sample.databinding.ItemFooBinding
 import com.dylanc.viewbinding.sample.item.Foo
-import com.dylanc.viewbinding.sample.item.FooAdapter
 import com.dylanc.viewbinding.sample.widget.LoadingDialogFragment
 
 class MainActivity : AppCompatActivity() {
@@ -31,19 +33,33 @@ class MainActivity : AppCompatActivity() {
   private val binding by binding(ActivityMainBinding::inflate)
   private val loadingDialog by lazy { LoadingDialogFragment() }
   private val handler = Handler(Looper.getMainLooper())
+  private val listAdapter = ListAdapter<Foo, ItemFooBinding>(DiffCallback()) {
+    with(binding) {
+      tvFoo.text = it.value
+    }
+  }
+  private val list = listOf(
+    Foo("item 1"),
+    Foo("item 2"),
+    Foo("item 3")
+  )
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    binding.apply {
-      recyclerView.adapter = FooAdapter().apply {
-        data.addAll(listOf(Foo("1"), Foo("2"), Foo("3")))
-      }
+    with(binding) {
       customView.setOnClickListener {
         loadingDialog.show(supportFragmentManager, "loading")
         handler.postDelayed({
           loadingDialog.dismiss()
         }, 2000)
       }
+      recyclerView.adapter = listAdapter
+      listAdapter.submitList(list)
     }
+  }
+
+  class DiffCallback : DiffUtil.ItemCallback<Foo>() {
+    override fun areItemsTheSame(oldItem: Foo, newItem: Foo) = oldItem.value == newItem.value
+    override fun areContentsTheSame(oldItem: Foo, newItem: Foo) = oldItem.value == newItem.value
   }
 }
