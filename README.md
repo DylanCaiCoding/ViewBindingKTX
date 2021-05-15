@@ -2,7 +2,7 @@
 
 English | [中文](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/README_CN.md)
 
-[![Download](https://api.bintray.com/packages/dylancai/maven/viewbinding-ktx/images/download.svg)](https://bintray.com/dylancai/maven/viewbinding-ktx/_latestVersion) [![](https://img.shields.io/badge/License-Apache--2.0-green.svg)](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/LICENSE)
+[![](https://www.jitpack.io/v/DylanCaiCoding/ViewBindingKTX.svg)](https://www.jitpack.io/#DylanCaiCoding/ViewBindingKTX) [![](https://img.shields.io/badge/License-Apache--2.0-green.svg)](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/LICENSE)
 
 [ViewBinding](https://developer.android.com/topic/libraries/view-binding) reduces exceptions caused by id or type errors, which are recommended by both Google officials and Jake Wharton, but it can be a bit cumbersome to use, so this library can **help you use ViewBinding with as little code as possible in any usage scenario**.
 
@@ -20,21 +20,31 @@ English | [中文](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/
 
 ## Gradle
 
-Adding dependencies and configurations：
+Add it in your root build.gradle at the end of repositories:
+```groovy
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://www.jitpack.io' }
+    }
+}
+```
+
+Add dependencies and configurations：
 
 ```groovy
 android {
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
 }
 
 dependencies {
     // The following are optional, please add as needed
-    implementation 'com.dylanc:viewbinding-ktx:1.1.2'
-    implementation 'com.dylanc:viewbinding-nonreflection-ktx:1.1.2'
-    implementation 'com.dylanc:viewbinding-base-ktx:1.1.2'
-    implementation 'com.dylanc:viewbinding-brvah-ktx:1.1.2'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.0'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.0'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.0'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:1.2.0'
 }
 ```
 
