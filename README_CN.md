@@ -58,6 +58,14 @@ dependencies {
 
 - [Q&A](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/Q&A)
 
+## 相关文章
+
+讲解本库的封装思路
+
+- [《优雅地封装和使用 ViewBinding，该替代 Kotlin synthetic 和 ButterKnife 了》](https://juejin.cn/post/6906153878312452103)
+
+- [《ViewBinding 巧妙的封装思路，还能这样适配 BRVAH》](https://juejin.cn/post/6950530267547172901)
+
 ## Thanks
 
 感谢 [ViewBindingPropertyDelegate](https://github.com/kirich1409/ViewBindingPropertyDelegate) 不使用反射的思路
