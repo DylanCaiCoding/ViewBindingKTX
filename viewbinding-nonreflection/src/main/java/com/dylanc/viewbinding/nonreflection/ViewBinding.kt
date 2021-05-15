@@ -44,8 +44,7 @@ fun <VB : ViewBinding> ComponentActivity.binding(inflate: (LayoutInflater) -> VB
   }
 }
 
-fun <VB : ViewBinding> Fragment.binding(bind: (View) -> VB) =
-  FragmentBindingDelegate(bind)
+fun <VB : ViewBinding> Fragment.binding(bind: (View) -> VB) = FragmentBindingDelegate(bind)
 
 fun <VB : ViewBinding> Dialog.binding(inflate: (LayoutInflater) -> VB) = lazy {
   inflate(layoutInflater).also { setContentView(it.root) }
@@ -68,24 +67,32 @@ fun <VB : ViewBinding> TabLayout.Tab.setCustomView(
 inline fun <reified VB : ViewBinding> TabLayout.Tab.bindCustomView(bind: (View) -> VB, onBindView: VB.() -> Unit) =
   customView?.let { bind(it).run(onBindView) }
 
+inline fun Fragment.doOnDestroyView(crossinline block: () -> Unit) =
+  viewLifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun onDestroyView() {
+      block.invoke()
+    }
+  })
+
+interface BindingLifecycleOwner {
+  fun onDestroyViewBinding()
+}
+
 class FragmentBindingDelegate<VB : ViewBinding>(
   private val bind: (View) -> VB
 ) : ReadOnlyProperty<Fragment, VB> {
-
   private var binding: VB? = null
 
-  @Suppress("UNCHECKED_CAST")
   override fun getValue(thisRef: Fragment, property: KProperty<*>): VB {
     if (binding == null) {
       binding = bind(thisRef.requireView()).also {
         if (it is ViewDataBinding) it.lifecycleOwner = thisRef.viewLifecycleOwner
       }
-      thisRef.viewLifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {
-        @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-        fun onDestroyView() {
-          binding = null
-        }
-      })
+      thisRef.doOnDestroyView {
+        if (thisRef is BindingLifecycleOwner) thisRef.onDestroyViewBinding()
+        binding = null
+      }
     }
     return binding!!
   }

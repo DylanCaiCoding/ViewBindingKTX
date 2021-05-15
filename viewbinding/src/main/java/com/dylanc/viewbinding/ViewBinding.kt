@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused", "EXPERIMENTAL_FEATURE_WARNING")
+@file:Suppress("unused")
 
 package com.dylanc.viewbinding
 
@@ -83,6 +83,20 @@ inline fun <reified VB : ViewBinding> inflateBinding(
 inline fun <reified VB : ViewBinding> View.bind() =
   VB::class.java.getMethod("bind", View::class.java).invoke(null, this) as VB
 
+inline fun Fragment.doOnDestroyView(crossinline block: () -> Unit) =
+  viewLifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun onDestroyView() {
+      block.invoke()
+    }
+  })
+
+enum class Method { BIND, INFLATE }
+
+interface BindingLifecycleOwner {
+  fun onDestroyViewBinding()
+}
+
 class FragmentBindingDelegate<VB : ViewBinding>(
   private val block: () -> VB
 ) : ReadOnlyProperty<Fragment, VB> {
@@ -93,20 +107,11 @@ class FragmentBindingDelegate<VB : ViewBinding>(
       binding = block().also {
         if (it is ViewDataBinding) it.lifecycleOwner = thisRef.viewLifecycleOwner
       }
-      thisRef.viewLifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {
-        @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-        fun onDestroyView() {
-          binding = null
-        }
-      })
+      thisRef.doOnDestroyView {
+        if (thisRef is BindingLifecycleOwner) thisRef.onDestroyViewBinding()
+        binding = null
+      }
     }
     return binding!!
-  }
-}
-
-inline class Method private constructor(val value: Int) {
-  companion object {
-    val BIND = Method(0)
-    val INFLATE = Method(1)
   }
 }
