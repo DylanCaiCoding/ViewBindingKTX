@@ -1,6 +1,6 @@
 include ':viewbinding-brvah'
-include ':viewbinding-nonreflection'
+include ':viewbinding-nonreflection-ktx'
 include ':viewbinding-base'
-include ':viewbinding'
+include ':viewbinding-ktx'
 include ':app'
 rootProject.name = "ViewBindingKTX"

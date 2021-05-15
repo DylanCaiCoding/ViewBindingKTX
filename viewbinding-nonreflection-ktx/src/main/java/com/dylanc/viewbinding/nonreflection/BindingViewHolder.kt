@@ -16,19 +16,18 @@
 
 @file:Suppress("unused")
 
-package com.dylanc.viewbinding
+package com.dylanc.viewbinding.nonreflection
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
 /**
  * @author Dylan Cai
  */
-
-inline fun <reified VB : ViewBinding> BindingViewHolder(parent: ViewGroup) =
-  BindingViewHolder(inflateBinding<VB>(parent))
 
 class BindingViewHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root) {
   constructor(parent: ViewGroup, inflate: (LayoutInflater, ViewGroup, Boolean) -> VB) :
@@ -40,3 +39,16 @@ inline fun <VB : ViewBinding> BindingViewHolder<VB>.onBinding(crossinline action
 
 inline fun <VB : ViewBinding> BindingViewHolder<VB>.onItemClick(crossinline action: VB.(Int) -> Unit) =
   apply { itemView.setOnClickListener { binding.action(adapterPosition) } }
+
+inline fun <T, reified VB : ViewBinding> ListAdapter(
+  diffCallback: DiffUtil.ItemCallback<T>,
+  noinline inflate: (LayoutInflater, ViewGroup, Boolean) -> VB,
+  crossinline onBindViewHolder: BindingViewHolder<VB>.(T) -> Unit
+) = object : ListAdapter<T, BindingViewHolder<VB>>(diffCallback) {
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+    BindingViewHolder(parent, inflate)
+
+  override fun onBindViewHolder(holder: BindingViewHolder<VB>, position: Int) {
+    onBindViewHolder(holder, currentList[position])
+  }
+}

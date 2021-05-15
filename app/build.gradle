@@ -45,8 +45,8 @@ dependencies {
     implementation 'com.drakeet.multitype:multitype:4.2.0'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation project(path: ':viewbinding')
-    implementation project(path: ':viewbinding-nonreflection')
+    implementation project(path: ':viewbinding-ktx')
+    implementation project(path: ':viewbinding-nonreflection-ktx')
     implementation project(path: ':viewbinding-base')
     implementation project(path: ':viewbinding-brvah')
     testImplementation 'junit:junit:4.13.2'
