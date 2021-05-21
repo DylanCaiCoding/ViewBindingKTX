@@ -69,6 +69,10 @@ dependencies {
 
 - [Q&A](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/Q&A)
 
+## 更新日志
+
+[Releases](https://github.com/DylanCaiCoding/ViewBindingKTX/releases)
+
 ## 相关文章
 
 讲解本库的封装思路
