@@ -42,10 +42,10 @@ android {
 
 dependencies {
     // 以下都是可选，请根据需要进行添加
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.0'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.0'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.0'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:1.2.0'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.1'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.1'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.1'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:1.2.1'
 }
 ```
 
