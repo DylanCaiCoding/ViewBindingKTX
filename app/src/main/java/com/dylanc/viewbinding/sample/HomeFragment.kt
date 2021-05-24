@@ -5,6 +5,7 @@ package com.dylanc.viewbinding.sample
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 import com.dylanc.viewbinding.BindingLifecycleOwner
 import com.dylanc.viewbinding.binding
 import com.dylanc.viewbinding.sample.databinding.FragmentHomeBinding
@@ -21,7 +22,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), BindingLifecycleOwner {
     binding.tvHelloWorld.text = "Hello Android!"
   }
 
-  override fun onDestroyViewBinding() {
+  override fun onDestroyViewBinding(destroyingBinding: ViewBinding) {
     // Release something before destroying the binding
   }
 

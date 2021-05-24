@@ -94,12 +94,10 @@ inline fun Fragment.doOnDestroyView(crossinline block: () -> Unit) =
 enum class Method { BIND, INFLATE }
 
 interface BindingLifecycleOwner {
-  fun onDestroyViewBinding()
+  fun onDestroyViewBinding(destroyingBinding: ViewBinding)
 }
 
-class FragmentBindingDelegate<VB : ViewBinding>(
-  private val block: () -> VB
-) : ReadOnlyProperty<Fragment, VB> {
+class FragmentBindingDelegate<VB : ViewBinding>(private val block: () -> VB) : ReadOnlyProperty<Fragment, VB> {
   private var binding: VB? = null
 
   override fun getValue(thisRef: Fragment, property: KProperty<*>): VB {
@@ -108,7 +106,7 @@ class FragmentBindingDelegate<VB : ViewBinding>(
         if (it is ViewDataBinding) it.lifecycleOwner = thisRef.viewLifecycleOwner
       }
       thisRef.doOnDestroyView {
-        if (thisRef is BindingLifecycleOwner) thisRef.onDestroyViewBinding()
+        if (thisRef is BindingLifecycleOwner) thisRef.onDestroyViewBinding(binding!!)
         binding = null
       }
     }
