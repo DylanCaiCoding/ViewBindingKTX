@@ -56,7 +56,7 @@ fun <VB : ViewBinding> Any.inflateBindingWithGeneric(parent: ViewGroup): VB =
 
 fun <VB : ViewBinding> Any.bindViewWithGeneric(view: View): VB =
   withGenericBindingClass<VB>(this) { clazz ->
-    clazz.getMethod("bind", LayoutInflater::class.java).invoke(null, view) as VB
+    clazz.getMethod("bind", View::class.java).invoke(null, view) as VB
   }.also { binding ->
     if (this is Fragment && binding is ViewDataBinding) {
       binding.lifecycleOwner = viewLifecycleOwner
