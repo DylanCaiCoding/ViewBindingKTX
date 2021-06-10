@@ -16,6 +16,7 @@
 - 支持在 Fragment 自动释放绑定类的实例对象
 - 支持实现自定义组合控件
 - 支持 TabLayout 实现自定义标签布局
+- 支持 NavigationView 设置头部控件
 - 支持 DataBinding 自动设置 lifecycleOwner
 
 ## Gradle
@@ -42,10 +43,10 @@ android {
 
 dependencies {
     // 以下都是可选，请根据需要进行添加
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.1'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.1'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.1'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:1.2.1'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.2'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.2'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.2'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:1.2.2'
 }
 ```
 
