@@ -29,6 +29,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -65,7 +66,10 @@ fun <VB : ViewBinding> TabLayout.Tab.setCustomView(
 }
 
 inline fun <reified VB : ViewBinding> TabLayout.Tab.bindCustomView(bind: (View) -> VB, onBindView: VB.() -> Unit) =
-  customView?.let { bind(it).run(onBindView) }
+  customView?.let { bind(it) }?.run(onBindView)
+
+inline fun <reified VB : ViewBinding> NavigationView.setHeaderView(index: Int = 0, bind: (View) -> VB, onBindView: VB.() -> Unit) =
+  getHeaderView(index)?.let { bind(it) }?.run(onBindView)
 
 inline fun Fragment.doOnDestroyView(crossinline block: () -> Unit) =
   viewLifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {

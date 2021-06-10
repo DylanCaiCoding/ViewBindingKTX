@@ -29,6 +29,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -66,7 +67,10 @@ inline fun <reified VB : ViewBinding> TabLayout.Tab.bindCustomView(onBindView: V
   customView?.bind<VB>()?.run(onBindView)
 
 inline fun <reified VB : ViewBinding> TabLayout.Tab.bindCustomView(bind: (View) -> VB, onBindView: VB.() -> Unit) =
-  customView?.let { bind(it).run(onBindView) }
+  customView?.let { bind(it) }?.run(onBindView)
+
+inline fun <reified VB : ViewBinding> NavigationView.setHeaderView(index: Int = 0, onBindView: VB.() -> Unit) =
+  getHeaderView(index)?.bind<VB>()?.run(onBindView)
 
 inline fun <reified VB : ViewBinding> inflateBinding(layoutInflater: LayoutInflater) =
   VB::class.java.getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
