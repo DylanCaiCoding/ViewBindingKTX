@@ -19,6 +19,7 @@
 package com.dylanc.viewbinding
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -37,11 +38,25 @@ class BindingViewHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHo
       this(inflate(LayoutInflater.from(parent.context), parent, false))
 }
 
-inline fun <VB : ViewBinding> BindingViewHolder<VB>.onBinding(crossinline action: VB.(Int) -> Unit) =
-  apply { binding.action(adapterPosition) }
+inline fun <VB : ViewBinding> BindingViewHolder<VB>.onClick(view: View, crossinline action: VB.(Int) -> Unit) =
+  apply { view.setOnClickListener { binding.action(adapterPosition) } }
+
+inline fun <VB : ViewBinding, T> BindingViewHolder<VB>.onClick(
+  view: View,
+  listener: OnItemClickListener<T>,
+  crossinline block: VB.(Int) -> T
+) =
+  onClick(view) { listener.onItemClick(block(it), it) }
 
 inline fun <VB : ViewBinding> BindingViewHolder<VB>.onItemClick(crossinline action: VB.(Int) -> Unit) =
-  apply { itemView.setOnClickListener { binding.action(adapterPosition) } }
+  onClick(itemView, action)
+
+inline fun <VB : ViewBinding, T> BindingViewHolder<VB>.onItemClick(listener: OnItemClickListener<T>, crossinline block: VB.(Int) -> T) =
+  onItemClick { listener.onItemClick(block(it), it) }
+
+fun interface OnItemClickListener<T> {
+  fun onItemClick(item: T, position: Int)
+}
 
 inline fun <T, reified VB : ViewBinding> ListAdapter(
   diffCallback: DiffUtil.ItemCallback<T>,
