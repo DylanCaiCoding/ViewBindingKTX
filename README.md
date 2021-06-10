@@ -16,6 +16,7 @@ English | [中文](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/
 - Support automatic release of binding class instance in Fragment
 - Support for custom combination view
 - Support for TabLayout to set custom view
+- Support for NavigationView to set header view
 - Support for DataBinding to automatically set the lifecycle owner
 
 ## Gradle
@@ -41,10 +42,10 @@ android {
 
 dependencies {
     // The following are optional, please add as needed
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.1'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.1'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.1'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:1.2.1'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.2'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.2'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.2'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:1.2.2'
 }
 ```
 
