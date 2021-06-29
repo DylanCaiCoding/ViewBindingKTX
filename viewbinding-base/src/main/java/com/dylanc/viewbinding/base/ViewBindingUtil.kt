@@ -26,6 +26,7 @@ import androidx.activity.ComponentActivity
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import java.lang.ClassCastException
 import java.lang.reflect.ParameterizedType
 
 
@@ -68,7 +69,8 @@ private fun <VB : ViewBinding> withGenericBindingClass(any: Any, block: (Class<V
     parameterizedType.actualTypeArguments.forEach {
       try {
         return block.invoke(it as Class<VB>)
-      } catch (e: Exception) {
+      } catch (e: NoSuchMethodException) {
+      } catch (e: ClassCastException) {
       }
     }
   }
