@@ -42,10 +42,10 @@ android {
 
 dependencies {
     // The following are optional, please add as needed
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.2'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.2'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.2'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:1.2.2'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.3'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.3'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.3'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:1.2.3'
 }
 ```
 
@@ -72,6 +72,11 @@ dependencies {
 ## Change log
 
 [Releases](https://github.com/DylanCaiCoding/ViewBindingKTX/releases)
+
+## Author's other libraries
+
+- [LoadingHelper](https://github.com/DylanCaiCoding/LoadingHelper), a highly expandable Android library for decoupling the code of toolbar or loading status view.
+- [ActivityResultLauncher](https://github.com/DylanCaiCoding/ActivityResultLauncher), perfect replacement for `startActivityForResult()`
 
 ## Thanks
 
