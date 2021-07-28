@@ -33,16 +33,7 @@ class MainActivity : AppCompatActivity() {
   private val binding by binding(ActivityMainBinding::inflate)
   private val loadingDialog by lazy { LoadingDialogFragment() }
   private val handler = Handler(Looper.getMainLooper())
-  private val listAdapter = ListAdapter<Foo, ItemFooBinding>(DiffCallback()) {
-    with(binding) {
-      tvFoo.text = it.value
-    }
-  }
-  private val list = listOf(
-    Foo("item 1"),
-    Foo("item 2"),
-    Foo("item 3")
-  )
+  private val list = listOf(Foo("item 1"), Foo("item 2"), Foo("item 3"))
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -53,9 +44,13 @@ class MainActivity : AppCompatActivity() {
           loadingDialog.dismiss()
         }, 2000)
       }
-      recyclerView.adapter = listAdapter
-      listAdapter.submitList(list)
+      recyclerView.adapter = adapter
+      adapter.submitList(list)
     }
+  }
+
+  private val adapter = ListAdapter<Foo, ItemFooBinding>(DiffCallback()) {
+    binding.tvFoo.text = it.value
   }
 
   class DiffCallback : DiffUtil.ItemCallback<Foo>() {
