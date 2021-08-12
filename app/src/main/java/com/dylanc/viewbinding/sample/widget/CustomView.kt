@@ -18,8 +18,11 @@ package com.dylanc.viewbinding.sample.widget
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.dylanc.viewbinding.binding
+import com.dylanc.viewbinding.inflate
+import com.dylanc.viewbinding.nonreflection.inflate
 import com.dylanc.viewbinding.sample.R
 import com.dylanc.viewbinding.sample.databinding.LayoutCustomViewBinding
 
@@ -29,7 +32,7 @@ import com.dylanc.viewbinding.sample.databinding.LayoutCustomViewBinding
 class CustomView(context: Context, attrs: AttributeSet? = null) :
   ConstraintLayout(context, attrs) {
 
-  val binding: LayoutCustomViewBinding by binding()
+  val binding = inflate<LayoutCustomViewBinding>()
 
   init {
     binding.tvTitle.setText(R.string.show_loading_dialog)

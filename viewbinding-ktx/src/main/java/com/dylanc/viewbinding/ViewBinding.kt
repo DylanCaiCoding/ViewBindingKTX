@@ -59,6 +59,9 @@ inline fun <reified VB : ViewBinding> ViewGroup.binding(attachToParent: Boolean 
   inflateBinding<VB>(LayoutInflater.from(context), if (attachToParent) this else null, attachToParent)
 }
 
+inline fun <reified VB : ViewBinding> ViewGroup.inflate() =
+  inflateBinding<VB>(LayoutInflater.from(context), this, true)
+
 inline fun <reified VB : ViewBinding> TabLayout.Tab.setCustomView(onBindView: VB.() -> Unit) {
   customView = inflateBinding<VB>(LayoutInflater.from(parent!!.context)).apply(onBindView).root
 }
