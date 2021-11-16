@@ -55,7 +55,7 @@ inline fun <reified VB : ViewBinding> Dialog.binding() = lazy {
   inflateBinding<VB>(layoutInflater).also { setContentView(it.root) }
 }
 
-inline fun <reified VB : ViewBinding> ViewGroup.binding(attachToParent: Boolean = true) = lazy {
+inline fun <reified VB : ViewBinding> ViewGroup.binding(attachToParent: Boolean = false) = lazy {
   inflateBinding<VB>(LayoutInflater.from(context), if (attachToParent) this else null, attachToParent)
 }
 

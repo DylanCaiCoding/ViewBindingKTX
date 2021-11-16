@@ -53,7 +53,7 @@ fun <VB : ViewBinding> Dialog.binding(inflate: (LayoutInflater) -> VB) = lazy {
 
 fun <VB : ViewBinding> ViewGroup.binding(
   inflate: (LayoutInflater, ViewGroup?, Boolean) -> VB,
-  attachToParent: Boolean = true
+  attachToParent: Boolean = false
 ) = lazy {
   inflate(LayoutInflater.from(context), if (attachToParent) this else null, attachToParent)
 }

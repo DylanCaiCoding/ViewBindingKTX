@@ -26,7 +26,7 @@ import androidx.activity.ComponentActivity
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import java.lang.ClassCastException
+import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.ParameterizedType
 
 
@@ -65,29 +65,22 @@ fun <VB : ViewBinding> Any.bindViewWithGeneric(view: View): VB =
   }
 
 private fun <VB : ViewBinding> withGenericBindingClass(any: Any, block: (Class<VB>) -> VB): VB {
-  any.allParameterizedType.forEach { parameterizedType ->
-    parameterizedType.actualTypeArguments.forEach {
-      try {
-        return block.invoke(it as Class<VB>)
-      } catch (e: NoSuchMethodException) {
-      } catch (e: ClassCastException) {
+  var genericSuperclass = any.javaClass.genericSuperclass
+  var superclass = any.javaClass.superclass
+  while (superclass != null) {
+    if (genericSuperclass is ParameterizedType) {
+      genericSuperclass.actualTypeArguments.forEach {
+        try {
+          return block.invoke(it as Class<VB>)
+        } catch (e: NoSuchMethodException) {
+        } catch (e: ClassCastException) {
+        } catch (e: InvocationTargetException) {
+          throw e.targetException
+        }
       }
     }
+    genericSuperclass = superclass.genericSuperclass
+    superclass = superclass.superclass
   }
   throw IllegalArgumentException("There is no generic of ViewBinding.")
 }
-
-private val Any.allParameterizedType: List<ParameterizedType>
-  get() {
-    val genericParameterizedType = mutableListOf<ParameterizedType>()
-    var genericSuperclass = javaClass.genericSuperclass
-    var superclass = javaClass.superclass
-    while (superclass != null) {
-      if (genericSuperclass is ParameterizedType) {
-        genericParameterizedType.add(genericSuperclass)
-      }
-      genericSuperclass = superclass.genericSuperclass
-      superclass = superclass.superclass
-    }
-    return genericParameterizedType
-  }
