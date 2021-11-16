@@ -43,10 +43,10 @@ android {
 
 dependencies {
     // 以下都是可选，请根据需要进行添加
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.3'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.3'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.3'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:1.2.3'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.4'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.4'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.4'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:1.2.4'
 }
 ```
 
@@ -76,8 +76,12 @@ dependencies {
 
 ## 作者其它的库
 
-- [LoadingHelper](https://github.com/DylanCaiCoding/LoadingHelper) —— 深度解耦标题栏或加载中、加载失败、无数据等视图
-- [ActivityResultLauncher](https://github.com/DylanCaiCoding/ActivityResultLauncher) —— 完美替代 `startActivityForResult()`
+| 库                                                           | 简介                                           |
+| ------------------------------------------------------------ | ---------------------------------------------- |
+| [Longan](https://github.com/DylanCaiCoding/Longan)           | 简化 Android 开发的 Kotlin 工具类集合      |
+| [LoadingStateView](https://github.com/DylanCaiCoding/LoadingStateView) | 深度解耦标题栏或加载中、加载失败、无数据等视图 |
+| [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | 让 MMKV 更加易用                               |
+| [ActivityResultLauncher](https://github.com/DylanCaiCoding/ActivityResultLauncher) | 优雅地替代 `startActivityForResult()`          |
 
 ## 相关文章
 

@@ -42,10 +42,10 @@ android {
 
 dependencies {
     // The following are optional, please add as needed
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.3'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.3'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.3'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:1.2.3'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.4'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.4'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.4'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:1.2.4'
 }
 ```
 
@@ -75,8 +75,12 @@ dependencies {
 
 ## Author's other libraries
 
-- [LoadingHelper](https://github.com/DylanCaiCoding/LoadingHelper), a highly expandable Android library for decoupling the code of toolbar or loading status view.
-- [ActivityResultLauncher](https://github.com/DylanCaiCoding/ActivityResultLauncher), perfect replacement for `startActivityForResult()`
+| Library                                                      | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [Longan](https://github.com/DylanCaiCoding/Longan)           | A collection of Kotlin utils which makes Android application development faster and easier. |
+| [LoadingStateView](https://github.com/DylanCaiCoding/LoadingStateView) | Decoupling the code of toolbar or loading status view.       |
+| [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | Easier to use the MMKV.                                      |
+| [ActivityResultLauncher](https://github.com/DylanCaiCoding/ActivityResultLauncher) | Replace startActivityForResult() method gracefully.          |
 
 ## Thanks
 
