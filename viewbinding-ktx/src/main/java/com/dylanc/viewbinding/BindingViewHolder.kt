@@ -26,9 +26,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
-/**
- * @author Dylan Cai
- */
 
 inline fun <reified VB : ViewBinding> BindingViewHolder(parent: ViewGroup) =
   BindingViewHolder(inflateBinding<VB>(parent))

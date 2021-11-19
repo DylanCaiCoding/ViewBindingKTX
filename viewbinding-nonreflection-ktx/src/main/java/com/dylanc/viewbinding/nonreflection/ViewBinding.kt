@@ -34,9 +34,6 @@ import com.google.android.material.tabs.TabLayout
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-/**
- * @author Dylan Cai
- */
 
 fun <VB : ViewBinding> ComponentActivity.binding(inflate: (LayoutInflater) -> VB) = lazy {
   inflate(layoutInflater).also {
@@ -91,8 +88,12 @@ class FragmentBindingDelegate<VB : ViewBinding>(private val bind: (View) -> VB) 
 
   override fun getValue(thisRef: Fragment, property: KProperty<*>): VB {
     if (binding == null) {
-      binding = bind(thisRef.requireView()).also {
-        if (it is ViewDataBinding) it.lifecycleOwner = thisRef.viewLifecycleOwner
+      binding = try {
+        bind(thisRef.requireView()).also {
+          if (it is ViewDataBinding) it.lifecycleOwner = thisRef.viewLifecycleOwner
+        }
+      } catch (e: IllegalStateException) {
+        throw IllegalStateException("The binding property has been destroyed.")
       }
       thisRef.doOnDestroyView {
         if (thisRef is BindingLifecycleOwner) thisRef.onDestroyViewBinding(binding!!)

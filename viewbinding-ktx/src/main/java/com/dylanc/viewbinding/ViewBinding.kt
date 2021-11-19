@@ -35,10 +35,6 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 
-/**
- * @author Dylan Cai
- */
-
 inline fun <reified VB : ViewBinding> ComponentActivity.binding() = lazy {
   inflateBinding<VB>(layoutInflater).also {
     setContentView(it.root)
@@ -109,8 +105,12 @@ class FragmentBindingDelegate<VB : ViewBinding>(private val block: () -> VB) : R
 
   override fun getValue(thisRef: Fragment, property: KProperty<*>): VB {
     if (binding == null) {
-      binding = block().also {
-        if (it is ViewDataBinding) it.lifecycleOwner = thisRef.viewLifecycleOwner
+      binding = try {
+        block().also {
+          if (it is ViewDataBinding) it.lifecycleOwner = thisRef.viewLifecycleOwner
+        }
+      } catch (e: IllegalStateException) {
+        throw IllegalStateException("The binding property has been destroyed.")
       }
       thisRef.doOnDestroyView {
         if (thisRef is BindingLifecycleOwner) thisRef.onDestroyViewBinding(binding!!)
