@@ -25,7 +25,7 @@ Add it in your root build.gradle at the end of repositories:
 ```groovy
 allprojects {
     repositories {
-        ...
+        // ...
         maven { url 'https://www.jitpack.io' }
     }
 }
@@ -49,25 +49,96 @@ dependencies {
 }
 ```
 
-## Wiki
+## Usage
 
-#### Kotlin usage
+:pencil: **[Usage documentation](https://dylancaicoding.github.io/ViewBindingKTX)**
 
-- [Using the extension function](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/使用拓展函数)
+## Sample
 
-- [Modify base class](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/改造基类-(Kotlin))
+Get the binding instance using the Kotlin property delegate：
 
-- [Compatible with BRVAH](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/兼容-BRVAH-(Kotlin))
+```kotlin
+class MainActivity : AppCompatActivity() {
 
-#### Java usage
+  private val binding: ActivityMainBinding by binding()
+  // private val binding by binding(ActivityMainBinding::inflate)
 
-- [Modify base class](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/改造基类-(Java))
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    binding.tvHelloWorld.text = "Hello Android!"
+  }
+}
+```
 
-- [Compatible with BRVAH](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/兼容-BRVAH-(Java))
+```kotlin
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
-#### Others
+  private val binding: FragmentHomeBinding by binding()
+  // private val binding by binding(FragmentHomeBinding::bind)
 
-- [Q&A](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/Q&A)
+  private val childBinding: LayoutChildBinding by binding(Method.INFLATE)
+  // private val childBinding by binding { LayoutChildBinding.inflate(layoutInflater) }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    binding.container.addView(childBinding.root)
+  }
+}
+```
+
+Use in the base class:
+
+```kotlin
+class MainActivity : BaseBindingActivity<ActivityMainBinding>() {
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    binding.tvHelloWorld.text = "Hello Android!"
+  }
+}
+```
+
+```kotlin
+class HomeFragment: BaseBindingFragment<FragmentHomeBinding>() {
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    binding.tvHelloWorld.text = "Hello Android!"
+  }
+}
+```
+
+Use multiple ways to compatible [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)： 
+
+```kotlin
+class FooAdapter : BaseQuickAdapter<Foo, BaseViewHolder>(R.layout.item_foo) {
+
+  override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+    return super.onCreateDefViewHolder(parent, viewType).withBinding { ItemFooBinding.bind(it) }
+  }
+  
+  override fun convert(holder: BaseViewHolder, item: Foo) {
+    holder.getViewBinding<ItemFooBinding>().apply {
+      tvFoo.text = item.value
+    }
+  }
+}
+```
+
+```kotlin
+class FooAdapter : BaseBindingQuickAdapter<Foo, ItemFooBinding>() {
+
+  override fun convert(holder: BaseBindingHolder<ItemFooBinding>, item: Foo) {
+    holder.getViewBinding<ItemFooBinding>().apply {
+      tvFoo.text = item.value
+    }
+  }
+}
+```
+
+See the [usage documentation](https://dylancaicoding.github.io/ViewBindingKTX) for more usage.
+
+## 
 
 ## Change log
 
@@ -79,7 +150,7 @@ dependencies {
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [Longan](https://github.com/DylanCaiCoding/Longan)           | A collection of Kotlin utils which makes Android application development faster and easier. |
 | [LoadingStateView](https://github.com/DylanCaiCoding/LoadingStateView) | Decoupling the code of toolbar or loading status view.       |
-| [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | Easier to use the MMKV.                                      |
+| [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | Use MMKV with property delegates.                                      |
 | [ActivityResultLauncher](https://github.com/DylanCaiCoding/ActivityResultLauncher) | Replace startActivityForResult() method gracefully.          |
 
 ## Thanks
