@@ -20,13 +20,13 @@
 - 支持 DataBinding 自动设置 lifecycleOwner
 
 ## Gradle
-
+ 
 在根目录的 build.gradle 添加：
 
 ```groovy
 allprojects {
     repositories {
-        ...
+        // ...
         maven { url 'https://www.jitpack.io' }
     }
 }
@@ -50,25 +50,94 @@ dependencies {
 }
 ```
 
-## Wiki
+## 用法
 
-#### Kotlin 用法
+:pencil: **[使用文档](https://dylancaicoding.github.io/ViewBindingKTX)**
 
-- [使用拓展函数](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/使用拓展函数)
+## 示例
 
-- [改造基类](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/改造基类-(Kotlin))
+使用 Kotlin 属性委托的方式获取 binding 对象：
 
-- [兼容 BRVAH](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/兼容-BRVAH-(Kotlin))
+```kotlin
+class MainActivity : AppCompatActivity() {
 
-#### Java 用法
+  private val binding: ActivityMainBinding by binding()
+  // private val binding by binding(ActivityMainBinding::inflate)
 
-- [改造基类](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/改造基类-(Java))
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    binding.tvHelloWorld.text = "Hello Android!"
+  }
+}
+```
 
-- [兼容 BRVAH](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/兼容-BRVAH-(Java))
+```kotlin
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
-#### 其它
+  private val binding: FragmentHomeBinding by binding()
+  // private val binding by binding(FragmentHomeBinding::bind)
 
-- [Q&A](https://github.com/DylanCaiCoding/ViewBindingKtx/wiki/Q&A)
+  private val childBinding: LayoutChildBinding by binding(Method.INFLATE)
+  // private val childBinding by binding { LayoutChildBinding.inflate(layoutInflater) }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    binding.container.addView(childBinding.root)
+  }
+}
+```
+
+把 ViewBinding 封装到基类进行使用：
+
+```kotlin
+class MainActivity : BaseBindingActivity<ActivityMainBinding>() {
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    binding.tvHelloWorld.text = "Hello Android!"
+  }
+}
+```
+
+```kotlin
+class HomeFragment: BaseBindingFragment<FragmentHomeBinding>() {
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    binding.tvHelloWorld.text = "Hello Android!"
+  }
+}
+```
+
+提供多种方式兼容 [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)： 
+
+```kotlin
+class FooAdapter : BaseQuickAdapter<Foo, BaseViewHolder>(R.layout.item_foo) {
+
+  override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+    return super.onCreateDefViewHolder(parent, viewType).withBinding { ItemFooBinding.bind(it) }
+  }
+  
+  override fun convert(holder: BaseViewHolder, item: Foo) {
+    holder.getViewBinding<ItemFooBinding>().apply {
+      tvFoo.text = item.value
+    }
+  }
+}
+```
+
+```kotlin
+class FooAdapter : BaseBindingQuickAdapter<Foo, ItemFooBinding>() {
+
+  override fun convert(holder: BaseBindingHolder<ItemFooBinding>, item: Foo) {
+    holder.getViewBinding<ItemFooBinding>().apply {
+      tvFoo.text = item.value
+    }
+  }
+}
+```
+
+还有更多的用法，包括 Java 用法和不使用反射的用法，详细的请查看[使用文档](https://dylancaicoding.github.io/ViewBindingKTX)。
 
 ## 更新日志
 
@@ -80,7 +149,7 @@ dependencies {
 | ------------------------------------------------------------ | ---------------------------------------------- |
 | [Longan](https://github.com/DylanCaiCoding/Longan)           | 简化 Android 开发的 Kotlin 工具类集合      |
 | [LoadingStateView](https://github.com/DylanCaiCoding/LoadingStateView) | 深度解耦标题栏或加载中、加载失败、无数据等视图 |
-| [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | 让 MMKV 更加易用                               |
+| [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | 用属性委托的方式使用 MMKV                               |
 | [ActivityResultLauncher](https://github.com/DylanCaiCoding/ActivityResultLauncher) | 优雅地替代 `startActivityForResult()`          |
 
 ## 相关文章
@@ -88,7 +157,6 @@ dependencies {
 讲解本库的封装思路
 
 - [《优雅地封装和使用 ViewBinding，该替代 Kotlin synthetic 和 ButterKnife 了》](https://juejin.cn/post/6906153878312452103)
-
 - [《ViewBinding 巧妙的封装思路，还能这样适配 BRVAH》](https://juejin.cn/post/6950530267547172901)
 
 ## Thanks
