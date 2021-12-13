@@ -19,9 +19,10 @@ package com.dylanc.viewbinding.sample
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DiffUtil
-import com.dylanc.viewbinding.ListAdapter
+import com.dylanc.viewbinding.base.simpleListAdapter
 import com.dylanc.viewbinding.nonreflection.binding
 import com.dylanc.viewbinding.sample.databinding.ActivityMainBinding
 import com.dylanc.viewbinding.sample.databinding.ItemFooBinding
@@ -45,12 +46,18 @@ class MainActivity : AppCompatActivity() {
         }, 2000)
       }
       recyclerView.adapter = adapter
-      adapter.submitList(list)
+    }
+    adapter.submitList(list)
+    adapter.doOnItemClick { item, _ ->
+      Toast.makeText(this, item.value, Toast.LENGTH_SHORT).show()
+    }
+    adapter.doOnItemLongClick { item, _ ->
+      Toast.makeText(this, "long click ${item.value}", Toast.LENGTH_SHORT).show()
     }
   }
 
-  private val adapter = ListAdapter<Foo, ItemFooBinding>(DiffCallback()) {
-    binding.tvFoo.text = it.value
+  private val adapter = simpleListAdapter<Foo, ItemFooBinding>(DiffCallback()) { item ->
+    tvFoo.text = item.value
   }
 
   class DiffCallback : DiffUtil.ItemCallback<Foo>() {
