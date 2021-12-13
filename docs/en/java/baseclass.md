@@ -1,29 +1,25 @@
-# 封装到基类
+# Use in base class
 
-因为 Java 没有 Kotlin 的特性，所以只推荐封装在基类里使用。
+There are two usages of [using reflection](/en/java/baseclass?id=use-reflection) and [not using reflection](/en/java/baseclass?id=don39t-use-reflection).
 
-下面会带着大家用最少的代码改造自己的基类使其用上 ViewBinding。因为大家的基类封装方式各式各样，所以会讲改造步骤和核心的改造代码，主要都是把 binding 对象封装在基类里替换掉原来的布局 id。
+## Use reflection
 
-提供了[使用反射](/java/baseclass?id=使用反射)和[不使用反射](/java/baseclass?id=不使用反射)的两种封装思路，后者需要每次重写个方法并手动创建 binding 对象，相对会麻烦一点。大家可以对比两者的用法后进行选择。个人更推荐用反射的方式封装改造，多一次反射的性能损耗可以忽略不计。
-
-## 使用反射
-
-添加依赖：
+Add dependency:
 
 ```gradle
 implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.6'
 ```
 
-改造的核心步骤：
+The core steps:
 
-1. 在基类增加一个继承 ViewBinding 的泛型；
-2. 在基类里定义一个类型是 ViewBinding 泛型的 binding 对象；
-3. 用工具类方法初始化泛型的 binding；
-4. 用 binding.getRoot() 替代原来设置或返回布局的代码；
+1. Add a generic that extends ViewBinding to the base class.
+2. Defining a binding object of the ViewBinding generic in the base class.
+3. Initialize the binding object.
+4. Replace the code that sets or returns the layout with `binding.getRoot()`.
 
 ### Activity
 
-Activity 基类的核心改造代码：
+Base class:
 
 ```java
 public abstract class BaseBindingActivity<VB extends ViewBinding> extends AppCompatActivity {
@@ -43,7 +39,7 @@ public abstract class BaseBindingActivity<VB extends ViewBinding> extends AppCom
 }
 ```
 
-Activity 基类改造后的使用示例：
+Usage sample:
 
 ```java
 public class MainActivity extends BaseBindingActivity<ActivityMainBinding>{
@@ -58,7 +54,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding>{
 
 ### Fragment
 
-Fragment 基类的核心改造代码：
+Base class:
 
 ```java
 public abstract class BaseBindingFragment<VB extends ViewBinding> extends Fragment {
@@ -84,7 +80,7 @@ public abstract class BaseBindingFragment<VB extends ViewBinding> extends Fragme
 }
 ```
 
-Fragment 基类改造后的使用示例：
+Usage sample:
 
 ```java
 class HomeFragment extends BaseBindingFragment<FragmentHomeBinding> {
@@ -99,11 +95,11 @@ class HomeFragment extends BaseBindingFragment<FragmentHomeBinding> {
 
 ### Adapter
 
-下面提供两个适配器开源库的封装改造示例，如果你有在用这两个库，可以直接拷贝去用。如果是自己封装的适配器基类，可参考下面封装的思路进行改造。
+The following are samples of two libraries for adapters. If you are using these two libraries, you can copy them.
 
 - #### [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
 
-封装基类代码：
+Base class:
 
 ```java
 public abstract class BaseBindingQuickAdapter<T, VB extends ViewBinding>
@@ -146,7 +142,7 @@ public abstract class BaseBindingQuickAdapter<T, VB extends ViewBinding>
 }
 ```
 
-封装后的使用示例：
+Usage sample:
 
 ```java
 class FooAdapter extends BaseBindingQuickAdapter<Foo, ItemFooBinding> {
@@ -161,7 +157,7 @@ class FooAdapter extends BaseBindingQuickAdapter<Foo, ItemFooBinding> {
 
 - #### [MultiType](https://github.com/drakeet/MultiType)
 
-封装基类代码：
+Base class:
 
 ```java
 public abstract class BindingViewDelegate<T, VB extends ViewBinding> extends
@@ -189,7 +185,7 @@ public abstract class BindingViewDelegate<T, VB extends ViewBinding> extends
 }
 ```
 
-封装后的使用示例：
+Usage sample:
 
 ```java
 class FooViewDelegate extends BindingViewDelegate<Foo, ItemFooBinding> {
@@ -201,18 +197,19 @@ class FooViewDelegate extends BindingViewDelegate<Foo, ItemFooBinding> {
 }
 ```
 
-## 不使用反射
+## Don't use reflection
 
-改造的核心步骤：
+The core steps:
 
-1. 在基类增加一个继承 ViewBinding 的泛型；
-2. 在基类里定义一个类型是 ViewBinding 泛型的 binding 对象；
-3. 添加创建绑定对象的抽象方法，并使用该方法初始化 binding 对象；
-4. 用 binding.root 替代原来设置或返回布局的代码；
+1. Add a generic that extends ViewBinding to the base class.
+2. Define a binding object of the ViewBinding generic in the base class.
+3. Add an abstract method of creating a binding object.
+4. Initialize the binding object.
+5. Replace the code that sets or returns the layout with `binding.getRoot()`.
 
 ### Activity
 
-Activity 基类的核心改造代码：
+Base class:
 
 ```java
 public abstract class BaseBindingActivity<VB extends ViewBinding> extends AppCompatActivity {
@@ -234,7 +231,7 @@ public abstract class BaseBindingActivity<VB extends ViewBinding> extends AppCom
 }
 ```
 
-Activity 基类改造后的使用示例：
+Usage sample:
 
 ```java
 public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
@@ -253,7 +250,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
 
 ### Fragment
 
-Fragment 基类的核心改造代码：
+Base class:
 
 ```java
 public abstract class BaseBindingFragment<VB extends ViewBinding> extends Fragment {
@@ -281,7 +278,7 @@ public abstract class BaseBindingFragment<VB extends ViewBinding> extends Fragme
 }
 ```
 
-Fragment 基类改造后的使用示例：
+Usage sample:
 
 ```java
 public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding> {
@@ -300,11 +297,11 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding> {
 
 ### Adapter
 
-下面提供两个适配器开源库的封装改造示例，如果你有在用这两个库，可以直接拷贝去用。如果是自己封装的适配器基类，可参考下面封装的思路进行改造。
+The following are samples of two libraries for adapters. If you are using these two libraries, you can copy them.
 
 - #### [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
 
-封装基类代码：
+Base class:
 
 ```java
 public abstract class BaseBindingQuickAdapter<T, VB extends ViewBinding>
@@ -348,7 +345,7 @@ public abstract class BaseBindingQuickAdapter<T, VB extends ViewBinding>
 }
 ```
 
-封装后的使用示例：
+Usage sample:
 
 ```java
 public class FooAdapter extends BaseBindingQuickAdapter<Foo, ItemFooBinding> {
@@ -367,7 +364,7 @@ public class FooAdapter extends BaseBindingQuickAdapter<Foo, ItemFooBinding> {
 
 - #### [MultiType](https://github.com/drakeet/MultiType)
 
-封装基类代码：
+Base class:
 
 ```java
 public abstract class BindingViewDelegate<T, VB extends ViewBinding> extends
@@ -397,7 +394,7 @@ public abstract class BindingViewDelegate<T, VB extends ViewBinding> extends
 }
 ```
 
-封装后的使用示例：
+Usage sample:
 
 ```java
 public class FooViewDelegate extends BindingViewDelegate<Foo, ItemFooBinding> {

@@ -1,7 +1,7 @@
 * [介绍](/)
 
 * Kotlin 用法
-    * [使用属性委托](/kotlin/propertydelegate)
+    * [使用扩展函数](/kotlin/ext)
     * [封装到基类](/kotlin/baseclass)
     * [兼容 BRVAH](/kotlin/brvah)
 

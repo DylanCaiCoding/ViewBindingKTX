@@ -1,4 +1,4 @@
-# 使用属性委托
+# 使用扩展函数
 
 ## 开始使用
 
@@ -56,7 +56,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), BindingLifecycleOwner {
 
 ### Adapter
 
-下面是结合官方 ListAdapter 的使用示例，无需再写个类继承 `RecycleView.ViewHolder`，直接用 `BindingViewHolder` 进行替代，可快速创建和获取 binding 对象。
+在 Adapter 里使用 `BindingViewHolder`，无需再写个类继承 `RecycleView.ViewHolder`。
 
 ```kotlin
 class TextAdapter : ListAdapter<String, BindingViewHolder<ItemTextBinding>>(DiffCallback()) {
@@ -122,7 +122,7 @@ class CustomView(context: Context, attrs: AttributeSet? = null) : ConstraintLayo
 
 ### TabLayout
 
-以下是 TabLayout + ViewPager2 实现底部导航栏的示例。
+以下是 TabLayout + ViewPager2 实现自定义底部导航栏的示例。
 
 ```kotlin
 TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
