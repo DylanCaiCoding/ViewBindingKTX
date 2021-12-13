@@ -1,13 +1,13 @@
 * [介绍](/)
 
 * Kotlin 用法
-    * [使用扩展函数](/kotlin/ext)
-    * [封装到基类](/kotlin/baseclass)
-    * [兼容 BRVAH](/kotlin/brvah)
+    * [使用扩展函数](/cn/kotlin/ext)
+    * [封装到基类](/cn/kotlin/baseclass)
+    * [兼容 BRVAH](/cn/kotlin/brvah)
 
 * Java 用法
-    * [封装到基类](/java/baseclass)
-    * [兼容 BRVAH](/java/brvah)
+    * [封装到基类](/cn/java/baseclass)
+    * [兼容 BRVAH](/cn/java/brvah)
 
 * 其它
-    * [Q&A](/others/q&a)
+    * [Q&A](/cn/others/q&a)
