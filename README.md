@@ -36,7 +36,7 @@ Add dependencies and configurations：
 ```groovy
 android {
     buildFeatures {
-        viewBinding = true
+        viewBinding true
     }
 }
 
@@ -51,7 +51,7 @@ dependencies {
 
 ## Usage
 
-:pencil: **[Usage documentation](https://dylancaicoding.github.io/ViewBindingKTX)**
+:pencil: **[Usage documentation](https://dylancaicoding.github.io/ViewBindingKTX/#/en/)**
 
 ## Sample
 
