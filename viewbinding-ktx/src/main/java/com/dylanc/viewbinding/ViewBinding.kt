@@ -44,12 +44,6 @@ inline fun <reified VB : ViewBinding> inflateBinding(
 inline fun <reified VB : ViewBinding> View.getBinding() = getBinding(VB::class.java)
 
 @Suppress("UNCHECKED_CAST")
-fun <VB : ViewBinding> View.getBinding(clazz: Class<VB>, lifecycleOwner: LifecycleOwner? = null) =
-  if (binding != null) {
-    binding as VB
-  } else {
-    (clazz.getMethod("bind", View::class.java).invoke(null, this) as VB).also {
-      if (it is ViewDataBinding) it.lifecycleOwner = lifecycleOwner
-      binding = it
-    }
-  }
+fun <VB : ViewBinding> View.getBinding(clazz: Class<VB>) =
+  binding as? VB ?: (clazz.getMethod("bind", View::class.java).invoke(null, this) as VB).also { binding = it }
+

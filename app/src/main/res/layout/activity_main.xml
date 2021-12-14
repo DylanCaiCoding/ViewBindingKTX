@@ -6,22 +6,17 @@
   android:layout_height="match_parent"
   tools:context=".MainActivity">
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/recycler_view"
+  <androidx.viewpager2.widget.ViewPager2
+    android:id="@+id/view_pager_2"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    android:layout_height="0dp"
+    app:layout_constraintBottom_toTopOf="@+id/tab_layout"
+    app:layout_constraintTop_toTopOf="parent" />
 
-  <com.dylanc.viewbinding.sample.widget.CustomView
-    android:id="@+id/custom_view"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent" />
+  <com.google.android.material.tabs.TabLayout
+    android:id="@+id/tab_layout"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

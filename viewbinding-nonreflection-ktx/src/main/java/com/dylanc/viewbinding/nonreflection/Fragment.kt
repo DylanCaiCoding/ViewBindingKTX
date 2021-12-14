@@ -18,6 +18,7 @@
 
 package com.dylanc.viewbinding.nonreflection
 
+import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -29,13 +30,28 @@ import kotlin.reflect.KProperty
 
 fun <VB : ViewBinding> Fragment.binding(bind: (View) -> VB) = FragmentBindingDelegate(bind)
 
+fun <VB : ViewBinding> Fragment.binding(inflate: (LayoutInflater) -> VB) = FragmentInflateBindingDelegate(inflate)
+
 class FragmentBindingDelegate<VB : ViewBinding>(private val bind: (View) -> VB) : ReadOnlyProperty<Fragment, VB> {
+  override fun getValue(thisRef: Fragment, property: KProperty<*>): VB {
+    val binding = try {
+      thisRef.requireView().getBinding(bind).also { binding ->
+        if (binding is ViewDataBinding) binding.lifecycleOwner = thisRef.viewLifecycleOwner
+      }
+    } catch (e: IllegalStateException) {
+      throw IllegalStateException("The binding property has been destroyed.")
+    }
+    return binding
+  }
+}
+
+class FragmentInflateBindingDelegate<VB : ViewBinding>(private val inflate: (LayoutInflater) -> VB) : ReadOnlyProperty<Fragment, VB> {
   private var binding: VB? = null
 
   override fun getValue(thisRef: Fragment, property: KProperty<*>): VB {
     if (binding == null) {
       binding = try {
-        bind(thisRef.requireView()).also { binding ->
+        inflate(thisRef.layoutInflater).also { binding ->
           if (binding is ViewDataBinding) binding.lifecycleOwner = thisRef.viewLifecycleOwner
         }
       } catch (e: IllegalStateException) {

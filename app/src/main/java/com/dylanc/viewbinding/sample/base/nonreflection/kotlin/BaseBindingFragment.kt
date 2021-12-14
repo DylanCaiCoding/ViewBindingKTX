@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused", "MemberVisibilityCanBePrivate")
+@file:Suppress("unused")
 
 package com.dylanc.viewbinding.sample.base.nonreflection.kotlin
 

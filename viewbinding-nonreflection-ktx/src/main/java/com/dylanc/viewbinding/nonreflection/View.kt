@@ -19,8 +19,10 @@
 package com.dylanc.viewbinding.nonreflection
 
 import android.view.View
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 
 @Suppress("UNCHECKED_CAST")
 fun <VB : ViewBinding> View.getBinding(bind: (View) -> VB): VB =
-  (getTag(Int.MIN_VALUE) as? VB) ?: bind(this).also { setTag(Int.MIN_VALUE, it) }
+  (getTag(Int.MIN_VALUE) as? VB) ?: bind(this).also { binding -> setTag(Int.MIN_VALUE, binding) }

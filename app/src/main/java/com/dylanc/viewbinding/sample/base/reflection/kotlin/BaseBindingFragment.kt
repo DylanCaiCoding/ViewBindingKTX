@@ -24,7 +24,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.dylanc.viewbinding.base.inflateBindingWithGeneric
+import com.dylanc.viewbinding.base.ViewBindingUtil
 
 /**
  * How to modify the base class to use view binding, you need the following steps:
@@ -43,7 +43,7 @@ abstract class BaseBindingFragment<VB : ViewBinding> : Fragment() {
   val binding: VB get() = _binding!!
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    _binding = inflateBindingWithGeneric(layoutInflater, container, false)
+    _binding = ViewBindingUtil.inflateWithGeneric(this, layoutInflater, container, false)
     return binding.root
   }
 

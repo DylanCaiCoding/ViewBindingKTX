@@ -42,7 +42,7 @@ abstract class SimpleListAdapter<T, VB : ViewBinding>(
   private var onItemLongClickListener: ((T, Int) -> Unit)? = null
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder<VB> =
-    BindingViewHolder(inflateBindingWithGeneric<VB>(parent)).apply {
+    BindingViewHolder(ViewBindingUtil.inflateWithGeneric<VB>(this, parent)).apply {
       itemView.setOnClickListener {
         onItemClickListener?.invoke(getItem(adapterPosition), adapterPosition)
       }

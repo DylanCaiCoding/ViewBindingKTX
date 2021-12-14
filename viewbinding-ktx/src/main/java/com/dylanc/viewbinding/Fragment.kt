@@ -37,7 +37,9 @@ class FragmentBindingProperty<VB : ViewBinding>(private val clazz: Class<VB>) : 
 
   override fun getValue(thisRef: Fragment, property: KProperty<*>): VB =
     try {
-      thisRef.requireView().getBinding(clazz, thisRef.viewLifecycleOwner)
+      thisRef.requireView().getBinding(clazz).also { binding ->
+        if (binding is ViewDataBinding) binding.lifecycleOwner = thisRef.viewLifecycleOwner
+      }
     } catch (e: IllegalStateException) {
       throw IllegalStateException("The binding property has been destroyed.")
     }
