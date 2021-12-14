@@ -21,7 +21,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.drakeet.multitype.ItemViewDelegate
-import com.dylanc.viewbinding.base.inflateBindingWithGeneric
+import com.dylanc.viewbinding.base.ViewBindingUtil
 
 /**
  * @author Dylan Cai
@@ -29,9 +29,8 @@ import com.dylanc.viewbinding.base.inflateBindingWithGeneric
 abstract class BindingViewDelegate<T, VB : ViewBinding> :
   ItemViewDelegate<T, BindingViewDelegate.BindingViewHolder<VB>>() {
 
-  override fun onCreateViewHolder(context: Context, parent: ViewGroup): BindingViewHolder<VB> {
-    return BindingViewHolder(inflateBindingWithGeneric(parent))
-  }
+  override fun onCreateViewHolder(context: Context, parent: ViewGroup) =
+    BindingViewHolder(ViewBindingUtil.inflateWithGeneric<VB>(this, parent))
 
   class BindingViewHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root)
 }

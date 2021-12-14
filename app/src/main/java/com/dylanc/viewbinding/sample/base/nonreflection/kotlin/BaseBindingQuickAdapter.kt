@@ -24,8 +24,6 @@ import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.dylanc.viewbinding.BindingViewHolder
-import com.dylanc.viewbinding.base.inflateBindingWithGeneric
 
 
 abstract class BaseBindingQuickAdapter<T, VB : ViewBinding>(

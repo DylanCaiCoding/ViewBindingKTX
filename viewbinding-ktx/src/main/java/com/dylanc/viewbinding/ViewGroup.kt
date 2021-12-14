@@ -16,29 +16,15 @@
 
 @file:Suppress("unused")
 
-package com.dylanc.viewbinding.sample.base.nonreflection.kotlin
+package com.dylanc.viewbinding
 
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseBindingFragment<VB : ViewBinding>(
-  private val inflate: (LayoutInflater, ViewGroup?, Boolean) -> VB
-) : Fragment() {
+inline fun <reified VB : ViewBinding> ViewGroup.inflate() =
+  inflateBinding<VB>(LayoutInflater.from(context), this, true)
 
-  private var _binding: VB? = null
-  val binding: VB get() = _binding!!
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    _binding = inflate(inflater, container, false)
-    return binding.root
-  }
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
-  }
+inline fun <reified VB : ViewBinding> ViewGroup.binding(attachToParent: Boolean = false) = lazy {
+  inflateBinding<VB>(LayoutInflater.from(context), if (attachToParent) this else null, attachToParent)
 }
