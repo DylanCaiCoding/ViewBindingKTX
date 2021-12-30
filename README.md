@@ -148,10 +148,9 @@ See the [usage documentation](https://dylancaicoding.github.io/ViewBindingKTX) f
 
 | Library                                                      | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [Longan](https://github.com/DylanCaiCoding/Longan)           | A collection of Kotlin utils which makes Android application development faster and easier. |
+| [Longan](https://github.com/DylanCaiCoding/Longan)           | A collection of Kotlin utils                                 |
 | [LoadingStateView](https://github.com/DylanCaiCoding/LoadingStateView) | Decoupling the code of toolbar or loading status view.       |
 | [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | Use MMKV with property delegates.                                      |
-| [ActivityResultLauncher](https://github.com/DylanCaiCoding/ActivityResultLauncher) | Replace startActivityForResult() method gracefully.          |
 
 ## Thanks
 
