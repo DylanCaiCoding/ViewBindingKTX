@@ -16,29 +16,17 @@
 
 @file:Suppress("unused")
 
-package com.dylanc.viewbinding.sample.base.nonreflection.kotlin
+package com.dylanc.viewbinding.nonreflection
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseBindingFragment<VB : ViewBinding>(
-  private val inflate: (LayoutInflater, ViewGroup?, Boolean) -> VB
-) : Fragment() {
+@Suppress("UNCHECKED_CAST")
+fun <VB : ViewBinding> View.getBinding(bind: (View) -> VB): VB =
+  (bindingCache as? VB) ?: bind(this).also { binding -> bindingCache = binding }
 
-  private var _binding: VB? = null
-  val binding: VB get() = _binding!!
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    _binding = inflate(inflater, container, false)
-    return binding.root
-  }
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
-  }
-}
+private var View.bindingCache: Any?
+  get() = getTag(Int.MIN_VALUE)
+  set(value) = setTag(Int.MIN_VALUE, value)

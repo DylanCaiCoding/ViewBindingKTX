@@ -22,7 +22,7 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import androidx.viewbinding.ViewBinding
-import com.dylanc.viewbinding.base.inflateBindingWithGeneric
+import com.dylanc.viewbinding.base.ViewBindingUtil
 
 /**
  * How to modify the base class to use view binding, you need the following steps:
@@ -42,7 +42,7 @@ abstract class BaseBindingDialog<VB : ViewBinding>(context: Context, themeResId:
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    binding = inflateBindingWithGeneric(layoutInflater)
+    binding = ViewBindingUtil.inflateWithGeneric(this, layoutInflater)
     setContentView(binding.root)
   }
 }

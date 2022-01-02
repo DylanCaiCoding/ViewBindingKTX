@@ -17,44 +17,45 @@
 package com.dylanc.viewbinding.sample
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DiffUtil
-import com.dylanc.viewbinding.ListAdapter
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.dylanc.viewbinding.doOnCustomTabSelected
 import com.dylanc.viewbinding.nonreflection.binding
+import com.dylanc.viewbinding.nonreflection.setCustomView
 import com.dylanc.viewbinding.sample.databinding.ActivityMainBinding
-import com.dylanc.viewbinding.sample.databinding.ItemFooBinding
-import com.dylanc.viewbinding.sample.item.Foo
-import com.dylanc.viewbinding.sample.widget.LoadingDialogFragment
+import com.dylanc.viewbinding.sample.databinding.LayoutBottomTabBinding
+import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
 
   private val binding by binding(ActivityMainBinding::inflate)
-  private val loadingDialog by lazy { LoadingDialogFragment() }
-  private val handler = Handler(Looper.getMainLooper())
-  private val list = listOf(Foo("item 1"), Foo("item 2"), Foo("item 3"))
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    with(binding) {
-      customView.setOnClickListener {
-        loadingDialog.show(supportFragmentManager, "loading")
-        handler.postDelayed({
-          loadingDialog.dismiss()
-        }, 2000)
-      }
-      recyclerView.adapter = adapter
-      adapter.submitList(list)
+
+    val fragments = listOf(HomeFragment(), CustomViewFragment())
+    binding.viewPager2.adapter = object : FragmentStateAdapter(this) {
+      override fun getItemCount() = fragments.size
+      override fun createFragment(position: Int) = fragments[position]
     }
+
+    TabLayoutMediator(binding.tabLayout, binding.viewPager2, false) { tab, position ->
+      tab.setCustomView(LayoutBottomTabBinding::inflate) {
+        if (position == 0) {
+          textView.textSize = 16f
+        }
+      }
+    }.attach()
+
+    binding.tabLayout.doOnCustomTabSelected<LayoutBottomTabBinding>(
+      // binding.tabLayout.doOnCustomTabSelected(LayoutBottomTabBinding::bind,
+      onTabSelected = {
+        textView.textSize = 16f
+      },
+      onTabUnselected = {
+        textView.textSize = 14f
+      }
+    )
   }
 
-  private val adapter = ListAdapter<Foo, ItemFooBinding>(DiffCallback()) {
-    binding.tvFoo.text = it.value
-  }
-
-  class DiffCallback : DiffUtil.ItemCallback<Foo>() {
-    override fun areItemsTheSame(oldItem: Foo, newItem: Foo) = oldItem.value == newItem.value
-    override fun areContentsTheSame(oldItem: Foo, newItem: Foo) = oldItem.value == newItem.value
-  }
 }

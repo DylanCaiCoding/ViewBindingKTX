@@ -23,7 +23,7 @@ import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.dylanc.viewbinding.base.inflateBindingWithGeneric
+import com.dylanc.viewbinding.base.ViewBindingUtil
 
 /**
  * How to modify the base adapter class to use view binding, you need the following steps:
@@ -40,7 +40,7 @@ abstract class BaseBindingQuickAdapter<T, VB : ViewBinding>(layoutResId: Int = -
   BaseQuickAdapter<T, BaseBindingQuickAdapter.BaseBindingHolder>(layoutResId) {
 
   override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int) =
-    BaseBindingHolder(inflateBindingWithGeneric<VB>(parent))
+    BaseBindingHolder(ViewBindingUtil.inflateWithGeneric<VB>(this, parent))
 
   class BaseBindingHolder(private val binding: ViewBinding) : BaseViewHolder(binding.root) {
     constructor(itemView: View) : this(ViewBinding { itemView })
