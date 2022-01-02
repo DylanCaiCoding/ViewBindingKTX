@@ -21,13 +21,7 @@ package com.dylanc.viewbinding
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
-
-private var View.binding: Any?
-  get() = getTag(Int.MIN_VALUE)
-  set(value) = setTag(Int.MIN_VALUE, value)
 
 inline fun <reified VB : ViewBinding> inflateBinding(layoutInflater: LayoutInflater) =
   VB::class.java.getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
@@ -40,10 +34,3 @@ inline fun <reified VB : ViewBinding> inflateBinding(
 ) =
   VB::class.java.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
     .invoke(null, layoutInflater, parent, attachToParent) as VB
-
-inline fun <reified VB : ViewBinding> View.getBinding() = getBinding(VB::class.java)
-
-@Suppress("UNCHECKED_CAST")
-fun <VB : ViewBinding> View.getBinding(clazz: Class<VB>) =
-  binding as? VB ?: (clazz.getMethod("bind", View::class.java).invoke(null, this) as VB).also { binding = it }
-
