@@ -11,7 +11,7 @@
 添加依赖：
 
 ```gradle
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.6'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.0'
 ```
 
 改造的核心步骤：
@@ -99,67 +99,7 @@ class HomeFragment extends BaseBindingFragment<FragmentHomeBinding> {
 
 ### Adapter
 
-下面提供两个适配器开源库的封装改造示例，如果你有在用这两个库，可以直接拷贝去用。如果是自己封装的适配器基类，可参考下面封装的思路进行改造。
-
-- #### [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
-
-封装基类代码：
-
-```java
-public abstract class BaseBindingQuickAdapter<T, VB extends ViewBinding>
-    extends BaseQuickAdapter<T, BaseBindingQuickAdapter.BaseBindingHolder> {
-
-  public BaseBindingQuickAdapter() {
-    this(-1);
-  }
-
-  public BaseBindingQuickAdapter(@LayoutRes int layoutResId) {
-    super(layoutResId);
-  }
-
-  @NotNull
-  @Override
-  protected BaseBindingHolder onCreateDefViewHolder(@NotNull ViewGroup parent, int viewType) {
-    VB viewBinding = ViewBindingUtil.inflateWithGeneric(this, parent);
-    return new BaseBindingHolder(viewBinding);
-  }
-
-  public static class BaseBindingHolder extends BaseViewHolder {
-
-    private final ViewBinding binding;
-
-    public BaseBindingHolder(@NotNull View view) {
-      this(() -> view);
-    }
-
-    public BaseBindingHolder(@NotNull ViewBinding binding) {
-      super(binding.getRoot());
-      this.binding = binding;
-    }
-
-    @NonNull
-    @SuppressWarnings("unchecked")
-    public <VB extends ViewBinding> VB getViewBinding() {
-      return (VB) binding;
-    }
-  }
-}
-```
-
-封装后的使用示例：
-
-```java
-class FooAdapter extends BaseBindingQuickAdapter<Foo, ItemFooBinding> {
-
-  @Override
-  public void convert(@NotNull BindingViewHolder<ItemFooBinding> holder, Foo item) {
-    ItemFooBinding binding = holder.getViewBinding();
-    binding.tvFoo.setText(item.getValue());
-  }
-}
-```
-
-- #### [MultiType](https://github.com/drakeet/MultiType)
+下面是第三方适配器库 [MultiType](https://github.com/drakeet/MultiType) 的封装示例，如果是自己封装的适配器基类，可参考下面的封装思路进行改造。
 
 封装基类代码：
 
@@ -171,6 +111,13 @@ public abstract class BindingViewDelegate<T, VB extends ViewBinding> extends
   public BindingViewHolder<VB> onCreateViewHolder(@NotNull Context context, @NotNull ViewGroup parent) {
     return new BindingViewHolder<>(ViewBindingUtil.inflateWithGeneric(this, parent));
   }
+
+  @Override
+  public void onBindViewHolder(@NonNull BindingViewHolder<VB> holder, T t) {
+    onBindViewHolder(holder.getBinding(), t, holder.getAdapterPosition());
+  }
+
+  protected abstract void onBindViewHolder(VB binding, T item, int position);
 
   public static class BindingViewHolder<VB extends ViewBinding> extends RecyclerView.ViewHolder {
 
@@ -195,8 +142,8 @@ public abstract class BindingViewDelegate<T, VB extends ViewBinding> extends
 class FooViewDelegate extends BindingViewDelegate<Foo, ItemFooBinding> {
 
   @Override
-  public void onBindViewHolder(@NotNull BindingViewHolder<ItemFooBinding> holder, Foo item) {
-    holder.getBinding().tvFoo.setText(item.getValue());
+  protected void onBindViewHolder(@NotNull ItemFooBinding binding, Foo foo, int position) {
+    binding.tvFoo.setText(item.getValue());
   }
 }
 ```
@@ -300,72 +247,7 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding> {
 
 ### Adapter
 
-下面提供两个适配器开源库的封装改造示例，如果你有在用这两个库，可以直接拷贝去用。如果是自己封装的适配器基类，可参考下面封装的思路进行改造。
-
-- #### [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
-
-封装基类代码：
-
-```java
-public abstract class BaseBindingQuickAdapter<T, VB extends ViewBinding>
-    extends BaseQuickAdapter<T, BaseBindingQuickAdapter.BaseBindingHolder> {
-
-  public BaseBindingQuickAdapter() {
-    this(-1);
-  }
-
-  public BaseBindingQuickAdapter(@LayoutRes int layoutResId) {
-    super(-layoutResId);
-  }
-
-  @NotNull
-  @Override
-  protected BaseBindingHolder onCreateDefViewHolder(@NotNull ViewGroup parent, int viewType) {
-    return new BaseBindingHolder(onCreateViewBinding(LayoutInflater.from(parent.getContext()), parent));
-  }
-
-  protected abstract VB onCreateViewBinding(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent);
-
-  public static class BaseBindingHolder extends BaseViewHolder {
-
-    private final ViewBinding binding;
-
-    public BaseBindingHolder(@NotNull View view) {
-      this(() -> view);
-    }
-
-    public BaseBindingHolder(@NotNull ViewBinding binding) {
-      super(binding.getRoot());
-      this.binding = binding;
-    }
-
-    @NonNull
-    @SuppressWarnings("unchecked")
-    public <VB extends ViewBinding> VB getViewBinding() {
-      return (VB) binding;
-    }
-  }
-}
-```
-
-封装后的使用示例：
-
-```java
-public class FooAdapter extends BaseBindingQuickAdapter<Foo, ItemFooBinding> {
-  @Override
-  protected ItemFooBinding onCreateViewBinding(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-    return ItemFooBinding.inflate(inflater, parent, false);
-  }
-
-  @Override
-  protected void convert(@NotNull BaseBindingHolder holder, Foo item) {
-    ItemFooBinding binding = holder.getViewBinding();
-    binding.tvFoo.setText(item.getValue());
-  }
-}
-```
-
-- #### [MultiType](https://github.com/drakeet/MultiType)
+下面是第三方适配器库 [MultiType](https://github.com/drakeet/MultiType) 的封装示例，如果是自己封装的适配器基类，可参考下面的封装思路进行改造。
 
 封装基类代码：
 
@@ -378,7 +260,14 @@ public abstract class BindingViewDelegate<T, VB extends ViewBinding> extends
     return new BindingViewHolder<>(onCreateViewBinding(LayoutInflater.from(parent.getContext()), parent));
   }
 
+  @Override
+  public void onBindViewHolder(@NonNull BindingViewHolder<VB> holder, T t) {
+    onBindViewHolder(holder.getBinding(), t, holder.getAdapterPosition());
+  }
+
   protected abstract VB onCreateViewBinding(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent);
+
+  protected abstract void onBindViewHolder(VB binding, T item, int position);
 
   public static class BindingViewHolder<VB extends ViewBinding> extends RecyclerView.ViewHolder {
 
@@ -407,8 +296,8 @@ public class FooViewDelegate extends BindingViewDelegate<Foo, ItemFooBinding> {
   }
 
   @Override
-  public void onBindViewHolder(@NotNull BindingViewHolder<ItemFooBinding> holder, Foo foo) {
-    holder.getBinding().tvFoo.setText(item.getValue());
+  protected void onBindViewHolder(@NotNull ItemFooBinding binding, Foo foo, int position) {
+    binding.tvFoo.setText(item.getValue());
   }
 }
 ```

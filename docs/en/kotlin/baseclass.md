@@ -7,7 +7,7 @@ There are two usages of [using reflection](/en/kotlin/baseclass?id=use-reflectio
 Add dependency:
 
 ```gradle
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.6'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.0'
 ```
 
 The core steps:
@@ -28,7 +28,7 @@ abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    binding = inflateBindingWithGeneric(layoutInflater)
+    binding = ViewBindingUtil.inflateWithGeneric(this, layoutInflater)
     setContentView(binding.root)
   }
 }
@@ -57,7 +57,7 @@ abstract class BaseBindingFragment<VB : ViewBinding> : Fragment() {
   val binding:VB get() = _binding!!
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    _binding = inflateBindingWithGeneric(layoutInflater, container, false)
+    _binding = ViewBindingUtil.inflateWithGeneric(this, layoutInflater, container, false)
     return binding.root
   }
 
@@ -93,7 +93,7 @@ abstract class BaseBindingQuickAdapter<T, VB : ViewBinding>(layoutResId: Int = -
   BaseQuickAdapter<T, BaseBindingQuickAdapter.BaseBindingHolder>(layoutResId) {
 
   override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int) =
-    BaseBindingHolder(inflateBindingWithGeneric<VB>(parent))
+    BaseBindingHolder(ViewBindingUtil.inflateWithGeneric<VB>(this, parent))
 
   class BaseBindingHolder(private val binding: ViewBinding) : BaseViewHolder(binding.root) {
     constructor(itemView: View) : this(ViewBinding { itemView })
@@ -125,7 +125,7 @@ Base class:
 abstract class BindingViewDelegate<T, VB : ViewBinding> : ItemViewDelegate<T, BindingViewHolder<VB>>() {
 
   override fun onCreateViewHolder(context: Context, parent: ViewGroup) =
-    BindingViewHolder(inflateBindingWithGeneric<VB>(parent))
+    BindingViewHolder(ViewBindingUtil.inflateWithGeneric<VB>(this, parent))
 
   class BindingViewHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root)
 }

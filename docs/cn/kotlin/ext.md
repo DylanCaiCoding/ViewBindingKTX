@@ -5,13 +5,13 @@
 添加依赖，本库提供了使用反射和不使用反射的用法，如果希望不使用反射，可换成代码下方对应的注释代码。
 
 ```gradle
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.6'
-// implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.6'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.0'
+// implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.0.0'
 ```
 
 个人推荐使用反射的用法，多一次反射的性能损耗可忽略不计，代码可读性会好很多，与 ViewModel 的用法更加统一。
 
->下面的使用方式不能用于基类，想封装到基类请移步到 [封装到基类](/kotlin/baseclass) 的用法
+>下面的使用方式不能用于基类，想封装到基类请移步到 [封装到基类](/cn/kotlin/baseclass) 的用法
 
 ### Activity
 
@@ -30,10 +30,8 @@ class MainActivity : AppCompatActivity() {
 
 ### Fragment
 
-如果需要在销毁 binding 对象前做其它释放操作，请实现 BindingLifecycleOwner 接口，重写 onDestroyViewBinding() 方法。
-
 ```kotlin
-class HomeFragment : Fragment(R.layout.fragment_home), BindingLifecycleOwner {
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
   private val binding: FragmentHomeBinding by binding()
   // private val binding by binding(FragmentHomeBinding::bind)
@@ -44,12 +42,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), BindingLifecycleOwner {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     binding.container.addView(childBinding.root)
-  }
-
-  override fun onDestroyViewBinding(destroyingBinding: ViewBinding) {
-    if(destroyingBinding is FragmentHomeBinding) {
-      // 如果使用了多个绑定对象，需要判断是对应的类型才做进行释放操作
-    }
   }
 }
 ```
@@ -62,8 +54,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), BindingLifecycleOwner {
 class TextAdapter : ListAdapter<String, BindingViewHolder<ItemTextBinding>>(DiffCallback()) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    BindingViewHolder<ItemFooBinding>(parent)
+    BindingViewHolder<ItemTextBinding>(parent)
     // BindingViewHolder(parent, ItemFooBinding::inflate)
+      .withBinding {
+        root.setOnClickListener { ... }
+        tvText.setOnClickListener { ... }
+      }
 
   override fun onBindViewHolder(holder: BindingViewHolder<ItemTextBinding>, position: Int) {
     holder.binding.apply {
@@ -78,7 +74,7 @@ class TextAdapter : ListAdapter<String, BindingViewHolder<ItemTextBinding>>(Diff
 }
 ```
 
-如果项目中的适配器封装了 ViewHolder 基类，可参考[兼容 BaseRecyclerViewAdapterHelper](/kotlin/brvah) 的方式另行适配。
+如果项目中的适配器封装了 ViewHolder 基类，可参考[兼容 BaseRecyclerViewAdapterHelper](/cn/kotlin/brvah) 的方式另行适配。
 
 ### DialogFragment & Dialog
 
@@ -129,35 +125,37 @@ TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
   tab.setCustomView<LayoutBottomTabBinding> {
   // tab.setCustomView(LayoutBottomTabBinding::bind) {
     tvTitle.setText(titleList[position])
+    tvTitle.textSize = if (position == 0) 16f else 14f
     ivIcon.setImageResource(iconList[position])
+    ivIcon.contentDescription = getString(titleList[position])
   }
 }.attach()
 
-tabLayout.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
-  override fun onTabSelected(tab: TabLayout.Tab) {
-    tab.bindCustomView<LayoutBottomTabBinding> { 
-    // tab.bindCustomView(LayoutBottomTabBinding::bind) {
-      // ps: 修改选中颜色或图标建议用 selector 实现，如需要改字体大小、风格等才监听标签选中事件。
-    }
-  }
-
-  override fun onTabUnselected(tab: TabLayout.Tab) {
-  }
-
-  override fun onTabReselected(tab: TabLayout.Tab) { 
-  }
-})
+tabLayout.doOnCustomTabSelected<LayoutBottomTabBinding>(
+// tabLayout.doOnCustomTabSelected(LayoutBottomTabBinding::bind,
+  onTabSelected = {
+    textView.textSize = 16f
+  },
+  onTabUnselected = {
+    textView.textSize = 14f
+  })
 ```
 
-设置自定义布局后需要修改自定义布局样式，不要再调用 setCustomView()，而是调用 bindCustomView()。
-
 ### NavigationView
-
-以下是 Navigation 设置头部布局的控件的示例。
 
 ```kotlin
 navigationView.setHeaderView<LayoutNavHeaderBinding> {
 // navigationView.setHeaderView(LayoutNavHeaderBinding::bind) {
   tvNickname.text = nickname
+}
+```
+
+### PopupWindow
+
+```kotlin
+private val popupWindow by popupWindow<LayoutPopupBinding> {
+  btnLike.setOnClickListener {
+    //...
+  }
 }
 ```

@@ -9,7 +9,7 @@
 添加依赖：
 
 ```gradle
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.6'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.0'
 ```
 
 改造的核心步骤：
@@ -30,7 +30,7 @@ abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    binding = inflateBindingWithGeneric(layoutInflater)
+    binding = ViewBindingUtil.inflateWithGeneric(this, layoutInflater)
     setContentView(binding.root)
   }
 }
@@ -59,7 +59,7 @@ abstract class BaseBindingFragment<VB : ViewBinding> : Fragment() {
   val binding:VB get() = _binding!!
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    _binding = inflateBindingWithGeneric(layoutInflater, container, false)
+    _binding = ViewBindingUtil.inflateWithGeneric(this, layoutInflater, container, false)
     return binding.root
   }
 
@@ -84,42 +84,7 @@ class HomeFragment: BaseBindingFragment<FragmentHomeBinding>() {
 
 ### Adapter
 
-下面提供两个适配器开源库的封装改造示例，如果你有在用这两个库，可以直接拷贝去用。如果是自己封装的适配器基类，可参考下面封装的思路进行改造。
-
-- #### [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
-
-封装基类代码：
-
-```kotlin
-abstract class BaseBindingQuickAdapter<T, VB : ViewBinding>(layoutResId: Int = -1) :
-  BaseQuickAdapter<T, BaseBindingQuickAdapter.BaseBindingHolder>(layoutResId) {
-
-  override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int) =
-    BaseBindingHolder(inflateBindingWithGeneric<VB>(parent))
-
-  class BaseBindingHolder(private val binding: ViewBinding) : BaseViewHolder(binding.root) {
-    constructor(itemView: View) : this(ViewBinding { itemView })
-
-    @Suppress("UNCHECKED_CAST")
-    fun <VB : ViewBinding> getViewBinding() = binding as VB
-  }
-}
-```
-
-封装后的使用示例：
-
-```kotlin
-class FooAdapter : BaseBindingQuickAdapter<Foo, ItemFooBinding>() {
-
-  override fun convert(holder: BaseBindingHolder<ItemFooBinding>, item: Foo) {
-    holder.getViewBinding<ItemFooBinding>().apply {
-      tvFoo.text = item.value
-    }
-  }
-}
-```
-
-- #### [MultiType](https://github.com/drakeet/MultiType)
+下面是第三方适配器库 [MultiType](https://github.com/drakeet/MultiType) 的封装示例，如果是自己封装的适配器基类，可参考下面的封装思路进行改造。
 
 封装基类代码：
 
@@ -127,7 +92,13 @@ class FooAdapter : BaseBindingQuickAdapter<Foo, ItemFooBinding>() {
 abstract class BindingViewDelegate<T, VB : ViewBinding> : ItemViewDelegate<T, BindingViewHolder<VB>>() {
 
   override fun onCreateViewHolder(context: Context, parent: ViewGroup) =
-    BindingViewHolder(inflateBindingWithGeneric<VB>(parent))
+    BindingViewHolder(ViewBindingUtil.inflateWithGeneric<VB>(this, parent))
+  
+  override fun onBindViewHolder(holder: BindingViewHolder<VB>, item: T) {
+    onBindViewHolder(holder.binding, item, holder.adapterPosition)
+  }
+
+  abstract fun onBindViewHolder(holder: VB, item: T, position: Int)
 
   class BindingViewHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root)
 }
@@ -138,10 +109,8 @@ abstract class BindingViewDelegate<T, VB : ViewBinding> : ItemViewDelegate<T, Bi
 ```kotlin
 class FooViewDelegate : BindingViewDelegate<Foo, ItemFooBinding>() {
 
-  override fun onBindViewHolder(holder: BindingViewHolder<ItemFooBinding>, item: Foo) {
-    holder.binding.apply {
-      tvFoo.text = item.value
-    }
+  override fun onBindViewHolder(binding: ItemFooBinding, item: Foo, position: Int) {
+    binding.tvFoo.text = item.value
   }
 }
 ```
@@ -226,45 +195,7 @@ class HomeFragment: BaseBindingFragment<FragmentHomeBinding>(FragmentHomeBinding
 
 ### Adapter
 
-下面提供两个适配器开源库的封装改造示例，如果你有在用这两个库，可以直接拷贝去用。如果是自己封装的适配器基类，可参考下面封装的思路进行改造。
-
-- #### [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
-
-封装基类代码：
-
-```kotlin
-abstract class BaseBindingQuickAdapter<T, VB : ViewBinding>(
-  private val inflate: (LayoutInflater, ViewGroup, Boolean) -> VB,
-  layoutResId: Int = -1
-) :
-  BaseQuickAdapter<T, BaseBindingQuickAdapter.BaseBindingHolder>(layoutResId) {
-
-  override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int) =
-    BaseBindingHolder(inflate(LayoutInflater.from(parent.context), parent, false))
-
-  class BaseBindingHolder(private val binding: ViewBinding) : BaseViewHolder(binding.root) {
-    constructor(itemView: View) : this(ViewBinding { itemView })
-
-    @Suppress("UNCHECKED_CAST")
-    fun <VB : ViewBinding> getViewBinding() = binding as VB
-  }
-}
-```
-
-封装后的使用示例：
-
-```kotlin
-class FooAdapter : BaseBindingQuickAdapter<Foo, ItemFooBinding>(ItemFooBinding::inflate) {
-
-  override fun convert(holder: BaseBindingHolder, item: Foo) {
-    holder.getViewBinding<ItemFooBinding>().apply {
-      tvFoo.text = item.value
-    }
-  }
-}
-```
-
-- #### [MultiType](https://github.com/drakeet/MultiType)
+下面是第三方适配器库 [MultiType](https://github.com/drakeet/MultiType) 的封装示例，如果是自己封装的适配器基类，可参考下面的封装思路进行改造。
 
 封装基类代码：
 
@@ -275,6 +206,12 @@ abstract class BindingViewDelegate<T, VB : ViewBinding> (
 
   override fun onCreateViewHolder(context: Context, parent: ViewGroup) : BindingViewHolder<VB> =
     BindingViewHolder(inflate(LayoutInflater.from(parent.context), parent, false))
+    
+  override fun onBindViewHolder(holder: BindingViewHolder<VB>, item: T) {
+    onBindViewHolder(holder.binding, item, holder.adapterPosition)
+  }
+
+  abstract fun onBindViewHolder(holder: VB, item: T, position: Int)
 
   class BindingViewHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root)
 }
@@ -285,10 +222,8 @@ abstract class BindingViewDelegate<T, VB : ViewBinding> (
 ```kotlin
 class FooViewDelegate : BindingViewDelegate<Foo, ItemFooBinding>(ItemFooBinding::inflate) {
 
-  override fun onBindViewHolder(holder: BindingViewHolder<ItemFooBinding>, item: Foo) {
-    holder.binding.apply {
-      tvFoo.text = item.value
-    }
+  override fun onBindViewHolder(binding: ItemFooBinding, item: Foo, position: Int) {
+    binding.tvFoo.text = item.value
   }
 }
 ```

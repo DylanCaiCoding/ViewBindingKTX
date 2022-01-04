@@ -15,6 +15,7 @@
 - 支持 Activity、Fragment、Dialog、Adapter
 - 支持在 Fragment 自动释放绑定类的实例对象
 - 支持实现自定义组合控件
+- 支持创建 PopupWindow
 - 支持 TabLayout 实现自定义标签布局
 - 支持 NavigationView 设置头部控件
 - 支持 DataBinding 自动设置 lifecycleOwner
@@ -43,10 +44,10 @@ android {
 
 dependencies {
     // 以下都是可选，请根据需要进行添加
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.6'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.6'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.6'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:1.2.6'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.0'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.0.0'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.0'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.0.0'
 }
 ```
 
@@ -109,28 +110,13 @@ class HomeFragment: BaseBindingFragment<FragmentHomeBinding>() {
 }
 ```
 
-提供多种方式兼容 [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)： 
+适配了 [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)：
 
 ```kotlin
 class FooAdapter : BaseQuickAdapter<Foo, BaseViewHolder>(R.layout.item_foo) {
 
-  override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-    return super.onCreateDefViewHolder(parent, viewType).withBinding { ItemFooBinding.bind(it) }
-  }
-  
   override fun convert(holder: BaseViewHolder, item: Foo) {
-    holder.getViewBinding<ItemFooBinding>().apply {
-      tvFoo.text = item.value
-    }
-  }
-}
-```
-
-```kotlin
-class FooAdapter : BaseBindingQuickAdapter<Foo, ItemFooBinding>() {
-
-  override fun convert(holder: BaseBindingHolder<ItemFooBinding>, item: Foo) {
-    holder.getViewBinding<ItemFooBinding>().apply {
+    holder.getBinding(ItemFooBinding::bind).apply {
       tvFoo.text = item.value
     }
   }

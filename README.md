@@ -15,6 +15,7 @@ English | [中文](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/
 - Support for Activity, Fragment, Dialog, Adapter
 - Support automatic release of binding class instance in Fragment
 - Support for custom combination view
+- Support for create PopupWindow
 - Support for TabLayout to set custom view
 - Support for NavigationView to set header view
 - Support for DataBinding to automatically set the lifecycle owner
@@ -42,10 +43,10 @@ android {
 
 dependencies {
     // The following are optional, please add as needed
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.6'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.6'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:1.2.6'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:1.2.6'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.0'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.0.0'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.0'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.0.0'
 }
 ```
 
@@ -108,28 +109,13 @@ class HomeFragment: BaseBindingFragment<FragmentHomeBinding>() {
 }
 ```
 
-Use multiple ways to compatible [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)： 
+Use in [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)：
 
 ```kotlin
 class FooAdapter : BaseQuickAdapter<Foo, BaseViewHolder>(R.layout.item_foo) {
 
-  override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-    return super.onCreateDefViewHolder(parent, viewType).withBinding { ItemFooBinding.bind(it) }
-  }
-  
   override fun convert(holder: BaseViewHolder, item: Foo) {
-    holder.getViewBinding<ItemFooBinding>().apply {
-      tvFoo.text = item.value
-    }
-  }
-}
-```
-
-```kotlin
-class FooAdapter : BaseBindingQuickAdapter<Foo, ItemFooBinding>() {
-
-  override fun convert(holder: BaseBindingHolder<ItemFooBinding>, item: Foo) {
-    holder.getViewBinding<ItemFooBinding>().apply {
+    holder.getBinding(ItemFooBinding::bind).apply {
       tvFoo.text = item.value
     }
   }
@@ -137,8 +123,6 @@ class FooAdapter : BaseBindingQuickAdapter<Foo, ItemFooBinding>() {
 ```
 
 See the [usage documentation](https://dylancaicoding.github.io/ViewBindingKTX) for more usage.
-
-## 
 
 ## Change log
 

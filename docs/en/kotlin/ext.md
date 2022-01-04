@@ -5,8 +5,8 @@
 Add dependency, this library provides two usages of using reflection and not using reflection. If you don't want to use reflection, you can replace it with the corresponding comment code.
 
 ```gradle
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:1.2.6'
-// implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:1.2.6'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.0'
+// implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.0.0'
 ```
 
 >The following usage methods cannot be used for base classes, if you want to use ViewBinding in base classes, please see [the usage of base class](/en/kotlin/baseclass).
@@ -28,10 +28,8 @@ class MainActivity : AppCompatActivity() {
 
 ### Fragment
 
-If you need to do some releases before destroying the binding object, implement the `BindingLifecycleOwner` interface and override the `onDestroyViewBinding()` method.
-
 ```kotlin
-class HomeFragment : Fragment(R.layout.fragment_home), BindingLifecycleOwner {
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
   private val binding: FragmentHomeBinding by binding()
   // private val binding by binding(FragmentHomeBinding::bind)
@@ -42,12 +40,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), BindingLifecycleOwner {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     binding.container.addView(childBinding.root)
-  }
-
-  override fun onDestroyViewBinding(destroyingBinding: ViewBinding) {
-    if(destroyingBinding is FragmentHomeBinding) {
-      // Multiple binding objects need to determine the type
-    }
   }
 }
 ```
@@ -60,8 +52,12 @@ Use `BindingViewHolder` in the adapter, no need to create a class extends `Recyc
 class TextAdapter : ListAdapter<String, BindingViewHolder<ItemTextBinding>>(DiffCallback()) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    BindingViewHolder<ItemFooBinding>(parent)
+    BindingViewHolder<ItemTextBinding>(parent)
     // BindingViewHolder(parent, ItemFooBinding::inflate)
+      .withBinding {
+        root.setOnClickListener { ... }
+        tvText.setOnClickListener { ... }
+      }
 
   override fun onBindViewHolder(holder: BindingViewHolder<ItemTextBinding>, position: Int) {
     holder.binding.apply {
@@ -127,24 +123,20 @@ TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
   tab.setCustomView<LayoutBottomTabBinding> {
   // tab.setCustomView(LayoutBottomTabBinding::bind) {
     tvTitle.setText(titleList[position])
+    tvTitle.textSize = if (position == 0) 16f else 14f
     ivIcon.setImageResource(iconList[position])
+    ivIcon.contentDescription = getString(titleList[position])
   }
 }.attach()
 
-tabLayout.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
-  override fun onTabSelected(tab: TabLayout.Tab) {
-    tab.bindCustomView<LayoutBottomTabBinding> { 
-    // tab.bindCustomView(LayoutBottomTabBinding::bind) {
-      
-    }
-  }
-
-  override fun onTabUnselected(tab: TabLayout.Tab) {
-  }
-
-  override fun onTabReselected(tab: TabLayout.Tab) { 
-  }
-})
+tabLayout.doOnCustomTabSelected<LayoutBottomTabBinding>(
+// tabLayout.doOnCustomTabSelected(LayoutBottomTabBinding::bind,
+  onTabSelected = {
+    textView.textSize = 16f
+  },
+  onTabUnselected = {
+    textView.textSize = 14f
+  })
 ```
 
 ### NavigationView
@@ -155,3 +147,14 @@ navigationView.setHeaderView<LayoutNavHeaderBinding> {
   tvNickname.text = nickname
 }
 ```
+
+### PopupWindow
+
+```kotlin
+private val popupWindow by popupWindow<LayoutPopupBinding> { 
+  btnLike.setOnClickListener {
+    //...
+  }
+}
+```
+
