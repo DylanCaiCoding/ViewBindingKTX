@@ -19,7 +19,6 @@
 package com.dylanc.viewbinding
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 

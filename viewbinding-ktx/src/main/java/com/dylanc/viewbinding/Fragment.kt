@@ -41,7 +41,7 @@ class FragmentBindingProperty<VB : ViewBinding>(private val clazz: Class<VB>) : 
         if (binding is ViewDataBinding) binding.lifecycleOwner = thisRef.viewLifecycleOwner
       }
     } catch (e: IllegalStateException) {
-      throw IllegalStateException("The binding property has been destroyed.")
+      throw IllegalStateException("The property of ${property.name} has been destroyed.")
     }
 }
 
@@ -55,7 +55,7 @@ class FragmentInflateBindingProperty<VB : ViewBinding>(private val clazz: Class<
         binding = (clazz.getMethod("inflate", LayoutInflater::class.java).invoke(null, thisRef.layoutInflater) as VB)
           .also { binding -> if (binding is ViewDataBinding) binding.lifecycleOwner = thisRef.viewLifecycleOwner }
       } catch (e: IllegalStateException) {
-        throw IllegalStateException("The binding property has been destroyed.")
+        throw IllegalStateException("The property of ${property.name} has been destroyed.")
       }
       thisRef.viewLifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
         override fun onDestroy(owner: LifecycleOwner) {
