@@ -2,7 +2,7 @@
 
 ## 开始使用
 
-添加依赖，本库提供了使用反射和不使用反射的用法，如果希望不使用反射，可换成代码下方对应的注释代码。
+添加依赖，本库提供了使用反射和不使用反射的用法，如果希望不使用反射，可换成对应的注释代码。
 
 ```gradle
 implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.0'
@@ -62,9 +62,7 @@ class TextAdapter : ListAdapter<String, BindingViewHolder<ItemTextBinding>>(Diff
       }
 
   override fun onBindViewHolder(holder: BindingViewHolder<ItemTextBinding>, position: Int) {
-    holder.binding.apply {
-      tvText.text = currentList[position]
-    }
+    holder.binding.tvText.text = currentList[position]
   }
 
   class DiffCallback : DiffUtil.ItemCallback<String>() {
@@ -74,7 +72,18 @@ class TextAdapter : ListAdapter<String, BindingViewHolder<ItemTextBinding>>(Diff
 }
 ```
 
-如果项目中的适配器封装了 ViewHolder 基类，可参考[兼容 BaseRecyclerViewAdapterHelper](/cn/kotlin/brvah) 的方式另行适配。
+如果项目中的适配器像 `BRVAH` 那样封装了自定义的 ViewHolder，那么可以直接通过 ViewHolder 获取 binding 对象。
+
+```kotlin
+class FooAdapter : BaseQuickAdapter<Foo, BaseViewHolder>(R.layout.item_foo) {
+
+  override fun convert(holder: BaseViewHolder, item: Foo) {
+    holder.getBinding<ItemFooBinding>()
+    // holder.getBinding(ItemFooBinding::bind)
+      .tvFoo.text = item.value
+  }
+}
+```
 
 ### DialogFragment & Dialog
 
@@ -125,19 +134,19 @@ TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
   tab.setCustomView<LayoutBottomTabBinding> {
   // tab.setCustomView(LayoutBottomTabBinding::bind) {
     tvTitle.setText(titleList[position])
-    tvTitle.textSize = if (position == 0) 16f else 14f
+    tvTitle.textSize = if (position == 0) 12f else 10f
     ivIcon.setImageResource(iconList[position])
-    ivIcon.contentDescription = getString(titleList[position])
+    ivIcon.contentDescription = tvTitle.text.toString()
   }
 }.attach()
 
 tabLayout.doOnCustomTabSelected<LayoutBottomTabBinding>(
 // tabLayout.doOnCustomTabSelected(LayoutBottomTabBinding::bind,
   onTabSelected = {
-    textView.textSize = 16f
+    textView.textSize = 12f
   },
   onTabUnselected = {
-    textView.textSize = 14f
+    textView.textSize = 10f
   })
 ```
 
@@ -154,8 +163,7 @@ navigationView.setHeaderView<LayoutNavHeaderBinding> {
 
 ```kotlin
 private val popupWindow by popupWindow<LayoutPopupBinding> {
-  btnLike.setOnClickListener {
-    //...
-  }
+// private val popupWindow by popupWindow(LayoutPopupBinding::inflate) {
+  btnLike.setOnClickListener { ... }
 }
 ```

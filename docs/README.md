@@ -18,7 +18,7 @@
 - 支持创建 PopupWindow
 - 支持 TabLayout 实现自定义标签布局
 - 支持 NavigationView 设置头部控件
-- 支持 DataBinding 自动设置 lifecycleOwner
+- 支持无缝切换 DataBinding
 
 ## Gradle
 

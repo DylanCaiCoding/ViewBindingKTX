@@ -20,3 +20,5 @@ class FooAdapter : BaseQuickAdapter<Foo, BaseViewHolder>(R.layout.item_foo) {
   }
 }
 ```
+
+If the `viewbinding-nonreflection-ktx` dependency is used, it can be supported without adding the `viewbinding-brvah` dependency.
