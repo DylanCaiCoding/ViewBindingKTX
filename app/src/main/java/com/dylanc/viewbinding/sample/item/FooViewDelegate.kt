@@ -28,7 +28,7 @@ class FooViewDelegate : ItemViewDelegate<Foo, BindingViewHolder<ItemFooBinding>>
     BindingViewHolder<ItemFooBinding>(parent)
 
   override fun onBindViewHolder(holder: BindingViewHolder<ItemFooBinding>, item: Foo) {
-    holder.binding.tvFoo.text = item.value
+    holder.binding.textView.text = item.value
   }
 }
 
