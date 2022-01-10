@@ -41,6 +41,13 @@ public abstract class BindingViewDelegate<T, VB extends ViewBinding> extends
     return new BindingViewHolder<>(ViewBindingUtil.inflateWithGeneric(this, parent));
   }
 
+  @Override
+  public void onBindViewHolder(@NonNull BindingViewHolder<VB> holder, T t) {
+    onBindViewHolder(holder.getBinding(), t, holder.getAdapterPosition());
+  }
+
+  abstract void onBindViewHolder(VB binding, T item, int position);
+
   public static class BindingViewHolder<VB extends ViewBinding> extends RecyclerView.ViewHolder {
 
     private final VB binding;

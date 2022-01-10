@@ -54,8 +54,7 @@ class MainActivity : AppCompatActivity() {
       },
       onTabUnselected = {
         textView.textSize = 14f
-      }
-    )
+      })
   }
 
 }

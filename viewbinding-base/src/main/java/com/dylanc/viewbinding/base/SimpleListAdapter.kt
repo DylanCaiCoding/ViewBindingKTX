@@ -24,6 +24,24 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
+inline fun <VB : ViewBinding> simpleIntListAdapter(crossinline onBindViewHolder: VB.(Int) -> Unit) =
+  simpleListAdapter(IntDiffCallback(), onBindViewHolder)
+
+inline fun <VB : ViewBinding> simpleLongListAdapter(crossinline onBindViewHolder: VB.(Long) -> Unit) =
+  simpleListAdapter(LongDiffCallback(), onBindViewHolder)
+
+inline fun <VB : ViewBinding> simpleBooleanListAdapter(crossinline onBindViewHolder: VB.(Boolean) -> Unit) =
+  simpleListAdapter(BooleanDiffCallback(), onBindViewHolder)
+
+inline fun <VB : ViewBinding> simpleFloatListAdapter(crossinline onBindViewHolder: VB.(Float) -> Unit) =
+  simpleListAdapter(FloatDiffCallback(), onBindViewHolder)
+
+inline fun <VB : ViewBinding> simpleDoubleListAdapter(crossinline onBindViewHolder: VB.(Double) -> Unit) =
+  simpleListAdapter(DoubleDiffCallback(), onBindViewHolder)
+
+inline fun <VB : ViewBinding> simpleStringListAdapter(crossinline onBindViewHolder: VB.(String) -> Unit) =
+  simpleListAdapter(StringDiffCallback(), onBindViewHolder)
+
 inline fun <T, VB : ViewBinding> simpleListAdapter(
   diffCallback: DiffUtil.ItemCallback<T>,
   crossinline onBindViewHolder: VB.(T) -> Unit
@@ -67,4 +85,46 @@ abstract class SimpleListAdapter<T, VB : ViewBinding>(
   abstract fun onBindViewHolder(binding: VB, item: T, position: Int)
 
   class BindingViewHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root)
+}
+
+abstract class SimpleIntListAdapter<VB : ViewBinding> : SimpleListAdapter<Int, VB>(IntDiffCallback())
+
+abstract class SimpleLongListAdapter<VB : ViewBinding> : SimpleListAdapter<Long, VB>(LongDiffCallback())
+
+abstract class SimpleBooleanListAdapter<VB : ViewBinding> : SimpleListAdapter<Boolean, VB>(BooleanDiffCallback())
+
+abstract class SimpleFloatListAdapter<VB : ViewBinding> : SimpleListAdapter<Float, VB>(FloatDiffCallback())
+
+abstract class SimpleDoubleListAdapter<VB : ViewBinding> : SimpleListAdapter<Double, VB>(DoubleDiffCallback())
+
+abstract class SimpleStringListAdapter<VB : ViewBinding> : SimpleListAdapter<String, VB>(StringDiffCallback())
+
+class IntDiffCallback : DiffUtil.ItemCallback<Int>() {
+  override fun areItemsTheSame(oldItem: Int, newItem: Int) = oldItem == newItem
+  override fun areContentsTheSame(oldItem: Int, newItem: Int) = oldItem == newItem
+}
+
+class LongDiffCallback : DiffUtil.ItemCallback<Long>() {
+  override fun areItemsTheSame(oldItem: Long, newItem: Long) = oldItem == newItem
+  override fun areContentsTheSame(oldItem: Long, newItem: Long) = oldItem == newItem
+}
+
+class BooleanDiffCallback : DiffUtil.ItemCallback<Boolean>() {
+  override fun areItemsTheSame(oldItem: Boolean, newItem: Boolean) = oldItem == newItem
+  override fun areContentsTheSame(oldItem: Boolean, newItem: Boolean) = oldItem == newItem
+}
+
+class FloatDiffCallback : DiffUtil.ItemCallback<Float>() {
+  override fun areItemsTheSame(oldItem: Float, newItem: Float) = oldItem == newItem
+  override fun areContentsTheSame(oldItem: Float, newItem: Float) = oldItem == newItem
+}
+
+class DoubleDiffCallback : DiffUtil.ItemCallback<Double>() {
+  override fun areItemsTheSame(oldItem: Double, newItem: Double) = oldItem == newItem
+  override fun areContentsTheSame(oldItem: Double, newItem: Double) = oldItem == newItem
+}
+
+class StringDiffCallback : DiffUtil.ItemCallback<String>() {
+  override fun areItemsTheSame(oldItem: String, newItem: String) = oldItem == newItem
+  override fun areContentsTheSame(oldItem: String, newItem: String) = oldItem == newItem
 }
