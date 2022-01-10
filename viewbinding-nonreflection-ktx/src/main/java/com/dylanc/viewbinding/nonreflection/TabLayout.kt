@@ -24,8 +24,12 @@ import androidx.viewbinding.ViewBinding
 import com.google.android.material.tabs.TabLayout
 
 fun <VB : ViewBinding> TabLayout.Tab.setCustomView(inflate: (LayoutInflater) -> VB, block: VB.() -> Unit) {
+  requireNotNull(parent) { "Tab not attached to a TabLayout" }
   customView = inflate(LayoutInflater.from(parent!!.context)).apply(block).root
 }
+
+fun <VB : ViewBinding> TabLayout.updateCustomTab(bind: (View) -> VB, index: Int, block: VB.() -> Unit) =
+  getTabAt(index)?.customView?.getBinding(bind)?.also(block)
 
 fun <VB : ViewBinding> TabLayout.doOnCustomTabSelected(
   bind: (View) -> VB,
