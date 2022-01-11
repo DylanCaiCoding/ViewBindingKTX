@@ -143,10 +143,10 @@ TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
 tabLayout.doOnCustomTabSelected<LayoutBottomTabBinding>(
 // tabLayout.doOnCustomTabSelected(LayoutBottomTabBinding::bind,
   onTabSelected = {
-    textView.textSize = 12f
+    tvTitle.textSize = 12f
   },
   onTabUnselected = {
-    textView.textSize = 10f
+    tvTitle.textSize = 10f
   })
 ```
 
