@@ -18,7 +18,7 @@
 - 支持创建 PopupWindow
 - 支持 TabLayout 实现自定义标签布局
 - 支持 NavigationView 设置头部控件
-- 支持 DataBinding 自动设置 lifecycleOwner
+- 支持无缝切换 DataBinding
 
 ## Gradle
  
@@ -44,10 +44,10 @@ android {
 
 dependencies {
     // 以下都是可选，请根据需要进行添加
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.0'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.0.0'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.0'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.0.0'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.1'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.0.1'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.1'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.0.1'
 }
 ```
 

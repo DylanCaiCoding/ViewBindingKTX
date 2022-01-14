@@ -5,8 +5,8 @@
 Add dependency, this library provides two usages of using reflection and not using reflection. If you don't want to use reflection, you can replace it with the corresponding comment code.
 
 ```gradle
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.0'
-// implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.0.0'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.1'
+// implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.0.1'
 ```
 
 >The following usage methods cannot be used for base classes, if you want to use ViewBinding in base classes, please see [the usage of base class](/en/kotlin/baseclass).
@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity() {
   }
 }
 ```
+
+If the binding object is not used in the `onCreate()` method, you need to call `setContentView(binding.root)` to set the layout.
 
 ### Fragment
 

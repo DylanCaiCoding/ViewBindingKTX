@@ -1,7 +1,7 @@
 * [Introduce](/en/)
 
 * Kotlin Usage
-    * [Use extension functions](/en/kotlin/ext)
+    * [Use extension functions](/en/kotlin/extensions)
     * [Use in base class](/en/kotlin/baseclass)
     * [Use in BRVAH](/en/kotlin/brvah)
 

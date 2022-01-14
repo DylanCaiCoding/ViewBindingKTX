@@ -5,8 +5,8 @@
 添加依赖，本库提供了使用反射和不使用反射的用法，如果希望不使用反射，可换成对应的注释代码。
 
 ```gradle
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.0'
-// implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.0.0'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.1'
+// implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.0.1'
 ```
 
 个人推荐使用反射的用法，多一次反射的性能损耗可忽略不计，代码可读性会好很多，与 ViewModel 的用法更加统一。
@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
   }
 }
 ```
+
+如果在 `onCreate()` 方法没有使用 binding 对象，需要手动调用 `setContentView(binding.root)` 设置布局。
 
 ### Fragment
 
