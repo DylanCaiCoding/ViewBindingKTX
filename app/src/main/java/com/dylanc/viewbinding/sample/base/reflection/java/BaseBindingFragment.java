@@ -36,7 +36,7 @@ public abstract class BaseBindingFragment<VB extends ViewBinding> extends Fragme
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    binding = ViewBindingUtil.inflateWithGeneric(this, getLayoutInflater(), container, false);
+    binding = ViewBindingUtil.inflateWithGeneric(this, inflater, container, false);
     return binding.getRoot();
   }
 

@@ -43,7 +43,7 @@ abstract class BaseBindingFragment<VB : ViewBinding> : Fragment() {
   val binding: VB get() = _binding!!
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    _binding = ViewBindingUtil.inflateWithGeneric(this, layoutInflater, container, false)
+    _binding = ViewBindingUtil.inflateWithGeneric(this, inflater, container, false)
     return binding.root
   }
 
