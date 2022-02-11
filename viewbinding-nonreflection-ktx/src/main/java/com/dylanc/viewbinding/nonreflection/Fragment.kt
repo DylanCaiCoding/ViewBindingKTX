@@ -18,6 +18,8 @@
 
 package com.dylanc.viewbinding.nonreflection
 
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.ViewDataBinding
@@ -47,6 +49,7 @@ class FragmentBindingDelegate<VB : ViewBinding>(private val bind: (View) -> VB) 
 
 class FragmentInflateBindingDelegate<VB : ViewBinding>(private val inflate: (LayoutInflater) -> VB) : ReadOnlyProperty<Fragment, VB> {
   private var binding: VB? = null
+  private val handler by lazy { Handler(Looper.getMainLooper()) }
 
   override fun getValue(thisRef: Fragment, property: KProperty<*>): VB {
     if (binding == null) {
@@ -59,15 +62,10 @@ class FragmentInflateBindingDelegate<VB : ViewBinding>(private val inflate: (Lay
       }
       thisRef.viewLifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
         override fun onDestroy(owner: LifecycleOwner) {
-          if (thisRef is BindingLifecycleOwner) thisRef.onDestroyViewBinding(binding!!)
-          binding = null
+          handler.post { binding = null }
         }
       })
     }
     return binding!!
   }
-}
-
-interface BindingLifecycleOwner {
-  fun onDestroyViewBinding(destroyingBinding: ViewBinding)
 }

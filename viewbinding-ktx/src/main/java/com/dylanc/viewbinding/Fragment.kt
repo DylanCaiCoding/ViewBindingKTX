@@ -18,6 +18,8 @@
 
 package com.dylanc.viewbinding
 
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -26,6 +28,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
+
+enum class Method { BIND, INFLATE }
 
 inline fun <reified VB : ViewBinding> Fragment.binding() =
   FragmentBindingProperty(VB::class.java)
@@ -47,11 +51,12 @@ class FragmentBindingProperty<VB : ViewBinding>(private val clazz: Class<VB>) : 
 
 class FragmentInflateBindingProperty<VB : ViewBinding>(private val clazz: Class<VB>) : ReadOnlyProperty<Fragment, VB> {
   private var binding: VB? = null
+  private val handler by lazy { Handler(Looper.getMainLooper()) }
 
-  @Suppress("UNCHECKED_CAST")
   override fun getValue(thisRef: Fragment, property: KProperty<*>): VB {
     if (binding == null) {
       try {
+        @Suppress("UNCHECKED_CAST")
         binding = (clazz.getMethod("inflate", LayoutInflater::class.java).invoke(null, thisRef.layoutInflater) as VB)
           .also { binding -> if (binding is ViewDataBinding) binding.lifecycleOwner = thisRef.viewLifecycleOwner }
       } catch (e: IllegalStateException) {
@@ -59,17 +64,10 @@ class FragmentInflateBindingProperty<VB : ViewBinding>(private val clazz: Class<
       }
       thisRef.viewLifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
         override fun onDestroy(owner: LifecycleOwner) {
-          if (thisRef is BindingLifecycleOwner) thisRef.onDestroyViewBinding(binding!!)
-          binding = null
+          handler.post { binding = null }
         }
       })
     }
     return binding!!
   }
-}
-
-enum class Method { BIND, INFLATE }
-
-interface BindingLifecycleOwner {
-  fun onDestroyViewBinding(destroyingBinding: ViewBinding)
 }
