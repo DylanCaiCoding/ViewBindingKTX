@@ -21,9 +21,9 @@ import androidx.activity.ComponentActivity
 import androidx.databinding.ViewDataBinding
 import androidx.viewbinding.ViewBinding
 
-fun <VB : ViewBinding> ComponentActivity.binding(inflate: (LayoutInflater) -> VB) = lazy {
+fun <VB : ViewBinding> ComponentActivity.binding(inflate: (LayoutInflater) -> VB, setContentView: Boolean = true) = lazy {
   inflate(layoutInflater).also { binding ->
-    setContentView(binding.root)
+    if (setContentView) setContentView(binding.root)
     if (binding is ViewDataBinding) binding.lifecycleOwner = this
   }
 }
