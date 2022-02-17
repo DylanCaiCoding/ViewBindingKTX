@@ -24,25 +24,25 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
-inline fun <VB : ViewBinding> simpleIntListAdapter(crossinline onBindViewHolder: VB.(Int) -> Unit) =
+inline fun <reified VB : ViewBinding> simpleIntListAdapter(crossinline onBindViewHolder: VB.(Int) -> Unit) =
   simpleListAdapter(IntDiffCallback(), onBindViewHolder)
 
-inline fun <VB : ViewBinding> simpleLongListAdapter(crossinline onBindViewHolder: VB.(Long) -> Unit) =
+inline fun <reified VB : ViewBinding> simpleLongListAdapter(crossinline onBindViewHolder: VB.(Long) -> Unit) =
   simpleListAdapter(LongDiffCallback(), onBindViewHolder)
 
-inline fun <VB : ViewBinding> simpleBooleanListAdapter(crossinline onBindViewHolder: VB.(Boolean) -> Unit) =
+inline fun <reified VB : ViewBinding> simpleBooleanListAdapter(crossinline onBindViewHolder: VB.(Boolean) -> Unit) =
   simpleListAdapter(BooleanDiffCallback(), onBindViewHolder)
 
-inline fun <VB : ViewBinding> simpleFloatListAdapter(crossinline onBindViewHolder: VB.(Float) -> Unit) =
+inline fun <reified VB : ViewBinding> simpleFloatListAdapter(crossinline onBindViewHolder: VB.(Float) -> Unit) =
   simpleListAdapter(FloatDiffCallback(), onBindViewHolder)
 
-inline fun <VB : ViewBinding> simpleDoubleListAdapter(crossinline onBindViewHolder: VB.(Double) -> Unit) =
+inline fun <reified VB : ViewBinding> simpleDoubleListAdapter(crossinline onBindViewHolder: VB.(Double) -> Unit) =
   simpleListAdapter(DoubleDiffCallback(), onBindViewHolder)
 
-inline fun <VB : ViewBinding> simpleStringListAdapter(crossinline onBindViewHolder: VB.(String) -> Unit) =
+inline fun <reified VB : ViewBinding> simpleStringListAdapter(crossinline onBindViewHolder: VB.(String) -> Unit) =
   simpleListAdapter(StringDiffCallback(), onBindViewHolder)
 
-inline fun <T, VB : ViewBinding> simpleListAdapter(
+inline fun <T, reified VB : ViewBinding> simpleListAdapter(
   diffCallback: DiffUtil.ItemCallback<T>,
   crossinline onBindViewHolder: VB.(T) -> Unit
 ) = object : SimpleListAdapter<T, VB>(diffCallback) {
