@@ -48,7 +48,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
   }
 
-  private val adapter = simpleStringListAdapter<ItemFooBinding> {
+  private val adapter by simpleStringListAdapter<ItemFooBinding> {
     textView.text = it
   }
 }

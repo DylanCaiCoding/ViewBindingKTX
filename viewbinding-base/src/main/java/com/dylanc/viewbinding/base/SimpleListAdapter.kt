@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import kotlin.LazyThreadSafetyMode.*
 
 inline fun <reified VB : ViewBinding> simpleIntListAdapter(crossinline onBindViewHolder: VB.(Int) -> Unit) =
   simpleListAdapter(IntDiffCallback(), onBindViewHolder)
@@ -45,12 +46,13 @@ inline fun <reified VB : ViewBinding> simpleStringListAdapter(crossinline onBind
 inline fun <T, reified VB : ViewBinding> simpleListAdapter(
   diffCallback: DiffUtil.ItemCallback<T>,
   crossinline onBindViewHolder: VB.(T) -> Unit
-) = object : SimpleListAdapter<T, VB>(diffCallback) {
-
-  override fun onBindViewHolder(binding: VB, item: T, position: Int) {
-    onBindViewHolder(binding, item)
+) =
+  lazy<SimpleListAdapter<T, VB>>(NONE) {
+    object : SimpleListAdapter<T, VB>(diffCallback) {
+      override fun onBindViewHolder(binding: VB, item: T, position: Int) =
+        onBindViewHolder(binding, item)
+    }
   }
-}
 
 abstract class SimpleListAdapter<T, VB : ViewBinding>(
   diffCallback: DiffUtil.ItemCallback<T>
