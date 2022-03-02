@@ -23,6 +23,7 @@ import android.view.ViewGroup
 import android.widget.PopupWindow
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import kotlin.LazyThreadSafetyMode.NONE
 
 inline fun <reified VB : ViewBinding> Activity.popupWindow(
   width: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -30,7 +31,7 @@ inline fun <reified VB : ViewBinding> Activity.popupWindow(
   focusable: Boolean = false,
   crossinline block: VB.() -> Unit
 ) =
-  lazy {
+  lazy(NONE) {
     PopupWindow(inflateBinding<VB>(layoutInflater).apply(block).root, width, height, focusable)
   }
 
@@ -40,6 +41,6 @@ inline fun <reified VB : ViewBinding> Fragment.popupWindow(
   focusable: Boolean = false,
   crossinline block: VB.() -> Unit
 ) =
-  lazy {
+  lazy(NONE) {
     PopupWindow(inflateBinding<VB>(layoutInflater).apply(block).root, width, height, focusable)
   }
