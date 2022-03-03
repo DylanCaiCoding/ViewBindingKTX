@@ -35,16 +35,11 @@ fun <VB : ViewBinding> Fragment.binding(bind: (View) -> VB) = FragmentBindingDel
 fun <VB : ViewBinding> Fragment.binding(inflate: (LayoutInflater) -> VB) = FragmentInflateBindingDelegate(inflate)
 
 class FragmentBindingDelegate<VB : ViewBinding>(private val bind: (View) -> VB) : ReadOnlyProperty<Fragment, VB> {
-  override fun getValue(thisRef: Fragment, property: KProperty<*>): VB {
-    val binding = try {
-      thisRef.requireView().getBinding(bind).also { binding ->
+  override fun getValue(thisRef: Fragment, property: KProperty<*>): VB =
+    requireNotNull(thisRef.view) { "The property of ${property.name} has been destroyed." }
+      .getBinding(bind).also { binding ->
         if (binding is ViewDataBinding) binding.lifecycleOwner = thisRef.viewLifecycleOwner
       }
-    } catch (e: IllegalStateException) {
-      throw IllegalStateException("The property of ${property.name} has been destroyed.")
-    }
-    return binding
-  }
 }
 
 class FragmentInflateBindingDelegate<VB : ViewBinding>(private val inflate: (LayoutInflater) -> VB) : ReadOnlyProperty<Fragment, VB> {

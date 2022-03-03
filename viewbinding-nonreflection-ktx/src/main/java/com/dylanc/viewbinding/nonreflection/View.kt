@@ -25,8 +25,5 @@ import androidx.viewbinding.ViewBinding
 
 @Suppress("UNCHECKED_CAST")
 fun <VB : ViewBinding> View.getBinding(bind: (View) -> VB): VB =
-  (bindingCache as? VB) ?: bind(this).also { binding -> bindingCache = binding }
+  getTag(Int.MIN_VALUE) as? VB ?: bind(this).also { setTag(Int.MIN_VALUE, it) }
 
-private var View.bindingCache: Any?
-  get() = getTag(Int.MIN_VALUE)
-  set(value) = setTag(Int.MIN_VALUE, value)

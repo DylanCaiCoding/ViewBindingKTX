@@ -40,13 +40,10 @@ inline fun <reified VB : ViewBinding> Fragment.binding(method: Method) =
 class FragmentBindingProperty<VB : ViewBinding>(private val clazz: Class<VB>) : ReadOnlyProperty<Fragment, VB> {
 
   override fun getValue(thisRef: Fragment, property: KProperty<*>): VB =
-    try {
-      thisRef.requireView().getBinding(clazz).also { binding ->
+    requireNotNull(thisRef.view) { "The property of ${property.name} has been destroyed." }
+      .getBinding(clazz).also { binding ->
         if (binding is ViewDataBinding) binding.lifecycleOwner = thisRef.viewLifecycleOwner
       }
-    } catch (e: IllegalStateException) {
-      throw IllegalStateException("The property of ${property.name} has been destroyed.")
-    }
 }
 
 class FragmentInflateBindingProperty<VB : ViewBinding>(private val clazz: Class<VB>) : ReadOnlyProperty<Fragment, VB> {
