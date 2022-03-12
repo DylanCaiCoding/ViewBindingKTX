@@ -1,4 +1,7 @@
 <resources>
   <string name="app_name">ViewBindingKTX</string>
   <string name="show_loading_dialog">Show loading dialog</string>
+  <string name="tab_home">Home</string>
+  <string name="tab_message">Message</string>
+  <string name="tab_me">Me</string>
 </resources>

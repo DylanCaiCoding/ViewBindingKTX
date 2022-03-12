@@ -17,6 +17,9 @@
     android:id="@+id/tab_layout"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    app:layout_constraintBottom_toBottomOf="parent" />
+    android:background="@color/white"
+    app:elevation="10dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:tabIndicatorHeight="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
