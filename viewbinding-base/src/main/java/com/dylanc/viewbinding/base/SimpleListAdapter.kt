@@ -58,16 +58,16 @@ abstract class SimpleListAdapter<T, VB : ViewBinding>(
   diffCallback: DiffUtil.ItemCallback<T>
 ) : ListAdapter<T, SimpleListAdapter.BindingViewHolder<VB>>(diffCallback) {
 
-  private var onItemClickListener: ((T, Int) -> Unit)? = null
-  private var onItemLongClickListener: ((T, Int) -> Unit)? = null
+  private var onItemClickListener: OnItemClickListener<T>? = null
+  private var onItemLongClickListener: OnItemClickListener<T>? = null
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder<VB> =
     BindingViewHolder(ViewBindingUtil.inflateWithGeneric<VB>(this, parent)).apply {
       itemView.setOnClickListener {
-        onItemClickListener?.invoke(getItem(adapterPosition), adapterPosition)
+        onItemClickListener?.onItemClick(getItem(adapterPosition), adapterPosition)
       }
       itemView.setOnLongClickListener {
-        onItemLongClickListener?.invoke(getItem(adapterPosition), adapterPosition)
+        onItemLongClickListener?.onItemClick(getItem(adapterPosition), adapterPosition)
         onItemLongClickListener != null
       }
     }
@@ -76,17 +76,21 @@ abstract class SimpleListAdapter<T, VB : ViewBinding>(
     onBindViewHolder(holder.binding, getItem(position), position)
   }
 
-  fun doOnItemClick(block: (T, Int) -> Unit) {
+  fun doOnItemClick(block: OnItemClickListener<T>) {
     onItemClickListener = block
   }
 
-  fun doOnItemLongClick(block: (T, Int) -> Unit) {
+  fun doOnItemLongClick(block: OnItemClickListener<T>) {
     onItemLongClickListener = block
   }
 
   abstract fun onBindViewHolder(binding: VB, item: T, position: Int)
 
   class BindingViewHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root)
+
+  interface OnItemClickListener<T> {
+    fun onItemClick(item: T, position: Int)
+  }
 }
 
 abstract class SimpleIntListAdapter<VB : ViewBinding> : SimpleListAdapter<Int, VB>(IntDiffCallback())
