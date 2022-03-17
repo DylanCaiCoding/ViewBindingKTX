@@ -9,7 +9,7 @@
 添加依赖：
 
 ```gradle
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.2'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.3'
 ```
 
 改造的核心步骤：
