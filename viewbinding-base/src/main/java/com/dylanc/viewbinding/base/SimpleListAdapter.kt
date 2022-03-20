@@ -88,7 +88,7 @@ abstract class SimpleListAdapter<T, VB : ViewBinding>(
 
   class BindingViewHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root)
 
-  interface OnItemClickListener<T> {
+  fun interface OnItemClickListener<T> {
     fun onItemClick(item: T, position: Int)
   }
 }
