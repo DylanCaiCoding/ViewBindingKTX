@@ -5,7 +5,7 @@
 首先添加依赖：
 
 ```gradle
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.0.3'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.0.4'
 ```
 
 通过 `holder.getBinding(VB::bind)` 来获取 ViewBinding 实例。

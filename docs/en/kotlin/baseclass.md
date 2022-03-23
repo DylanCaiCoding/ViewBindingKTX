@@ -7,7 +7,7 @@ There are two usages of [using reflection](/en/kotlin/baseclass?id=use-reflectio
 Add dependency:
 
 ```gradle
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.3'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.4'
 ```
 
 The core steps:
