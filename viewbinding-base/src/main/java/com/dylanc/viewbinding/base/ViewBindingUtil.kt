@@ -76,7 +76,11 @@ object ViewBindingUtil {
           } catch (e: NoSuchMethodException) {
           } catch (e: ClassCastException) {
           } catch (e: InvocationTargetException) {
-            throw e.targetException
+            var tagException: Throwable? = e
+            while (tagException is InvocationTargetException) {
+              tagException = e.cause
+            }
+            throw tagException ?: IllegalArgumentException("ViewBinding generic was found, but creation failed.")
           }
         }
       }
