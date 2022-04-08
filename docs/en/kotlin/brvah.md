@@ -5,7 +5,7 @@ Use ViewBinding without affecting the original code in BRVAH.
 Add dependency:
 
 ```gradle
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.0.4'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.0.5'
 ```
 
 You can get the binding object with `holder.getBinding(VB::bind)`.

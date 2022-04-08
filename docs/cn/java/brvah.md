@@ -5,7 +5,7 @@
 首先添加依赖：
 
 ```gradle
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.0.4'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.0.5'
 ```
 
 通过 `BaseViewHolderUtil.getBinding(holder, VB::bind)` 方法来获取 binding 对象了。

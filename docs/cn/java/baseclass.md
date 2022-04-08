@@ -11,7 +11,7 @@
 添加依赖：
 
 ```gradle
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.4'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.5'
 ```
 
 改造的核心步骤：

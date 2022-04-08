@@ -5,8 +5,8 @@
 添加依赖，本库提供了使用反射和不使用反射的用法，如果希望不使用反射，可换成对应的注释代码。
 
 ```gradle
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.4'
-// implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.0.4'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.5'
+// implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.0.5'
 ```
 
 个人推荐使用反射的用法，多一次反射的性能损耗可忽略不计，代码可读性会好很多，与 ViewModel 的用法更加统一。
