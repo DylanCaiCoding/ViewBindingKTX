@@ -36,7 +36,7 @@ fun <VB : ViewBinding> Fragment.binding(inflate: (LayoutInflater) -> VB) = Fragm
 
 class FragmentBindingDelegate<VB : ViewBinding>(private val bind: (View) -> VB) : ReadOnlyProperty<Fragment, VB> {
   override fun getValue(thisRef: Fragment, property: KProperty<*>): VB =
-    requireNotNull(thisRef.view) { "The property of ${property.name} has been destroyed." }
+    requireNotNull(thisRef.view) { "The constructor missing layout id or the property of ${property.name} has been destroyed." }
       .getBinding(bind).also { binding ->
         if (binding is ViewDataBinding) binding.lifecycleOwner = thisRef.viewLifecycleOwner
       }
