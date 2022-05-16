@@ -1,10 +1,10 @@
 # Q&A
 
-### include 的布局怎么使用 ViewBinding？
+## include 的布局怎么使用 ViewBinding？
 
 以下是 ViewBinding 本身的用法，有两种使用情况：
 
-- #### include 的布局不含 merge 标签。
+- **布局不含 `<merge/>` 标签**
 
 首先要给 include 的布局增加一个 id。
 
@@ -20,7 +20,7 @@
 binding.toolbar.tvTitle.text = title
 ```
 
-- #### include 的布局包含 merge 标签。
+- **布局包含 `<merge/>` 标签**
 
 这和前面用法有点不一样，不能给 include 标签增加 id。
 
@@ -30,13 +30,13 @@ binding.toolbar.tvTitle.text = title
 val mergeBinding = LayoutMergeBinding.bind(binding.root)
 ```
 
-### 为什么在 Fragment 使用 ViewBinding 时，要在 onDestroyView() 清理绑定对象？
+## 为什么在 Fragment 使用 ViewBinding 时，要在 onDestroyView() 清理绑定对象？
 
 因为 Fragment 的存在时间比其视图长，就是 onDestroyView() 把视图销毁了，Fragment 可能还没走 onDestroy()，此时由于绑定对象还持有着视图，这个本该被释放回收的 View 在 onDestroyView() 后还存在内存中，并未及时的释放，这是不合理的。
 
 那么不释放会导致什么问题呢？其实多数情况下不释放绑定对象也不会报错，个人目前想到的问题是未能及时释放视图的内存，不知道会不会还有其它隐患，后续遇到的话再进行补充。反正在 onDestroyView 释放了总没错，官方也是这么要求的。本库的 Fragment 拓展函数会按照官方要求自动释放绑定对象。
 
-### ViewBinding 和 DataBinding 有什么关系？
+## ViewBinding 和 DataBinding 有什么关系？
 
 两者是一种包含关系，ViewBinding 是 DataBinding 的一部分功能，即 ViewBinding 能做的事，DataBinding 都能做。所以 DataBinding 也能用通过 inflate 方法和 bind 方法创建绑定对象，这样与 ViewBinding 的用法保持一致，不需要用 DataBindingUtil。
 

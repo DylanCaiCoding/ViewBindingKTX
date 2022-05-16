@@ -4,11 +4,27 @@
 
 首先添加依赖：
 
-```gradle
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.0.5'
+```groovy
+// 如果使用了 viewbinding-nonreflection-ktx 可以不添加
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.0.6'
 ```
 
-通过 `BaseViewHolderUtil.getBinding(holder, VB::bind)` 方法来获取 binding 对象了。
+可直接通过 `holder` 来获取 ViewBinding 实例。
+
+<!-- tabs:start -->
+
+#### **Kotlin**
+
+```kotlin
+class FooAdapter : BaseQuickAdapter<Foo, BaseViewHolder>(R.layout.item_foo) {
+
+  override fun convert(holder: BaseViewHolder, item: Foo) {
+    holder.getBinding(ItemFooBinding::bind).tvFoo.text = item.value
+  }
+}
+```
+
+#### **Java**
 
 ```java
 public class FooAdapter extends BaseQuickAdapter<Foo, BaseViewHolder> {
@@ -24,3 +40,5 @@ public class FooAdapter extends BaseQuickAdapter<Foo, BaseViewHolder> {
   }
 }
 ```
+
+<!-- tabs:end -->
