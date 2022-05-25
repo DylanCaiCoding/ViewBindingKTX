@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion buildConfig.compileSdkVersion
 
     defaultConfig {
         minSdkVersion buildConfig.minSdkVersion
@@ -17,11 +17,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
-    compileOptions {
-        kotlinOptions.freeCompilerArgs += ['-module-name', "viewbinding-brvah-ktx"]
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -29,6 +24,7 @@ android {
 
     kotlinOptions {
         jvmTarget = '1.8'
+        freeCompilerArgs += ['-module-name', "viewbinding-brvah-ktx"]
     }
 
     buildFeatures {
@@ -38,8 +34,5 @@ android {
 
 
 dependencies {
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:$brvahVersion"
 }

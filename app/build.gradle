@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion buildConfig.compileSdkVersion
 
     defaultConfig {
         applicationId "com.dylanc.viewbinding.sample"
@@ -38,19 +38,18 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.6.0'
-    implementation "androidx.fragment:fragment-ktx:1.3.6"
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'com.drakeet.multitype:multitype:4.3.0'
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation "androidx.appcompat:appcompat:$appCompatVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+    implementation "com.google.android.material:material:$materialVersion"
+    implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
+    implementation "com.drakeet.multitype:multitype:$multiTypeVersion"
+    implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:$brvahVersion"
     implementation project(path: ':viewbinding-ktx')
     implementation project(path: ':viewbinding-nonreflection-ktx')
     implementation project(path: ':viewbinding-base')
     implementation project(path: ':viewbinding-brvah')
 
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$junitExtVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
 }
