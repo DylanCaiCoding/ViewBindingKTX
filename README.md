@@ -135,6 +135,7 @@ See the [usage documentation](https://dylancaicoding.github.io/ViewBindingKTX) f
 | [Longan](https://github.com/DylanCaiCoding/Longan)           | A collection of Kotlin utils                                 |
 | [LoadingStateView](https://github.com/DylanCaiCoding/LoadingStateView) | Decoupling the code of toolbar or loading status view.       |
 | [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | Use MMKV with property delegates.                                      |
+| [Tracker](https://github.com/DylanCaiCoding/Tracker)       | A lightweight tracking framework based on the tracking idea of Buzzvideo.|
 
 ## Thanks
 
