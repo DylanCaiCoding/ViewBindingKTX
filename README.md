@@ -1,6 +1,6 @@
 # ViewBindingKTX
 
-English | [中文](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/README_CN.md)
+English | [中文](README_ZH.md)
 
 [![](https://www.jitpack.io/v/DylanCaiCoding/ViewBindingKTX.svg)](https://www.jitpack.io/#DylanCaiCoding/ViewBindingKTX) [![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/LICENSE)
 
@@ -43,16 +43,16 @@ android {
 
 dependencies {
     // The following are optional, please add as needed
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.5'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.0.5'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.5'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.0.5'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.6'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.0.6'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.6'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.0.6'
 }
 ```
 
 ## Usage
 
-:pencil: **[Usage documentation](https://dylancaicoding.github.io/ViewBindingKTX/#/en/)**
+:pencil: **[>> Usage documentation <<](https://dylancaicoding.github.io/ViewBindingKTX/#/en/)**
 
 ## Sample
 
@@ -62,7 +62,6 @@ Get the binding instance using the Kotlin property delegate：
 class MainActivity : AppCompatActivity() {
 
   private val binding: ActivityMainBinding by binding()
-  // private val binding by binding(ActivityMainBinding::inflate)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -75,11 +74,8 @@ class MainActivity : AppCompatActivity() {
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
   private val binding: FragmentHomeBinding by binding()
-  // private val binding by binding(FragmentHomeBinding::bind)
-
   private val childBinding: LayoutChildBinding by binding(Method.INFLATE)
-  // private val childBinding by binding { LayoutChildBinding.inflate(layoutInflater) }
-
+  
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     binding.container.addView(childBinding.root)
@@ -132,7 +128,7 @@ See the [usage documentation](https://dylancaicoding.github.io/ViewBindingKTX) f
 
 | Library                                                      | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [Longan](https://github.com/DylanCaiCoding/Longan)           | A collection of Kotlin utils                                 |
+| [Longan](https://github.com/DylanCaiCoding/Longan)           | Probably the best Kotlin utils library for Android.                                  |
 | [LoadingStateView](https://github.com/DylanCaiCoding/LoadingStateView) | Decoupling the code of toolbar or loading status view.       |
 | [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | Use MMKV with property delegates.                                      |
 | [Tracker](https://github.com/DylanCaiCoding/Tracker)       | A lightweight tracking framework based on the tracking idea of Buzzvideo.|

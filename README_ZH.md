@@ -1,6 +1,6 @@
 # ViewBindingKTX
 
-[English](https://github.com/DylanCaiCoding/ViewBindingKtx) | 中文
+[English](https://github.com/DylanCaiCoding/ViewBindingKTX) | 中文
 
 [![](https://www.jitpack.io/v/DylanCaiCoding/ViewBindingKTX.svg)](https://www.jitpack.io/#DylanCaiCoding/ViewBindingKTX) [![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/ViewBindingKtx/blob/master/LICENSE)
 
@@ -44,16 +44,16 @@ android {
 
 dependencies {
     // 以下都是可选，请根据需要进行添加
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.5'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.0.5'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.5'
-    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.0.5'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.6'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.0.6'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.6'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.0.6'
 }
 ```
 
 ## 用法
 
-:pencil: **[使用文档](https://dylancaicoding.github.io/ViewBindingKTX)**
+:pencil: **[>> 使用文档 <<](https://dylancaicoding.github.io/ViewBindingKTX)**
 
 ## 示例
 
@@ -63,8 +63,7 @@ dependencies {
 class MainActivity : AppCompatActivity() {
 
   private val binding: ActivityMainBinding by binding()
-  // private val binding by binding(ActivityMainBinding::inflate)
-
+  
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     binding.tvHelloWorld.text = "Hello Android!"
@@ -76,10 +75,7 @@ class MainActivity : AppCompatActivity() {
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
   private val binding: FragmentHomeBinding by binding()
-  // private val binding by binding(FragmentHomeBinding::bind)
-
   private val childBinding: LayoutChildBinding by binding(Method.INFLATE)
-  // private val childBinding by binding { LayoutChildBinding.inflate(layoutInflater) }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -144,6 +140,7 @@ class FooAdapter : BaseQuickAdapter<Foo, BaseViewHolder>(R.layout.item_foo) {
 
 - [《优雅地封装和使用 ViewBinding，该替代 Kotlin synthetic 和 ButterKnife 了》](https://juejin.cn/post/6906153878312452103)
 - [《ViewBinding 巧妙的封装思路，还能这样适配 BRVAH》](https://juejin.cn/post/6950530267547172901)
+- [《更多 ViewBinding 的封装思路，适配 BRVAH 竟如此简单》](https://juejin.cn/post/7082809725703684132)
 
 ## Thanks
 
