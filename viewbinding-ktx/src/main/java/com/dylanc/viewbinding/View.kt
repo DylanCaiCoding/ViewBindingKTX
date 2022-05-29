@@ -23,6 +23,6 @@ inline fun <reified VB : ViewBinding> View.getBinding() = getBinding(VB::class.j
 
 @Suppress("UNCHECKED_CAST")
 fun <VB : ViewBinding> View.getBinding(clazz: Class<VB>) =
-  getTag(Int.MIN_VALUE) as? VB ?: (clazz.getMethod("bind", View::class.java)
+  getTag(R.id.tag_view_binding) as? VB ?: (clazz.getMethod("bind", View::class.java)
     .invoke(null, this) as VB)
-    .also { setTag(Int.MIN_VALUE, it) }
+    .also { setTag(R.id.tag_view_binding, it) }
