@@ -21,26 +21,17 @@ package com.dylanc.viewbinding.sample.base.reflection.kotlin
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import com.dylanc.viewbinding.base.ViewBindingUtil
+import com.dylanc.viewbinding.base.BindingOwner
+import com.dylanc.viewbinding.base.BindingOwnerDelegate
 
 /**
- * How to modify the base class to use view binding, you need the following steps:
- * 1. Adds a generic of view binding to the base class.
- * 2. Declares a binding object.
- * 3. Uses [inflateBindingWithGeneric] method to create the binding object.
- * 4. Uses the root of the binding object instead of layout id to set content view.
- *
- * Here is the core code.
- *
  * @author Dylan Cai
  */
-abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity() {
-
-  lateinit var binding: VB
+abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity(),
+  BindingOwner<VB> by BindingOwnerDelegate() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    binding = ViewBindingUtil.inflateWithGeneric(this, layoutInflater)
-    setContentView(binding.root)
+    setContentViewWithBinding()
   }
 }

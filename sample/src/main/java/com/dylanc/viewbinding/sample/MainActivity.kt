@@ -17,22 +17,19 @@
 package com.dylanc.viewbinding.sample
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.dylanc.viewbinding.doOnCustomTabSelected
-import com.dylanc.viewbinding.nonreflection.binding
-import com.dylanc.viewbinding.nonreflection.setCustomView
+import com.dylanc.viewbinding.sample.base.reflection.kotlin.BaseBindingActivity
 import com.dylanc.viewbinding.sample.databinding.ActivityMainBinding
 import com.dylanc.viewbinding.sample.databinding.LayoutBottomTabBinding
 import com.dylanc.viewbinding.setCustomView
 import com.dylanc.viewbinding.updateCustomTab
 import com.google.android.material.tabs.TabLayoutMediator
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseBindingActivity<ActivityMainBinding>() {
 
-  private val binding by binding(ActivityMainBinding::inflate)
   private val tabs: List<CustomTab> by lazy {
     listOf(
       CustomTab(R.string.tab_home, R.drawable.ic_home_selector, HomeFragment()),
