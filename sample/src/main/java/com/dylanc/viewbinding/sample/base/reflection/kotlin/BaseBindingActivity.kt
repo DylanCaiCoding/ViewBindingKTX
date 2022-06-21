@@ -21,14 +21,14 @@ package com.dylanc.viewbinding.sample.base.reflection.kotlin
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import com.dylanc.viewbinding.base.BindingOwner
-import com.dylanc.viewbinding.base.BindingOwnerDelegate
+import com.dylanc.viewbinding.base.ActivityBinding
+import com.dylanc.viewbinding.base.ActivityBindingDelegate
 
 /**
  * @author Dylan Cai
  */
 abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity(),
-  BindingOwner<VB> by BindingOwnerDelegate() {
+  ActivityBinding<VB> by ActivityBindingDelegate() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

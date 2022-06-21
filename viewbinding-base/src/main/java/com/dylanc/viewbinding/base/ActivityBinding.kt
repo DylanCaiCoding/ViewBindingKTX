@@ -14,24 +14,27 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+package com.dylanc.viewbinding.base
 
-package com.dylanc.viewbinding.sample.base.reflection.kotlin
-
-import android.os.Bundle
+import android.app.Activity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.dylanc.viewbinding.base.FragmentBinding
-import com.dylanc.viewbinding.base.FragmentBindingDelegate
 
-/**
- * @author Dylan Cai
- */
-abstract class BaseBindingFragment<VB : ViewBinding> : Fragment(),
-  FragmentBinding<VB> by FragmentBindingDelegate() {
+interface ActivityBinding<VB : ViewBinding> {
+  val binding: VB
+  fun Activity.setContentViewWithBinding()
+}
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-    createViewWithBinding(inflater, container)
+class ActivityBindingDelegate<VB : ViewBinding> : ActivityBinding<VB> {
+  private lateinit var _binding: VB
+
+  override val binding: VB get() = _binding
+
+  override fun Activity.setContentViewWithBinding() {
+    _binding = ViewBindingUtil.inflateWithGeneric(this, layoutInflater)
+    setContentView(binding.root)
+  }
 }
