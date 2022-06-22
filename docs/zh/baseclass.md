@@ -9,15 +9,27 @@
 添加依赖：
 
 ```groovy
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.0.6'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.1.0'
 ```
 
 改造的核心步骤：
 
-1. 在基类增加一个继承 ViewBinding 的泛型；
+<!-- tabs:start -->
+
+#### **Kotlin**
+
+1. 给基类增加一个 ViewBinding 泛型；
+2. Activity 基类实现 `ActivityBinding<VB> by ActivityBindingDelegate()`，Fragment 基类实现 `FragmentBinding<VB> by FragmentBindingDelegate()`；
+3. 在 Activity 基类调用 `setContentViewWithBinding()` 函数，在 Fragment 基类调用 `createViewWithBinding(inflater, container)`；
+
+#### **Java**
+
+1. 给基类增加一个 ViewBinding 泛型；
 2. 在基类里定义一个类型是 ViewBinding 泛型的 binding 对象；
 3. 用工具类方法初始化泛型的 binding；
 4. 用 binding.root 替代原来设置或返回布局的代码；
+
+<!-- tabs:end -->
 
 ### Activity
 
@@ -28,14 +40,12 @@ Activity 基类的核心改造代码：
 #### **Kotlin**
 
 ```kotlin
-abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity() {
-
-  lateinit var binding: VB
+abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity(),
+  ActivityBinding<VB> by ActivityBindingDelegate() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    binding = ViewBindingUtil.inflateWithGeneric(this, layoutInflater)
-    setContentView(binding.root)
+    setContentViewWithBinding()
   }
 }
 ```
@@ -103,19 +113,13 @@ Fragment 基类的核心改造代码：
 #### **Kotlin**
 
 ```kotlin
-abstract class BaseBindingFragment<VB : ViewBinding> : Fragment() {
+abstract class BaseBindingFragment<VB : ViewBinding> : Fragment(),
+  FragmentBinding<VB> by FragmentBindingDelegate() {
 
-  private var _binding: VB? = null
-  val binding:VB get() = _binding!!
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    _binding = ViewBindingUtil.inflateWithGeneric(this, inflater, container, false)
-    return binding.root
-  }
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
+  override fun onCreateView(
+    inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+  ): View? {
+    return createViewWithBinding(inflater, container)
   }
 }
 ```

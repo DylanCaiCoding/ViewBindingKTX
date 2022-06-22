@@ -6,7 +6,7 @@
 
 ```groovy
 // 如果使用了 viewbinding-nonreflection-ktx 可以不添加
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.0.6'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-brvah:2.1.0'
 ```
 
 可直接通过 `holder` 来获取 ViewBinding 实例。

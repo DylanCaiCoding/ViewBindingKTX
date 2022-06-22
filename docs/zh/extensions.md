@@ -11,13 +11,13 @@
 #### **反射**
 
 ```groovy
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.0.6'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.1.0'
 ```
 
 #### **无反射**
 
 ```groovy
-implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.0.6'
+implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-nonreflection-ktx:2.1.0'
 ```
 
 <!-- tabs:end -->
