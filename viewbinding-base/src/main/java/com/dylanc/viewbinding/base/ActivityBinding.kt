@@ -17,15 +17,12 @@
 package com.dylanc.viewbinding.base
 
 import android.app.Activity
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 
 interface ActivityBinding<VB : ViewBinding> {
   val binding: VB
-  fun Activity.setContentViewWithBinding()
+  fun Activity.setContentViewWithBinding(): View
 }
 
 class ActivityBindingDelegate<VB : ViewBinding> : ActivityBinding<VB> {
@@ -33,8 +30,9 @@ class ActivityBindingDelegate<VB : ViewBinding> : ActivityBinding<VB> {
 
   override val binding: VB get() = _binding
 
-  override fun Activity.setContentViewWithBinding() {
+  override fun Activity.setContentViewWithBinding(): View {
     _binding = ViewBindingUtil.inflateWithGeneric(this, layoutInflater)
-    setContentView(binding.root)
+    setContentView(_binding.root)
+    return _binding.root
   }
 }
